@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pssc.standardinfo.mapper.StandardinfoProcesslossMapper">
+    
+    <resultMap type="StandardinfoProcessloss" id="StandardinfoProcesslossResult">
+        <result property="processlossId"    column="processloss_id"    />
+        <result property="processNumber"    column="process_number"    />
+        <result property="processName"    column="process_name"    />
+        <result property="processCapacity"    column="process_capacity"    />
+        <result property="convertTime"    column="convert_time"    />
+        <result property="lossRate"    column="loss_rate"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectStandardinfoProcesslossVo">
+        select processloss_id, process_number, process_name, process_capacity, convert_time, loss_rate, create_by, create_time, update_by, update_time, remark, attribute1, attribute2, attribute3 from standardinfo_processloss
+    </sql>
+
+    <select id="selectStandardinfoProcesslossList" parameterType="StandardinfoProcessloss" resultMap="StandardinfoProcesslossResult">
+        <include refid="selectStandardinfoProcesslossVo"/>
+        <where>  
+            <if test="processNumber != null  and processNumber != ''"> and process_number = #{processNumber}</if>
+            <if test="processName != null  and processName != ''"> and process_name like concat('%', #{processName}, '%')</if>
+            <if test="processCapacity != null  and processCapacity != ''"> and process_capacity = #{processCapacity}</if>
+            <if test="convertTime != null "> and convert_time = #{convertTime}</if>
+            <if test="lossRate != null  and lossRate != ''"> and loss_rate = #{lossRate}</if>
+            <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
+            <if test="attribute2 != null  and attribute2 != ''"> and attribute2 = #{attribute2}</if>
+            <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
+        </where>
+    </select>
+    
+    <select id="selectStandardinfoProcesslossById" parameterType="Long" resultMap="StandardinfoProcesslossResult">
+        <include refid="selectStandardinfoProcesslossVo"/>
+        where processloss_id = #{processlossId}
+    </select>
+        
+    <insert id="insertStandardinfoProcessloss" parameterType="StandardinfoProcessloss" useGeneratedKeys="true" keyProperty="processlossId">
+        insert into standardinfo_processloss
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="processNumber != null and processNumber != ''">process_number,</if>
+            <if test="processName != null">process_name,</if>
+            <if test="processCapacity != null">process_capacity,</if>
+            <if test="convertTime != null">convert_time,</if>
+            <if test="lossRate != null">loss_rate,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="processNumber != null and processNumber != ''">#{processNumber},</if>
+            <if test="processName != null">#{processName},</if>
+            <if test="processCapacity != null">#{processCapacity},</if>
+            <if test="convertTime != null">#{convertTime},</if>
+            <if test="lossRate != null">#{lossRate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStandardinfoProcessloss" parameterType="StandardinfoProcessloss">
+        update standardinfo_processloss
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="processNumber != null and processNumber != ''">process_number = #{processNumber},</if>
+            <if test="processName != null">process_name = #{processName},</if>
+            <if test="processCapacity != null">process_capacity = #{processCapacity},</if>
+            <if test="convertTime != null">convert_time = #{convertTime},</if>
+            <if test="lossRate != null">loss_rate = #{lossRate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where processloss_id = #{processlossId}
+    </update>
+
+    <delete id="deleteStandardinfoProcesslossById" parameterType="Long">
+        delete from standardinfo_processloss where processloss_id = #{processlossId}
+    </delete>
+
+    <delete id="deleteStandardinfoProcesslossByIds" parameterType="String">
+        delete from standardinfo_processloss where processloss_id in 
+        <foreach item="processlossId" collection="array" open="(" separator="," close=")">
+            #{processlossId}
+        </foreach>
+    </delete>
+
+</mapper>
