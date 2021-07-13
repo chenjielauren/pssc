@@ -7,6 +7,8 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-processloss-add">
+            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
             <div class="form-group">    
                 <label class="col-sm-2 control-label is-required">工序编号：</label>
                 <div class="col-sm-4">
@@ -25,8 +27,7 @@
                 <label class="col-sm-2 control-label  is-required">转换时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="convertTime" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="convertTime" class="form-control" type="text" required>
                     </div>
                 </div>
             </div>
@@ -58,11 +59,6 @@
             }
         }
 
-        $("input[name='convertTime']").datetimepicker({
-            format: "yyyy-mm-dd",
-            minView: "month",
-            autoclose: true
-        });
     </script>
 </body>
 </html>

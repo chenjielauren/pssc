@@ -22,7 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectStandardinfoProcesslossVo">
-        select processloss_id, process_number, process_name, process_capacity, convert_time, loss_rate, create_by, create_time, update_by, update_time, remark, attribute1, attribute2, attribute3 from standardinfo_processloss
+        select p.processloss_id, p.process_number, p.process_name, p.process_capacity, p.convert_time, p.loss_rate, p.create_by, p.create_time, su.user_name as update_by, p.update_time, p.remark, attribute1, attribute2, attribute3 
+        from standardinfo_processloss p left join sys_user su on p.update_by = su.login_name 
     </sql>
 
     <select id="selectStandardinfoProcesslossList" parameterType="StandardinfoProcessloss" resultMap="StandardinfoProcesslossResult">
@@ -53,9 +54,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="convertTime != null">convert_time,</if>
             <if test="lossRate != null">loss_rate,</if>
             <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
+            create_time,
             <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            update_time,
             <if test="remark != null">remark,</if>
             <if test="attribute1 != null">attribute1,</if>
             <if test="attribute2 != null">attribute2,</if>
@@ -68,9 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="convertTime != null">#{convertTime},</if>
             <if test="lossRate != null">#{lossRate},</if>
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
+            sysdate(),
             <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            sysdate(),
             <if test="remark != null">#{remark},</if>
             <if test="attribute1 != null">#{attribute1},</if>
             <if test="attribute2 != null">#{attribute2},</if>
@@ -89,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
+            update_time = sysdate(),
             <if test="remark != null">remark = #{remark},</if>
             <if test="attribute1 != null">attribute1 = #{attribute1},</if>
             <if test="attribute2 != null">attribute2 = #{attribute2},</if>

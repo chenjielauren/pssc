@@ -24,7 +24,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectStandardinfoVendorVo">
-        select vendor_id, vendor_category, vendor_number, vendor_name, vendor_phone, contract_name, contract_mobile, vendor_addr, create_by, create_time, update_by, update_time, remark, attribute1, attribute2, attribute3 from standardinfo_vendor
+        select v.vendor_id, v.vendor_category, v.vendor_number, v.vendor_name, v.vendor_phone, v.contract_name, v.contract_mobile, v.vendor_addr, v.create_by, v.create_time, su.user_name as update_by, v.update_time, v.remark, v.attribute1, v.attribute2, v.attribute3 
+        from standardinfo_vendor v left join sys_user su on v.update_by = su.login_name 
     </sql>
 
     <select id="selectStandardinfoVendorList" parameterType="StandardinfoVendor" resultMap="StandardinfoVendorResult">
@@ -56,9 +57,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="contractMobile != null">contract_mobile,</if>
             <if test="vendorAddr != null">vendor_addr,</if>
             <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
+            create_time,
             <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            update_time,
             <if test="remark != null">remark,</if>
             <if test="attribute1 != null">attribute1,</if>
             <if test="attribute2 != null">attribute2,</if>
@@ -73,9 +74,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="contractMobile != null">#{contractMobile},</if>
             <if test="vendorAddr != null">#{vendorAddr},</if>
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
+            sysdate(),
             <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            sysdate(),
             <if test="remark != null">#{remark},</if>
             <if test="attribute1 != null">#{attribute1},</if>
             <if test="attribute2 != null">#{attribute2},</if>
@@ -96,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
+            update_time = sysdate(),
             <if test="remark != null">remark = #{remark},</if>
             <if test="attribute1 != null">attribute1 = #{attribute1},</if>
             <if test="attribute2 != null">attribute2 = #{attribute2},</if>

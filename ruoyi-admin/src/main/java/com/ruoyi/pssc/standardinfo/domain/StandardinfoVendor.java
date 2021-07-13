@@ -18,8 +18,8 @@ public class StandardinfoVendor extends BaseEntity
     /** 供应商ID */
     private Long vendorId;
 
-    /** 用户性别（0主材供应商 1辅材供应商 2未知） */
-    @Excel(name = "用户性别", readConverterExp = "0=主材供应商,1=辅材供应商,2=未知")
+    /** 供应商分类（0主材供应商 1辅材供应商 2未知） */
+    @Excel(name = "供应商分类", readConverterExp = "0=主材供应商,1=辅材供应商,2=未知")
     private String vendorCategory;
 
     /** 供应商编号 */
@@ -176,4 +176,6 @@ public class StandardinfoVendor extends BaseEntity
             .append("attribute3", getAttribute3())
             .toString();
     }
+
+
 }

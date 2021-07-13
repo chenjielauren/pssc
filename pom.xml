@@ -9,7 +9,7 @@
 
     <name>ruoyi</name>
     <url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+    <description>供应商质量追溯平台</description>
     
     <properties>
         <ruoyi.version>4.6.2</ruoyi.version>

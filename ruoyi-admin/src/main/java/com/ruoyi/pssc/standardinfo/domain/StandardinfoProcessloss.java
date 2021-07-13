@@ -33,24 +33,17 @@ public class StandardinfoProcessloss extends BaseEntity
     private String processCapacity;
 
     /** 转换时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "转换时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date convertTime;
+    @Excel(name = "转换时间")
+    private String convertTime;
 
     /** 损耗率 */
     @Excel(name = "损耗率")
     private String lossRate;
 
-    /**  */
-    @Excel(name = "")
     private String attribute1;
 
-    /**  */
-    @Excel(name = "")
     private String attribute2;
 
-    /**  */
-    @Excel(name = "")
     private String attribute3;
 
     public void setProcesslossId(Long processlossId) 
@@ -89,14 +82,13 @@ public class StandardinfoProcessloss extends BaseEntity
     {
         return processCapacity;
     }
-    public void setConvertTime(Date convertTime) 
-    {
-        this.convertTime = convertTime;
+    
+    public String getConvertTime() {
+        return convertTime;
     }
 
-    public Date getConvertTime() 
-    {
-        return convertTime;
+    public void setConvertTime(String convertTime) {
+        this.convertTime = convertTime;
     }
     public void setLossRate(String lossRate) 
     {
@@ -154,4 +146,5 @@ public class StandardinfoProcessloss extends BaseEntity
             .append("attribute3", getAttribute3())
             .toString();
     }
+
 }

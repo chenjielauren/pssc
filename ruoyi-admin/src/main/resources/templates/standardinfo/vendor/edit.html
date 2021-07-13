@@ -6,6 +6,7 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-vendor-edit" th:object="${standardinfoVendor}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
             <input name="vendorId" th:field="*{vendorId}" type="hidden">
             <div class="form-group">    
                 <label class="col-sm-2 control-label is-required">供应商分类：</label>
