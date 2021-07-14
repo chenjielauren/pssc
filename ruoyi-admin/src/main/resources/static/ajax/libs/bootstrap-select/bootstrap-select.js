@@ -954,7 +954,7 @@
       }
 
       this.checkDisabled();
-      this.clickListener();
+      this.clicruoyiistener();
 
       if (this.options.liveSearch) {
         this.liveSearchListener();
@@ -2311,7 +2311,7 @@
       this.$element.attr('tabindex', -98);
     },
 
-    clickListener: function () {
+    clicruoyiistener: function () {
       var that = this,
           $document = $(document);
 

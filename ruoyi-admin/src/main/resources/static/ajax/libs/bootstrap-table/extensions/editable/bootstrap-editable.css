@@ -97,14 +97,14 @@
 }
 
 
-/* checklist vertical alignment */
-.editable-checklist label input[type="checkbox"], 
-.editable-checklist label span {
+/* checruoyiist vertical alignment */
+.editable-checruoyiist label input[type="checkbox"], 
+.editable-checruoyiist label span {
     vertical-align: middle;
     margin: 0;
 }
 
-.editable-checklist label {
+.editable-checruoyiist label {
     white-space: nowrap; 
 }
 

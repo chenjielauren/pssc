@@ -147,7 +147,7 @@
                             <ul class="nav nav-third-level">
 								<li><a class="menuItem" th:href="@{/demo/report/echarts}">百度ECharts</a></li>
 								<li><a class="menuItem" th:href="@{/demo/report/peity}">peity</a></li>
-								<li><a class="menuItem" th:href="@{/demo/report/sparkline}">sparkline</a></li>
+								<li><a class="menuItem" th:href="@{/demo/report/sparruoyiine}">sparruoyiine</a></li>
 								<li><a class="menuItem" th:href="@{/demo/report/metrics}">图表组合</a></li>
 							</ul>
                         </li>
@@ -191,10 +191,10 @@
                     </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right welcome-message">
-                    <li><a data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="开发文档" href="http://doc.ruoyi.vip/ruoyi" target="_blank"><i class="fa fa-question-circle"></i> 文档</a></li>
+                    <!-- <li><a data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="开发文档" href="http://doc.ruoyi.vip/ruoyi" target="_blank"><i class="fa fa-question-circle"></i> 文档</a></li> -->
                     <li><a data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="锁定屏幕" href="#" id="lockScreen"><i class="fa fa-lock"></i> 锁屏</a></li>
 	                <li><a data-toggle="tooltip" data-trigger="hover" data-placement="bottom" title="全屏显示" href="#" id="fullScreen"><i class="fa fa-arrows-alt"></i> 全屏</a></li>
-                    <li class="dropdown user-menu">
+					<li class="dropdown user-menu">
 						<a href="javascript:void(0)" class="dropdown-toggle" data-hover="dropdown">
 							<img th:src="(${#strings.isEmpty(user.avatar)}) ? @{/img/profile.jpg} : @{${user.avatar}}" th:onerror="this.src='img/profile.jpg'" class="user-image">
 							<span class="hidden-xs">[[${#strings.defaultString(user.userName, '-')}]]</span>
@@ -249,7 +249,7 @@
         </div>
         
         <div th:if="${ignoreFooter}" class="footer">
-            <div class="pull-right">© [[${copyrightYear}]] RuoYi Copyright </div>
+            <div class="pull-right">© [[${copyrightYear}]] King's Luck  Copyright </div>
         </div>
     </div>
     <!--右侧部分结束-->

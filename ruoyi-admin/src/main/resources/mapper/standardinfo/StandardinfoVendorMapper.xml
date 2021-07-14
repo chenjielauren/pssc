@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.pssc.standardinfo.mapper.StandardinfoVendorMapper">
+<mapper namespace="com.kl.pssc.mapper.StandardinfoVendorMapper">
     
     <resultMap type="StandardinfoVendor" id="StandardinfoVendorResult">
         <result property="vendorId"    column="vendor_id"    />
@@ -17,6 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="isValid"    column="is_valid"    />
         <result property="remark"    column="remark"    />
         <result property="attribute1"    column="attribute1"    />
         <result property="attribute2"    column="attribute2"    />
@@ -24,8 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectStandardinfoVendorVo">
-        select v.vendor_id, v.vendor_category, v.vendor_number, v.vendor_name, v.vendor_phone, v.contract_name, v.contract_mobile, v.vendor_addr, v.create_by, v.create_time, su.user_name as update_by, v.update_time, v.remark, v.attribute1, v.attribute2, v.attribute3 
-        from standardinfo_vendor v left join sys_user su on v.update_by = su.login_name 
+        select vendor_id, vendor_category, vendor_number, vendor_name, vendor_phone, contract_name, contract_mobile, vendor_addr, v.create_by, v.create_time, su.user_name update_by, v.update_time, v.is_valid, v.remark, attribute1, attribute2, attribute3 
+        from standardinfo_vendor v left join sys_user su on v.update_by = su.login_name
     </sql>
 
     <select id="selectStandardinfoVendorList" parameterType="StandardinfoVendor" resultMap="StandardinfoVendorResult">
@@ -38,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="contractName != null  and contractName != ''"> and contract_name like concat('%', #{contractName}, '%')</if>
             <if test="contractMobile != null  and contractMobile != ''"> and contract_mobile = #{contractMobile}</if>
             <if test="vendorAddr != null  and vendorAddr != ''"> and vendor_addr = #{vendorAddr}</if>
+             and is_valid = 'Y'
         </where>
     </select>
     
@@ -49,35 +51,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertStandardinfoVendor" parameterType="StandardinfoVendor" useGeneratedKeys="true" keyProperty="vendorId">
         insert into standardinfo_vendor
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="vendorCategory != null">vendor_category,</if>
+            <if test="vendorCategory != null and vendorCategory != ''">vendor_category,</if>
             <if test="vendorNumber != null and vendorNumber != ''">vendor_number,</if>
-            <if test="vendorName != null">vendor_name,</if>
-            <if test="vendorPhone != null">vendor_phone,</if>
-            <if test="contractName != null">contract_name,</if>
-            <if test="contractMobile != null">contract_mobile,</if>
-            <if test="vendorAddr != null">vendor_addr,</if>
+            <if test="vendorName != null and vendorName != ''">vendor_name,</if>
+            <if test="vendorPhone != null and vendorPhone != ''">vendor_phone,</if>
+            <if test="contractName != null and contractName != ''">contract_name,</if>
+            <if test="contractMobile != null and contractMobile != ''">contract_mobile,</if>
+            <if test="vendorAddr != null and vendorAddr != ''">vendor_addr,</if>
             <if test="createBy != null">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
             update_time,
-            <if test="remark != null">remark,</if>
+            is_valid,
+            <if test="remark != null and remark != ''">remark,</if>
             <if test="attribute1 != null">attribute1,</if>
             <if test="attribute2 != null">attribute2,</if>
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="vendorCategory != null">#{vendorCategory},</if>
+            <if test="vendorCategory != null and vendorCategory != ''">#{vendorCategory},</if>
             <if test="vendorNumber != null and vendorNumber != ''">#{vendorNumber},</if>
-            <if test="vendorName != null">#{vendorName},</if>
-            <if test="vendorPhone != null">#{vendorPhone},</if>
-            <if test="contractName != null">#{contractName},</if>
-            <if test="contractMobile != null">#{contractMobile},</if>
-            <if test="vendorAddr != null">#{vendorAddr},</if>
+            <if test="vendorName != null and vendorName != ''">#{vendorName},</if>
+            <if test="vendorPhone != null and vendorPhone != ''">#{vendorPhone},</if>
+            <if test="contractName != null and contractName != ''">#{contractName},</if>
+            <if test="contractMobile != null and contractMobile != ''">#{contractMobile},</if>
+            <if test="vendorAddr != null and vendorAddr != ''">#{vendorAddr},</if>
             <if test="createBy != null">#{createBy},</if>
             sysdate(),
             <if test="updateBy != null">#{updateBy},</if>
             sysdate(),
-            <if test="remark != null">#{remark},</if>
+            'Y',
+            <if test="remark != null and remark != ''">#{remark},</if>
             <if test="attribute1 != null">#{attribute1},</if>
             <if test="attribute2 != null">#{attribute2},</if>
             <if test="attribute3 != null">#{attribute3},</if>
@@ -87,23 +91,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateStandardinfoVendor" parameterType="StandardinfoVendor">
         update standardinfo_vendor
         <trim prefix="SET" suffixOverrides=",">
-            <if test="vendorCategory != null">vendor_category = #{vendorCategory},</if>
+            <if test="vendorCategory != null and vendorCategory != ''">vendor_category = #{vendorCategory},</if>
             <if test="vendorNumber != null and vendorNumber != ''">vendor_number = #{vendorNumber},</if>
-            <if test="vendorName != null">vendor_name = #{vendorName},</if>
-            <if test="vendorPhone != null">vendor_phone = #{vendorPhone},</if>
-            <if test="contractName != null">contract_name = #{contractName},</if>
-            <if test="contractMobile != null">contract_mobile = #{contractMobile},</if>
-            <if test="vendorAddr != null">vendor_addr = #{vendorAddr},</if>
+            <if test="vendorName != null and vendorName != ''">vendor_name = #{vendorName},</if>
+            <if test="vendorPhone != null and vendorPhone != ''">vendor_phone = #{vendorPhone},</if>
+            <if test="contractName != null and contractName != ''">contract_name = #{contractName},</if>
+            <if test="contractMobile != null and contractMobile != ''">contract_mobile = #{contractMobile},</if>
+            <if test="vendorAddr != null and vendorAddr != ''">vendor_addr = #{vendorAddr},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             update_time = sysdate(),
-            <if test="remark != null">remark = #{remark},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
             <if test="attribute1 != null">attribute1 = #{attribute1},</if>
             <if test="attribute2 != null">attribute2 = #{attribute2},</if>
             <if test="attribute3 != null">attribute3 = #{attribute3},</if>
         </trim>
         where vendor_id = #{vendorId}
+    </update>
+
+    <update id="updateStandardinfoVendorById" parameterType="Long">
+        update standardinfo_vendor set is_valid = 'N'  where vendor_id = #{vendorId}
+    </update>
+
+    <update id="updateStandardinfoVendorByIds" parameterType="String">
+        update standardinfo_vendor set is_valid = 'N' where vendor_id in 
+        <foreach item="vendorId" collection="array" open="(" separator="," close=")">
+            #{vendorId}
+        </foreach>
     </update>
 
     <delete id="deleteStandardinfoVendorById" parameterType="Long">

@@ -81,7 +81,7 @@
 		r.curHoverNode = null;
 		r.dragFlag = 0;
 		r.dragNodeShowBefore = [];
-		r.dragMaskList = new Array();
+		r.dragMasruoyiist = new Array();
 		r.showHoverDom = true;
 	},
 	//default cache of exedit
@@ -750,9 +750,9 @@
 		showIfameMask: function(setting, showSign) {
 			var root = data.getRoot(setting);
 			//clear full mask
-			while (root.dragMaskList.length > 0) {
-				root.dragMaskList[0].remove();
-				root.dragMaskList.shift();
+			while (root.dragMasruoyiist.length > 0) {
+				root.dragMasruoyiist[0].remove();
+				root.dragMasruoyiist.shift();
 			}
 			if (showSign) {
 				//show mask
@@ -762,7 +762,7 @@
 					r = tools.getAbs(obj),
 					dragMask = $("<div id='zTreeMask_" + i + "' class='zTreeMask' style='top:" + r[1] + "px; left:" + r[0] + "px; width:" + obj.offsetWidth + "px; height:" + obj.offsetHeight + "px;'></div>");
 					dragMask.appendTo("body");
-					root.dragMaskList.push(dragMask);
+					root.dragMasruoyiist.push(dragMask);
 				}
 			}
 		}

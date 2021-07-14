@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kl.pssc.mapper.StandardinfoProductMapper">
+    
+    <resultMap type="StandardinfoProduct" id="StandardinfoProductResult">
+        <result property="productId"    column="product_id"    />
+        <result property="productNumber"    column="product_number"    />
+        <result property="productName"    column="product_name"    />
+        <result property="inspectionStep"    column="inspection_step"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <resultMap id="StandardinfoProductStandardinfoProductInspectionResult" type="StandardinfoProduct" extends="StandardinfoProductResult">
+        <collection property="standardinfoProductInspectionList" notNullColumn="sub_inspection_id" javaType="java.util.List" resultMap="StandardinfoProductInspectionResult" />
+    </resultMap>
+
+    <resultMap type="StandardinfoProductInspection" id="StandardinfoProductInspectionResult">
+        <result property="inspectionId"    column="sub_inspection_id"    />
+        <result property="productId"    column="sub_product_id"    />
+        <result property="inspectionType"    column="sub_inspection_type"    />
+        <result property="inspectionNumber"    column="sub_inspection_number"    />
+        <result property="inspectionName"    column="sub_inspection_name"    />
+        <result property="inspectionStandard"    column="sub_inspection_standard"    />
+        <result property="inspectionMethod"    column="sub_inspection_method"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="isValid"    column="sub_is_valid"    />
+        <result property="attribute1"    column="sub_attribute1"    />
+        <result property="attribute2"    column="sub_attribute2"    />
+        <result property="attribute3"    column="sub_attribute3"    />
+    </resultMap>
+
+    <sql id="selectStandardinfoProductVo">
+        select product_id, product_number, product_name, inspection_step, create_by, create_time, update_by, update_time, is_valid, attribute1, attribute2, attribute3 from standardinfo_product
+    </sql>
+
+    <select id="selectStandardinfoProductList" parameterType="StandardinfoProduct" resultMap="StandardinfoProductResult">
+        <include refid="selectStandardinfoProductVo"/>
+        <where>  
+            <if test="productNumber != null  and productNumber != ''"> and product_number = #{productNumber}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="inspectionStep != null  and inspectionStep != ''"> and inspection_step = #{inspectionStep}</if>
+             and is_valid = 'Y'
+        </where>
+    </select>
+    
+    <select id="selectStandardinfoProductById" parameterType="Long" resultMap="StandardinfoProductStandardinfoProductInspectionResult">
+        select a.product_id, a.product_number, a.product_name, a.inspection_step, a.create_by, a.create_time, a.update_by, a.update_time, a.is_valid, a.attribute1, a.attribute2, a.attribute3,
+            b.inspection_id as sub_inspection_id, b.product_id as sub_product_id, b.inspection_type as sub_inspection_type, b.inspection_number as sub_inspection_number, b.inspection_name as sub_inspection_name, b.inspection_standard as sub_inspection_standard, b.inspection_method as sub_inspection_method, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.is_valid as sub_is_valid, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
+        from standardinfo_product a
+        left join standardinfo_product_inspection b on b.product_id = a.product_id
+        where a.product_id = #{productId}
+    </select>
+        
+    <insert id="insertStandardinfoProduct" parameterType="StandardinfoProduct" useGeneratedKeys="true" keyProperty="productId">
+        insert into standardinfo_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productNumber != null and productNumber != ''">product_number,</if>
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="inspectionStep != null and inspectionStep != ''">inspection_step,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            is_valid,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productNumber != null and productNumber != ''">#{productNumber},</if>
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="inspectionStep != null and inspectionStep != ''">#{inspectionStep},</if>
+            <if test="createBy != null">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            'Y',
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStandardinfoProduct" parameterType="StandardinfoProduct">
+        update standardinfo_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productNumber != null and productNumber != ''">product_number = #{productNumber},</if>
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="inspectionStep != null and inspectionStep != ''">inspection_step = #{inspectionStep},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where product_id = #{productId}
+    </update>
+
+    <update id="updateStandardinfoProductById" parameterType="Long">
+        update standardinfo_product set is_valid='N' where product_id = #{productId}
+    </update>
+
+    <update id="updateStandardinfoProductByIds" parameterType="String">
+        update standardinfo_product set is_valid='N' where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </update>
+
+    <update id="updateStandardinfoProductInspectionByProductIds" parameterType="String">
+        update  standardinfo_product_inspection set is_valid = 'N' where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </update>
+
+    <update id="updateStandardinfoProductInspectionByProductId" parameterType="Long">
+        update standardinfo_product_inspection set is_valid='N' where product_id = #{productId}
+    </update>
+
+    <delete id="deleteStandardinfoProductById" parameterType="Long">
+        delete from standardinfo_product where product_id = #{productId}
+    </delete>
+
+    <delete id="deleteStandardinfoProductByIds" parameterType="String">
+        delete from standardinfo_product where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteStandardinfoProductInspectionByProductIds" parameterType="String">
+        delete from standardinfo_product_inspection where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteStandardinfoProductInspectionByProductId" parameterType="Long">
+        delete from standardinfo_product_inspection where product_id = #{productId}
+    </delete>
+
+    
+
+    <insert id="batchStandardinfoProductInspection">
+        insert into standardinfo_product_inspection( inspection_id, product_id, inspection_type, inspection_number, inspection_name, inspection_standard, inspection_method, create_by, create_time, update_by, update_time, is_valid) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.inspectionId}, #{item.productId}, #{item.inspectionType}, #{item.inspectionNumber}, #{item.inspectionName}, #{item.inspectionStandard}, #{item.inspectionMethod}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), 'Y')
+        </foreach>
+    </insert>
+
+</mapper>

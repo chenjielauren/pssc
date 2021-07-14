@@ -69,7 +69,7 @@
                     labelWidth: null, // size of tick labels in pixels
                     labelHeight: null,
                     reserveSpace: null, // whether to reserve space even if axis isn't shown
-                    tickLength: null, // size in pixels of ticks, or "full" for whole line
+                    ticruoyiength: null, // size in pixels of ticks, or "full" for whole line
                     alignTicksWithAxis: null, // axis number or null for no sync
 
                     // mode specific options
@@ -843,7 +843,7 @@
                 axis.c2p = function (c) { return it(m + c / s); };
         }
 
-        function measureTickLabels(axis) {
+        function measureTicruoyiabels(axis) {
             var opts = axis.options, i, ticks = axis.ticks || [], labels = [],
                 l, w = opts.labelWidth, h = opts.labelHeight, dummyDiv;
 
@@ -868,7 +868,7 @@
                     for (i = 0; i < ticks.length; ++i) {
                         l = ticks[i].label;
                         if (l)
-                            labels.push('<div class="tickLabel" style="float:left;width:' + w + 'px">' + l + '</div>');
+                            labels.push('<div class="ticruoyiabel" style="float:left;width:' + w + 'px">' + l + '</div>');
                     }
 
                     if (labels.length > 0) {
@@ -886,7 +886,7 @@
                 for (i = 0; i < ticks.length; ++i) {
                     l = ticks[i].label;
                     if (l)
-                        labels.push('<div class="tickLabel">' + l + '</div>');
+                        labels.push('<div class="ticruoyiabel">' + l + '</div>');
                 }
 
                 if (labels.length > 0) {
@@ -894,7 +894,7 @@
                     if (w == null)
                         w = dummyDiv.children().width();
                     if (h == null)
-                        h = dummyDiv.find("div.tickLabel").height();
+                        h = dummyDiv.find("div.ticruoyiabel").height();
                     dummyDiv.remove();
                 }
             }
@@ -916,7 +916,7 @@
             var lw = axis.labelWidth,
                 lh = axis.labelHeight,
                 pos = axis.options.position,
-                tickLength = axis.options.tickLength,
+                ticruoyiength = axis.options.ticruoyiength,
                 axismargin = options.grid.axisMargin,
                 padding = options.grid.labelMargin,
                 all = axis.direction == "x" ? xaxes : yaxes,
@@ -930,19 +930,19 @@
                 axismargin = 0; // outermost
 
             // determine tick length - if we're innermost, we can use "full"
-            if (tickLength == null)
-                tickLength = "full";
+            if (ticruoyiength == null)
+                ticruoyiength = "full";
 
             var sameDirection = $.grep(all, function (a) {
                 return a && a.reserveSpace;
             });
 
             var innermost = $.inArray(axis, sameDirection) == 0;
-            if (!innermost && tickLength == "full")
-                tickLength = 5;
+            if (!innermost && ticruoyiength == "full")
+                ticruoyiength = 5;
 
-            if (!isNaN(+tickLength))
-                padding += +tickLength;
+            if (!isNaN(+ticruoyiength))
+                padding += +ticruoyiength;
 
             // compute box
             if (axis.direction == "x") {
@@ -972,7 +972,7 @@
 
              // save for future reference
             axis.position = pos;
-            axis.tickLength = tickLength;
+            axis.ticruoyiength = ticruoyiength;
             axis.box.padding = padding;
             axis.innermost = innermost;
         }
@@ -1015,7 +1015,7 @@
                     snapRangeToTicks(axis, axis.ticks);
 
                     // find labelWidth/Height for axis
-                    measureTickLabels(axis);
+                    measureTicruoyiabels(axis);
                 });
 
                 // with all dimensions in house, we can compute the
@@ -1555,7 +1555,7 @@
 
             for (var j = 0; j < axes.length; ++j) {
                 var axis = axes[j], box = axis.box,
-                    t = axis.tickLength, x, y, xoff, yoff;
+                    t = axis.ticruoyiength, x, y, xoff, yoff;
                 if (!axis.show || axis.ticks.length == 0)
                     continue
 
@@ -1651,9 +1651,9 @@
         }
 
         function insertAxisLabels() {
-            placeholder.find(".tickLabels").remove();
+            placeholder.find(".ticruoyiabels").remove();
 
-            var html = ['<div class="tickLabels" style="font-size:smaller">'];
+            var html = ['<div class="ticruoyiabels" style="font-size:smaller">'];
 
             var axes = allAxes();
             for (var j = 0; j < axes.length; ++j) {
@@ -1695,7 +1695,7 @@
                     for (var a in pos)
                         style.push(a + ":" + pos[a] + "px")
 
-                    html.push('<div class="tickLabel" style="' + style.join(';') + '">' + tick.label + '</div>');
+                    html.push('<div class="ticruoyiabel" style="' + style.join(';') + '">' + tick.label + '</div>');
                 }
                 html.push('</div>');
             }

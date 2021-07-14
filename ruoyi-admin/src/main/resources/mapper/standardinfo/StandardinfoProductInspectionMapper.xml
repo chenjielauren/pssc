@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kl.pssc.mapper.StandardinfoProductInspectionMapper">
+    
+    <resultMap type="StandardinfoProductInspection" id="StandardinfoProductInspectionResult">
+        <result property="inspectionId"    column="inspection_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="inspectionType"    column="inspection_type"    />
+        <result property="inspectionNumber"    column="inspection_number"    />
+        <result property="inspectionName"    column="inspection_name"    />
+        <result property="inspectionStandard"    column="inspection_standard"    />
+        <result property="inspectionMethod"    column="inspection_method"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectStandardinfoProductInspectionVo">
+        select inspection_id, product_id, inspection_type, inspection_number, inspection_name, inspection_standard, inspection_method, create_by, create_time, update_by, update_time, is_valid, attribute1, attribute2, attribute3 from standardinfo_product_inspection
+    </sql>
+
+    <select id="selectStandardinfoProductInspectionList" parameterType="StandardinfoProductInspection" resultMap="StandardinfoProductInspectionResult">
+        <include refid="selectStandardinfoProductInspectionVo"/>
+        <where>  
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="inspectionType != null  and inspectionType != ''"> and inspection_type = #{inspectionType}</if>
+            <if test="inspectionNumber != null  and inspectionNumber != ''"> and inspection_number = #{inspectionNumber}</if>
+            <if test="inspectionName != null  and inspectionName != ''"> and inspection_name like concat('%', #{inspectionName}, '%')</if>
+            <if test="inspectionStandard != null  and inspectionStandard != ''"> and inspection_standard = #{inspectionStandard}</if>
+            <if test="inspectionMethod != null  and inspectionMethod != ''"> and inspection_method = #{inspectionMethod}</if>
+            <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
+        </where>
+    </select>
+    
+    <select id="selectStandardinfoProductInspectionById" parameterType="Long" resultMap="StandardinfoProductInspectionResult">
+        <include refid="selectStandardinfoProductInspectionVo"/>
+        where inspection_id = #{inspectionId}
+    </select>
+        
+    <insert id="insertStandardinfoProductInspection" parameterType="StandardinfoProductInspection" useGeneratedKeys="true" keyProperty="inspectionId">
+        insert into standardinfo_product_inspection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">product_id,</if>
+            <if test="inspectionType != null and inspectionType != ''">inspection_type,</if>
+            <if test="inspectionNumber != null and inspectionNumber != ''">inspection_number,</if>
+            <if test="inspectionName != null">inspection_name,</if>
+            <if test="inspectionStandard != null">inspection_standard,</if>
+            <if test="inspectionMethod != null">inspection_method,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            'Y',
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">#{productId},</if>
+            <if test="inspectionType != null and inspectionType != ''">#{inspectionType},</if>
+            <if test="inspectionNumber != null and inspectionNumber != ''">#{inspectionNumber},</if>
+            <if test="inspectionName != null">#{inspectionName},</if>
+            <if test="inspectionStandard != null">#{inspectionStandard},</if>
+            <if test="inspectionMethod != null">#{inspectionMethod},</if>
+            <if test="createBy != null">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            'Y',
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStandardinfoProductInspection" parameterType="StandardinfoProductInspection">
+        update standardinfo_product_inspection
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="inspectionType != null and inspectionType != ''">inspection_type = #{inspectionType},</if>
+            <if test="inspectionNumber != null and inspectionNumber != ''">inspection_number = #{inspectionNumber},</if>
+            <if test="inspectionName != null">inspection_name = #{inspectionName},</if>
+            <if test="inspectionStandard != null">inspection_standard = #{inspectionStandard},</if>
+            <if test="inspectionMethod != null">inspection_method = #{inspectionMethod},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where inspection_id = #{inspectionId}
+    </update>
+
+    <update id="updateStandardinfoProductInspectionById" parameterType="Long">
+        update standardinfo_product_inspection set is_valid = 'N' where inspection_id = #{inspectionId}
+    </update>
+
+    <update id="updateStandardinfoProductInspectionByIds" parameterType="String">
+        update standardinfo_product_inspection  set is_valid = 'N' where inspection_id in 
+        <foreach item="inspectionId" collection="array" open="(" separator="," close=")">
+            #{inspectionId}
+        </foreach>
+    </update>
+
+    <delete id="deleteStandardinfoProductInspectionById" parameterType="Long">
+        delete from standardinfo_product_inspection where inspection_id = #{inspectionId}
+    </delete>
+
+    <delete id="deleteStandardinfoProductInspectionByIds" parameterType="String">
+        delete from standardinfo_product_inspection where inspection_id in 
+        <foreach item="inspectionId" collection="array" open="(" separator="," close=")">
+            #{inspectionId}
+        </foreach>
+    </delete>
+
+</mapper>

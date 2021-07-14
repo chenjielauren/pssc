@@ -8,7 +8,7 @@
             "type": "java",
             "name": "Debug (Launch)-RuoYiApplication<ruoyi-admin>",
             "request": "launch",
-            "mainClass": "com.ruoyi.RuoYiApplication",
+            "mainClass": "com.kl.RuoYiApplication",
             "projectName": "ruoyi-admin"
         }
     ]
