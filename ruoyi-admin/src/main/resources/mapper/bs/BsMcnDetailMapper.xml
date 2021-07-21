@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.BsMcnDetailMapper">
+    
+    <resultMap type="BsMcnDetail" id="BsMcnDetailResult">
+        <result property="id"    column="id"    />
+        <result property="mainId"    column="main_id"    />
+        <result property="mcode"    column="mcode"    />
+        <result property="mdate"    column="mdate"    />
+        <result property="mcontent"    column="mcontent"    />
+        <result property="attachment"    column="attachment"    />
+        <result property="uploadUser"    column="upload_user"    />
+        <result property="uploadTime"    column="upload_time"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectBsMcnDetailVo">
+        select id, main_id, mcode, mdate, mcontent, attachment, upload_user, upload_time, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_mcn_detail
+    </sql>
+
+    <select id="selectBsMcnDetailList" parameterType="BsMcnDetail" resultMap="BsMcnDetailResult">
+        <include refid="selectBsMcnDetailVo"/>
+        <where>  
+            <if test="mainId != null "> and main_id = #{mainId}</if>
+            <if test="mcode != null  and mcode != ''"> and mcode = #{mcode}</if>
+            <if test="mdate != null "> and mdate = #{mdate}</if>
+            <if test="mcontent != null  and mcontent != ''"> and mcontent = #{mcontent}</if>
+            <if test="attachment != null  and attachment != ''"> and attachment = #{attachment}</if>
+            <if test="uploadUser != null  and uploadUser != ''"> and upload_user = #{uploadUser}</if>
+            <if test="uploadTime != null  and uploadTime != ''"> and upload_time = #{uploadTime}</if>
+            <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
+            <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
+            <if test="attribute2 != null  and attribute2 != ''"> and attribute2 = #{attribute2}</if>
+            <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
+        </where>
+    </select>
+    
+    <select id="selectBsMcnDetailById" parameterType="Long" resultMap="BsMcnDetailResult">
+        <include refid="selectBsMcnDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBsMcnDetail" parameterType="BsMcnDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into bs_mcn_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">main_id,</if>
+            <if test="mcode != null">mcode,</if>
+            <if test="mdate != null">mdate,</if>
+            <if test="mcontent != null">mcontent,</if>
+            <if test="attachment != null">attachment,</if>
+            <if test="uploadUser != null">upload_user,</if>
+            <if test="uploadTime != null">upload_time,</if>
+            <if test="isValid != null">is_valid,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">#{mainId},</if>
+            <if test="mcode != null">#{mcode},</if>
+            <if test="mdate != null">#{mdate},</if>
+            <if test="mcontent != null">#{mcontent},</if>
+            <if test="attachment != null">#{attachment},</if>
+            <if test="uploadUser != null">#{uploadUser},</if>
+            <if test="uploadTime != null">#{uploadTime},</if>
+            <if test="isValid != null">#{isValid},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBsMcnDetail" parameterType="BsMcnDetail">
+        update bs_mcn_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mainId != null">main_id = #{mainId},</if>
+            <if test="mcode != null">mcode = #{mcode},</if>
+            <if test="mdate != null">mdate = #{mdate},</if>
+            <if test="mcontent != null">mcontent = #{mcontent},</if>
+            <if test="attachment != null">attachment = #{attachment},</if>
+            <if test="uploadUser != null">upload_user = #{uploadUser},</if>
+            <if test="uploadTime != null">upload_time = #{uploadTime},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBsMcnDetailById" parameterType="Long">
+        delete from bs_mcn_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteBsMcnDetailByIds" parameterType="String">
+        delete from bs_mcn_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增工序损耗标准')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-procloss-add">
+            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="isValid" th:value="1">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">工序编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">工序名称：</label>
+                <div class="col-sm-4">
+                    <input name="name" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">工序产能：</label>
+                <div class="col-sm-4">
+                    <input name="capacity" class="form-control" type="number" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">转换时间：</label>
+                <div class="col-sm-4">
+                    <input name="convertTime" class="form-control" type="number" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">损耗率：</label>
+                <div class="col-sm-4">
+                    <input name="lossRate" class="form-control" type="number" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "bs/procloss"
+        $("#form-procloss-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-procloss-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增工艺标准与CCP')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-craftsopmain-add">
+            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <h4 class="form-header h4">基本信息</h4>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">产品编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label">产品名称：</label>
+                <div class="col-sm-4">
+                    <input name="name" class="form-control" type="text">
+                </div>
+            </div>
+            <h4 class="form-header h4">技术标准</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn1()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table1"></table>
+                    </div>
+                </div>
+            </div>
+            <h4 class="form-header h4">工艺标准</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn2()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table2"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:src="@{/saas/js/craft_sop_main.js}"></script>
+    <script th:inline="javascript">
+        var prefix = ctx + "bs/craftsopmain"
+        $("#form-craftsopmain-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-craftsopmain-add').serialize());
+            }
+        }
+
+        $(function() {
+            var options1 = {
+                id:"bootstrap-table1",
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    visible: false,
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'ptype',
+                    align: 'center',
+                    title: '检验类型 0技术标准 1工艺标准 2未知',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].ptype' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'fileTitle',
+                    align: 'center',
+                    title: '文件标题',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].fileTitle' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'fileName',
+                    align: 'center',
+                    title: '文件名称',
+                    formatter: function(value, row, index) {
+                        if($.common.isNotEmpty(value)){
+                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsSopTechDetailList[%s].fileName' value='%s'><img id='img%s' class='img-circle img-xs' src='%s'/>", index, value,index, value);
+                            return html;
+                        } else {
+                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsSopTechDetailList[%s].fileName' value='%s'><img id='img%s' class='img-circle img-xs'/>", index,value,index);
+                            return html;
+                        }
+                    }
+                },
+                {
+                    field: 'uploadUser',
+                    align: 'center',
+                    title: '上传人',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].uploadUser' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'uploadTime',
+                    align: 'center',
+                    title: '上传时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].uploadTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="uploadfile1(\'' + index + '\')"><i class="fa fa-upload"></i>浏览</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'isValid',
+                    align: 'center',
+                    title: '是否有效',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].isValid' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'createBy',
+                    align: 'center',
+                    title: '创建人',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].createBy' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'createTime',
+                    align: 'center',
+                    title: '创建时间',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].createTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'updateBy',
+                    align: 'center',
+                    title: '修改人',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].updateBy' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'updateTime',
+                    align: 'center',
+                    title: '修改时间',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].updateTime' value='%s'>", index, value);
+                        return html;
+                    }
+                }]
+            };
+            $.table.init(options1);
+        });
+
+        $(function() {
+            var options2 = {
+                id:"bootstrap-table2",
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    visible: false,
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'ptype',
+                    align: 'center',
+                    title: '检验类型 0技术标准 1工艺标准 2未知',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].ptype' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'fileTitle',
+                    align: 'center',
+                    title: '文件标题',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].fileTitle' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'fileName',
+                    align: 'center',
+                    title: '文件名称',
+                    formatter: function(value, row, index) {
+                        if($.common.isNotEmpty(value)){
+                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsSopProdDetailList[%s].fileName' value='%s'><img id='img%s' class='img-circle img-xs' src='%s'/>", index, value,index, value);
+                            return html;
+                        } else {
+                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsSopProdDetailList[%s].fileName' value='%s'><img id='img%s' class='img-circle img-xs'/>", index,value,index);
+                            return html;
+                        }
+                    }
+                },
+                {
+                    field: 'uploadUser',
+                    align: 'center',
+                    title: '上传人',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].uploadUser' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'uploadTime',
+                    align: 'center',
+                    title: '上传时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].uploadTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="uploadfile2(\'' + index + '\')"><i class="fa fa-upload"></i>浏览</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'isValid',
+                    align: 'center',
+                    title: '是否有效',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].isValid' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'createBy',
+                    align: 'center',
+                    title: '创建人',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].createBy' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'createTime',
+                    align: 'center',
+                    title: '创建时间',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].createTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'updateBy',
+                    align: 'center',
+                    title: '修改人',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].updateBy' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'updateTime',
+                    align: 'center',
+                    title: '修改时间',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].updateTime' value='%s'>", index, value);
+                        return html;
+                    }
+                }]
+            };
+            $.table.init(options2);
+        });
+
+        
+    </script>
+</body>
+</html>

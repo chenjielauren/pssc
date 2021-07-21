@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改4M变更单')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-mcnmain-edit" th:object="${bsMcnMain}">
+            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <h4 class="form-header h4">基本信息</h4>
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">产品编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" th:field="*{pcode}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">产品名称：</label>
+                <div class="col-sm-4">
+                    <input name="name" th:field="*{name}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <h4 class="form-header h4">4M变更记录</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:src="@{/saas/js/mcn_main.js}"></script>
+    <script th:inline="javascript">
+        var prefix = ctx + "bs/mcnmain";
+        $("#form-mcnmain-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-mcnmain-edit').serialize());
+            }
+        }
+
+        $(function() {
+            var options = {
+                data: [[${bsMcnMain.bsMcnDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'id',
+                    align: 'center',
+                    title: '主键id',
+                    visible:false,
+				},
+                {
+                    field: 'mcode',
+                    align: 'center',
+                    title: '变更单号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].mcode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'mdate',
+                    align: 'center',
+                    title: '变更日期',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].mdate' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'mcontent',
+                    align: 'center',
+                    title: '变更内容',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].mcontent' data-height='20px' data-width='20px' data-target='self' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'attachment',
+                    align: 'center',
+                    title: '附件名称',
+                    formatter: function(value, row, index) {
+                        if($.common.isNotEmpty(value)){
+                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsMcnDetailList[%s].attachment' value='%s'><img id='img%s' class='img-circle img-xs' src='%s'/>", index, value,index, value);
+                            return html;
+                        } else {
+                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsMcnDetailList[%s].attachment' value='%s'><img id='img%s' class='img-circle img-xs'/>", index,value,index);
+                            return html;
+                        }
+                    }
+				},
+                {
+                    field: 'uploadUser',
+                    align: 'center',
+                    title: '上传人',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].uploadUser' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'uploadTime',
+                    align: 'center',
+                    title: '上传时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].uploadTime' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'isValid',
+                    align: 'center',
+                    title: '是否有效',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].isValid' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'createBy',
+                    align: 'center',
+                    title: '创建人',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].createBy' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'createTime',
+                    align: 'center',
+                    title: '创建时间 默认为当前时间',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].createTime' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'updateBy',
+                    align: 'center',
+                    title: '修改人',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].updateBy' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'updateTime',
+                    align: 'center',
+                    title: '修改时间',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMcnDetailList[%s].updateTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="uploadfile(\'' + index + '\')"><i class="fa fa-upload"></i>浏览</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        //添加行
+        function addColumn() {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+        	
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    mcode: "",
+                    mdate: "",
+                    mcontent: "",
+                    attachment: "",
+                    uploadUser:  $("input[name='createBy']").val(),
+                    uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd  HH:mm:ss"),
+                    isValid: "",
+                    createBy:  $("input[name='createBy']").val(),
+                    createTime: "",
+                    updateBy:  $("input[name='createBy']").val(),
+                    updateTime: "",
+                    attribute1: "",
+                    attribute2: "",
+                    attribute3: ""
+        	    }
+            });
+        }
+    </script>
+</body>
+</html>

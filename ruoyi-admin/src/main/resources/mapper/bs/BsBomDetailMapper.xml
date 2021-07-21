@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.BsBomDetailMapper">
+    
+    <resultMap type="BsBomDetail" id="BsBomDetailResult">
+        <result property="id"    column="id"    />
+        <result property="mainId"    column="main_id"    />
+        <result property="mcode"    column="mcode"    />
+        <result property="mname"    column="mname"    />
+        <result property="attribute"    column="attribute"    />
+        <result property="qty"    column="qty"    />
+        <result property="spec"    column="spec"    />
+        <result property="remark"    column="remark"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectBsBomDetailVo">
+        select id, main_id, mcode, mname, attribute, qty, spec, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_bom_detail
+    </sql>
+
+    <select id="selectBsBomDetailList" parameterType="BsBomDetail" resultMap="BsBomDetailResult">
+        <include refid="selectBsBomDetailVo"/>
+        <where>  
+            <if test="mainId != null "> and main_id = #{mainId}</if>
+            <if test="mcode != null  and mcode != ''"> and mcode = #{mcode}</if>
+            <if test="mname != null  and mname != ''"> and mname like concat('%', #{mname}, '%')</if>
+            <if test="attribute != null  and attribute != ''"> and attribute = #{attribute}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="spec != null  and spec != ''"> and spec = #{spec}</if>
+            <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
+            <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
+            <if test="attribute2 != null  and attribute2 != ''"> and attribute2 = #{attribute2}</if>
+            <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
+        </where>
+        order by main_id
+    </select>
+    
+    <select id="selectBsBomDetailById" parameterType="Long" resultMap="BsBomDetailResult">
+        select t.id, t.main_id, t.mcode, t.mname, t.attribute, t.qty, t.spec, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, t.attribute1, t.attribute2, t.attribute3, p.mname as parent_name
+        from bs_bom_detail t
+        left join bs_bom_detail p on p.id = t.main_id
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertBsBomDetail" parameterType="BsBomDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into bs_bom_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">main_id,</if>
+            <if test="mcode != null">mcode,</if>
+            <if test="mname != null">mname,</if>
+            <if test="attribute != null and attribute != ''">attribute,</if>
+            <if test="qty != null">qty,</if>
+            <if test="spec != null">spec,</if>
+            <if test="remark != null">remark,</if>
+            <if test="isValid != null">is_valid,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">#{mainId},</if>
+            <if test="mcode != null">#{mcode},</if>
+            <if test="mname != null">#{mname},</if>
+            <if test="attribute != null and attribute != ''">#{attribute},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="spec != null">#{spec},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="isValid != null">#{isValid},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBsBomDetail" parameterType="BsBomDetail">
+        update bs_bom_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mainId != null">main_id = #{mainId},</if>
+            <if test="mcode != null">mcode = #{mcode},</if>
+            <if test="mname != null">mname = #{mname},</if>
+            <if test="attribute != null and attribute != ''">attribute = #{attribute},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="spec != null">spec = #{spec},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBsBomDetailById" parameterType="Long">
+        delete from bs_bom_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteBsBomDetailByIds" parameterType="String">
+        delete from bs_bom_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
