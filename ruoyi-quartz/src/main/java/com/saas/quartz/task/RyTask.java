@@ -1,7 +1,7 @@
-package com.kl.quartz.task;
+package com.saas.quartz.task;
 
 import org.springframework.stereotype.Component;
-import com.kl.common.utils.StringUtils;
+import com.saas.common.utils.StringUtils;
 
 /**
  * 定时任务调度测试

@@ -1,7 +1,7 @@
-package com.kl.quartz.util;
+package com.saas.quartz.util;
 
 import org.quartz.JobExecutionContext;
-import com.kl.quartz.domain.SysJob;
+import com.saas.quartz.domain.SysJob;
 
 /**
  * 定时任务处理（允许并发执行）

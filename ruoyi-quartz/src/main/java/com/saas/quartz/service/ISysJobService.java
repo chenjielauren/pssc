@@ -1,9 +1,9 @@
-package com.kl.quartz.service;
+package com.saas.quartz.service;
 
 import java.util.List;
 import org.quartz.SchedulerException;
-import com.kl.common.exception.job.TaskException;
-import com.kl.quartz.domain.SysJob;
+import com.saas.common.exception.job.TaskException;
+import com.saas.quartz.domain.SysJob;
 
 /**
  * 定时任务调度信息信息 服务层

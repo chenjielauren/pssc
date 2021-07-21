@@ -1,6 +1,6 @@
-package com.kl.quartz.mapper;
+package com.saas.quartz.mapper;
 
-import com.kl.quartz.domain.SysJobLog;
+import com.saas.quartz.domain.SysJobLog;
 import java.util.List;
 
 /**

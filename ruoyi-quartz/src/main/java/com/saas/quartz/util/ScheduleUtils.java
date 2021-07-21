@@ -1,4 +1,4 @@
-package com.kl.quartz.util;
+package com.saas.quartz.util;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
@@ -10,10 +10,10 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import com.kl.common.constant.ScheduleConstants;
-import com.kl.common.exception.job.TaskException;
-import com.kl.common.exception.job.TaskException.Code;
-import com.kl.quartz.domain.SysJob;
+import com.saas.common.constant.ScheduleConstants;
+import com.saas.common.exception.job.TaskException;
+import com.saas.common.exception.job.TaskException.Code;
+import com.saas.quartz.domain.SysJob;
 
 /**
  * 定时任务工具类

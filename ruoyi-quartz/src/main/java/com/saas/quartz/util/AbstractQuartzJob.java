@@ -1,4 +1,4 @@
-package com.kl.quartz.util;
+package com.saas.quartz.util;
 
 import java.util.Date;
 import org.quartz.Job;
@@ -6,15 +6,15 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.kl.common.constant.Constants;
-import com.kl.common.constant.ScheduleConstants;
-import com.kl.common.utils.ExceptionUtil;
-import com.kl.common.utils.StringUtils;
-import com.kl.common.utils.bean.BeanUtils;
-import com.kl.common.utils.spring.SpringUtils;
-import com.kl.quartz.domain.SysJob;
-import com.kl.quartz.domain.SysJobLog;
-import com.kl.quartz.service.ISysJobLogService;
+import com.saas.common.constant.Constants;
+import com.saas.common.constant.ScheduleConstants;
+import com.saas.common.utils.ExceptionUtil;
+import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.bean.BeanUtils;
+import com.saas.common.utils.spring.SpringUtils;
+import com.saas.quartz.domain.SysJob;
+import com.saas.quartz.domain.SysJobLog;
+import com.saas.quartz.service.ISysJobLogService;
 
 /**
  * 抽象quartz调用

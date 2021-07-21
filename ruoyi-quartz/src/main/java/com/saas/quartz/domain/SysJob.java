@@ -1,16 +1,16 @@
-package com.kl.quartz.domain;
+package com.saas.quartz.domain;
 
 import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.kl.common.annotation.Excel;
-import com.kl.common.annotation.Excel.ColumnType;
-import com.kl.common.constant.ScheduleConstants;
-import com.kl.common.core.domain.BaseEntity;
-import com.kl.common.utils.StringUtils;
-import com.kl.quartz.util.CronUtils;
+import com.saas.common.annotation.Excel;
+import com.saas.common.annotation.Excel.ColumnType;
+import com.saas.common.constant.ScheduleConstants;
+import com.saas.common.core.domain.BaseEntity;
+import com.saas.common.utils.StringUtils;
+import com.saas.quartz.util.CronUtils;
 
 /**
  * 定时任务调度表 sys_job

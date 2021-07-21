@@ -1,10 +1,10 @@
-package com.kl.quartz.domain;
+package com.saas.quartz.domain;
 
 import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.kl.common.annotation.Excel;
-import com.kl.common.core.domain.BaseEntity;
+import com.saas.common.annotation.Excel;
+import com.saas.common.core.domain.BaseEntity;
 
 /**
  * 定时任务调度日志表 sys_job_log

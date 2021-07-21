@@ -1,4 +1,4 @@
-package com.kl.quartz.config;
+package com.saas.quartz.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

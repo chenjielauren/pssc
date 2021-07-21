@@ -1,4 +1,4 @@
-package com.kl.quartz.service.impl;
+package com.saas.quartz.service.impl;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -9,14 +9,14 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.kl.common.constant.ScheduleConstants;
-import com.kl.common.core.text.Convert;
-import com.kl.common.exception.job.TaskException;
-import com.kl.quartz.domain.SysJob;
-import com.kl.quartz.mapper.SysJobMapper;
-import com.kl.quartz.service.ISysJobService;
-import com.kl.quartz.util.CronUtils;
-import com.kl.quartz.util.ScheduleUtils;
+import com.saas.common.constant.ScheduleConstants;
+import com.saas.common.core.text.Convert;
+import com.saas.common.exception.job.TaskException;
+import com.saas.quartz.domain.SysJob;
+import com.saas.quartz.mapper.SysJobMapper;
+import com.saas.quartz.service.ISysJobService;
+import com.saas.quartz.util.CronUtils;
+import com.saas.quartz.util.ScheduleUtils;
 
 /**
  * 定时任务调度信息 服务层
