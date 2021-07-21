@@ -1,12 +1,12 @@
-package com.kl.generator.service.impl;
+package com.saas.generator.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.kl.common.core.text.Convert;
-import com.kl.generator.domain.GenTableColumn;
-import com.kl.generator.mapper.GenTableColumnMapper;
-import com.kl.generator.service.IGenTableColumnService;
+import com.saas.common.core.text.Convert;
+import com.saas.generator.domain.GenTableColumn;
+import com.saas.generator.mapper.GenTableColumnMapper;
+import com.saas.generator.service.IGenTableColumnService;
 
 /**
  * 业务字段 服务层实现

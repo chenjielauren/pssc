@@ -1,12 +1,12 @@
-package com.kl.generator.domain;
+package com.saas.generator.domain;
 
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import org.apache.commons.lang3.ArrayUtils;
-import com.kl.common.constant.GenConstants;
-import com.kl.common.core.domain.BaseEntity;
-import com.kl.common.utils.StringUtils;
+import com.saas.common.constant.GenConstants;
+import com.saas.common.core.domain.BaseEntity;
+import com.saas.common.utils.StringUtils;
 
 /**
  * 业务表 gen_table

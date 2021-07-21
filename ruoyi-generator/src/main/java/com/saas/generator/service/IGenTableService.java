@@ -1,8 +1,8 @@
-package com.kl.generator.service;
+package com.saas.generator.service;
 
 import java.util.List;
 import java.util.Map;
-import com.kl.generator.domain.GenTable;
+import com.saas.generator.domain.GenTable;
 
 /**
  * 业务 服务层

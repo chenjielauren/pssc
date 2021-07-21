@@ -1,4 +1,4 @@
-package com.kl.generator.service.impl;
+package com.saas.generator.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -22,20 +22,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.kl.common.constant.Constants;
-import com.kl.common.constant.GenConstants;
-import com.kl.common.core.text.CharsetKit;
-import com.kl.common.core.text.Convert;
-import com.kl.common.exception.BusinessException;
-import com.kl.common.utils.StringUtils;
-import com.kl.generator.domain.GenTable;
-import com.kl.generator.domain.GenTableColumn;
-import com.kl.generator.mapper.GenTableColumnMapper;
-import com.kl.generator.mapper.GenTableMapper;
-import com.kl.generator.service.IGenTableService;
-import com.kl.generator.util.GenUtils;
-import com.kl.generator.util.VelocityInitializer;
-import com.kl.generator.util.VelocityUtils;
+import com.saas.common.constant.Constants;
+import com.saas.common.constant.GenConstants;
+import com.saas.common.core.text.CharsetKit;
+import com.saas.common.core.text.Convert;
+import com.saas.common.exception.BusinessException;
+import com.saas.common.utils.StringUtils;
+import com.saas.generator.domain.GenTable;
+import com.saas.generator.domain.GenTableColumn;
+import com.saas.generator.mapper.GenTableColumnMapper;
+import com.saas.generator.mapper.GenTableMapper;
+import com.saas.generator.service.IGenTableService;
+import com.saas.generator.util.GenUtils;
+import com.saas.generator.util.VelocityInitializer;
+import com.saas.generator.util.VelocityUtils;
 
 /**
  * 业务 服务层实现

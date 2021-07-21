@@ -1,4 +1,4 @@
-package com.kl.generator.controller;
+package com.saas.generator.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
-import com.kl.common.annotation.Log;
-import com.kl.common.core.controller.BaseController;
-import com.kl.common.core.domain.AjaxResult;
-import com.kl.common.core.domain.CxSelect;
-import com.kl.common.core.page.TableDataInfo;
-import com.kl.common.core.text.Convert;
-import com.kl.common.enums.BusinessType;
-import com.kl.common.utils.StringUtils;
-import com.kl.common.utils.security.PermissionUtils;
-import com.kl.generator.domain.GenTable;
-import com.kl.generator.domain.GenTableColumn;
-import com.kl.generator.service.IGenTableColumnService;
-import com.kl.generator.service.IGenTableService;
+import com.saas.common.annotation.Log;
+import com.saas.common.core.controller.BaseController;
+import com.saas.common.core.domain.AjaxResult;
+import com.saas.common.core.domain.CxSelect;
+import com.saas.common.core.page.TableDataInfo;
+import com.saas.common.core.text.Convert;
+import com.saas.common.enums.BusinessType;
+import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.security.PermissionUtils;
+import com.saas.generator.domain.GenTable;
+import com.saas.generator.domain.GenTableColumn;
+import com.saas.generator.service.IGenTableColumnService;
+import com.saas.generator.service.IGenTableService;
 
 /**
  * 代码生成 操作处理

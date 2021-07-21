@@ -1,8 +1,8 @@
-package com.kl.generator.util;
+package com.saas.generator.util;
 
 import java.util.Properties;
 import org.apache.velocity.app.Velocity;
-import com.kl.common.constant.Constants;
+import com.saas.common.constant.Constants;
 
 /**
  * VelocityEngine工厂

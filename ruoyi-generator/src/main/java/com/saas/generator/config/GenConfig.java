@@ -1,4 +1,4 @@
-package com.kl.generator.config;
+package com.saas.generator.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

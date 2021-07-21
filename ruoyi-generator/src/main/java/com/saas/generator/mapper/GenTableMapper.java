@@ -1,7 +1,7 @@
-package com.kl.generator.mapper;
+package com.saas.generator.mapper;
 
 import java.util.List;
-import com.kl.generator.domain.GenTable;
+import com.saas.generator.domain.GenTable;
 
 /**
  * 业务 数据层

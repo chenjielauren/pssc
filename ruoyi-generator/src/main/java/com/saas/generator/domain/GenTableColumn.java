@@ -1,8 +1,8 @@
-package com.kl.generator.domain;
+package com.saas.generator.domain;
 
 import javax.validation.constraints.NotBlank;
-import com.kl.common.core.domain.BaseEntity;
-import com.kl.common.utils.StringUtils;
+import com.saas.common.core.domain.BaseEntity;
+import com.saas.common.utils.StringUtils;
 
 /**
  * 代码生成业务字段表 gen_table_column

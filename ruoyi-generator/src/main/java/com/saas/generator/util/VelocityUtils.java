@@ -1,16 +1,16 @@
-package com.kl.generator.util;
+package com.saas.generator.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.velocity.VelocityContext;
 import com.alibaba.fastjson.JSONObject;
-import com.kl.common.constant.GenConstants;
-import com.kl.common.utils.DateUtils;
-import com.kl.common.utils.StringUtils;
-import com.kl.generator.config.GenConfig;
-import com.kl.generator.domain.GenTable;
-import com.kl.generator.domain.GenTableColumn;
+import com.saas.common.constant.GenConstants;
+import com.saas.common.utils.DateUtils;
+import com.saas.common.utils.StringUtils;
+import com.saas.generator.config.GenConfig;
+import com.saas.generator.domain.GenTable;
+import com.saas.generator.domain.GenTableColumn;
 
 public class VelocityUtils
 {
