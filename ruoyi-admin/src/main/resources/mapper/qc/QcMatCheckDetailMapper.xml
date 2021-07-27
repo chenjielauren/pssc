@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.QcMatCheckDetailMapper">
+    
+    <resultMap type="QcMatCheckDetail" id="QcMatCheckDetailResult">
+        <result property="id"    column="id"    />
+        <result property="mainId"    column="main_id"    />
+        <result property="cproject"    column="cproject"    />
+        <result property="csop"    column="csop"    />
+        <result property="cmethod"    column="cmethod"    />
+        <result property="qcResult"    column="qc_result"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectQcMatCheckDetailVo">
+        select id, main_id, cproject, csop, cmethod, qc_result, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from qc_mat_check_detail
+    </sql>
+
+    <select id="selectQcMatCheckDetailList" parameterType="QcMatCheckDetail" resultMap="QcMatCheckDetailResult">
+        <include refid="selectQcMatCheckDetailVo"/>
+        <where>  
+            <if test="mainId != null "> and main_id = #{mainId}</if>
+            <if test="cproject != null  and cproject != ''"> and cproject = #{cproject}</if>
+            <if test="csop != null  and csop != ''"> and csop = #{csop}</if>
+            <if test="cmethod != null  and cmethod != ''"> and cmethod = #{cmethod}</if>
+            and is_valid = '1'  ${params.dataScope}
+        </where>
+    </select>
+    
+    <select id="selectQcMatCheckDetailById" parameterType="Long" resultMap="QcMatCheckDetailResult">
+        <include refid="selectQcMatCheckDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertQcMatCheckDetail" parameterType="QcMatCheckDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into qc_mat_check_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">main_id,</if>
+            <if test="cproject != null">cproject,</if>
+            <if test="csop != null">csop,</if>
+            <if test="cmethod != null">cmethod,</if>
+            <if test="qcResult != null">qc_result,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">#{mainId},</if>
+            <if test="cproject != null">#{cproject},</if>
+            <if test="csop != null">#{csop},</if>
+            <if test="cmethod != null">#{cmethod},</if>
+            <if test="qcResult != null">#{qcResult},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQcMatCheckDetail" parameterType="QcMatCheckDetail">
+        update qc_mat_check_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mainId != null">main_id = #{mainId},</if>
+            <if test="cproject != null">cproject = #{cproject},</if>
+            <if test="csop != null">csop = #{csop},</if>
+            <if test="cmethod != null">cmethod = #{cmethod},</if>
+            <if test="qcResult != null">qc_result = #{qcResult},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQcMatCheckDetailById" parameterType="Long">
+        delete from qc_mat_check_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteQcMatCheckDetailByIds" parameterType="String">
+        delete from qc_mat_check_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

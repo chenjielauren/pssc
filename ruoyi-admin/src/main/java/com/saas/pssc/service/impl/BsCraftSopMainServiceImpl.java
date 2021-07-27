@@ -39,15 +39,10 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
     public BsCraftSopMain selectBsCraftSopMainById(Long id)
     {
         BsCraftSopMain bsSopMain = bsCraftSopMainMapper.selectBsCraftSopMainById(id);
+        List<BsCraftSopDetail> techList = new ArrayList<BsCraftSopDetail>();//技术标准
+        List<BsCraftSopDetail> prodList = new ArrayList<BsCraftSopDetail>();//工艺标准
         if(null!=bsSopMain && !StringUtils.isEmpty(bsSopMain.getBsCraftSopDetailList())){
-            List<BsCraftSopDetail> techList = new ArrayList<BsCraftSopDetail>();//技术标准
-            List<BsCraftSopDetail> prodList = new ArrayList<BsCraftSopDetail>();//工艺标准
             for(BsCraftSopDetail detail : bsSopMain.getBsCraftSopDetailList()){
-                detail.setIsValid("1");
-                detail.setCreateBy(ShiroUtils.getLoginName());
-                detail.setCreateTime(DateUtils.getNowDate());
-                detail.setUpdateBy(ShiroUtils.getLoginName());
-                detail.setUpdateTime(DateUtils.getNowDate());
                 if(Long.valueOf(detail.getPtype()) == 0){
                     techList.add(detail);
                 }
@@ -55,9 +50,9 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
                     prodList.add(detail);
                 }
             }
-            bsSopMain.setBsSopTechDetailList(techList);
-            bsSopMain.setBsSopProdDetailList(prodList);
         }
+        bsSopMain.setBsSopTechDetailList(techList);
+        bsSopMain.setBsSopProdDetailList(prodList);
         return bsSopMain;
     }
 
@@ -147,6 +142,7 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
             for(BsCraftSopDetail detail: bsCraftSopMain.getBsSopTechDetailList()){
                 detail.setPtype("0");
                 detail.setCreateBy(ShiroUtils.getLoginName());
+                detail.setUpdateBy(ShiroUtils.getLoginName());
             }
             bsCraftSopDetailList.addAll(bsCraftSopMain.getBsSopTechDetailList());
         }
@@ -155,6 +151,7 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
             for(BsCraftSopDetail detail: bsCraftSopMain.getBsSopProdDetailList()){
                 detail.setPtype("1");
                 detail.setCreateBy(ShiroUtils.getLoginName());
+                detail.setUpdateBy(ShiroUtils.getLoginName());
             }
             bsCraftSopDetailList.addAll(bsCraftSopMain.getBsSopProdDetailList());
         }

@@ -2,11 +2,13 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="include :: header('修改工艺标准与CCP')" />
+    <th:block th:include="include :: datetimepicker-css" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-craftsopmain-edit" th:object="${bsCraftSopMain}">
-            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="createByName" th:value="${@permission.getPrincipalProperty('userName')}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
             <h4 class="form-header h4">基本信息</h4>
             <input name="id" th:field="*{id}" type="hidden">
             <div class="form-group">    
@@ -23,7 +25,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn1()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="delColumn1()"><i class="fa fa-minus"> 删除</i></button>
                     <div class="col-sm-12 select-table table-striped">
                         <table id="bootstrap-table1"></table>
                     </div>
@@ -33,7 +35,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn2()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="delColumn2()"><i class="fa fa-minus"> 删除</i></button>
                     <div class="col-sm-12 select-table table-striped">
                         <table id="bootstrap-table2"></table>
                     </div>
@@ -42,6 +44,7 @@
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
     <script th:src="@{/saas/js/craft_sop_main.js}"></script>
     <script th:inline="javascript">
         var prefix = ctx + "bs/craftsopmain";
@@ -56,6 +59,7 @@
         }
 
         $(function() {
+            console.log([[${bsCraftSopMain.bsSopTechDetailList}]])
             var options1 = {
                 id:"bootstrap-table1",
                 data: [[${bsCraftSopMain.bsSopTechDetailList}]],
@@ -72,6 +76,7 @@
                     field: 'index',
                     align: 'center',
                     title: "序号",
+                    visible: false,
                     formatter: function (value, row, index) {
                     	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
@@ -123,9 +128,8 @@
                     field: 'uploadTime',
                     align: 'center',
                     title: '上传时间',
-                    visible: false,
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].uploadTime' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopTechDetailList[%s].uploadTime' value='%s' placeholder='yyyy-MM-dd'>", index, value);
                         return html;
                     }
                 },
@@ -260,9 +264,8 @@
                     field: 'uploadTime',
                     align: 'center',
                     title: '上传时间',
-                    visible: false,
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].uploadTime' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsSopProdDetailList[%s].uploadTime' value='%s' placeholder='yyyy-MM-dd'>", index, value);
                         return html;
                     }
                 },

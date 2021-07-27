@@ -1,3 +1,11 @@
+$("#bootstrap-table1").on("post-body.bs.table", function (e, args) {
+    $("input[name$='uploadTime']").datetimepicker({
+        format: "yyyy-mm-dd hh:ii:ss",
+        minView: "month",
+        autoclose: true,
+        pickerPosition:'top-right'
+    });
+});
 //增加技术标准行
 function addColumn1() {
     var count = $("#bootstrap-table1").bootstrapTable('getData').length;
@@ -10,19 +18,21 @@ function addColumn1() {
             ptype: "0",
             fileTitle: "",
             fileName: "",
-            uploadUser: $("input[name='createBy']").val(),
-            uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd  HH:mm:ss"),
-            isValid: "1",
+            uploadUser: $("input[name='createByName']").val(),
+            uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
+            // isValid: "1",
             createBy: $("input[name='createBy']").val(),
-            createTime: $.common.dateFormat(new Date(),"yyyy-MM-dd  HH:mm:ss"),
+            createTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
             updateBy: $("input[name='updateBy']").val(),
-            updateTime: $.common.dateFormat(new Date(),"yyyy-MM-dd  HH:mm:ss")
+            updateTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss")
         }
     });
 }
 //删除技术标准行
 function delColumn1() {
-    var subColumn = "index";
+    debugger;
+    sub.editColumn();
+    var subColumn = "fileTitle";
     var ids = $.table.selectColumns(subColumn);
     if (ids.length == 0) {
         $.modal.alertWarning("请至少选择一条记录");
@@ -30,7 +40,14 @@ function delColumn1() {
     }
     $("#bootstrap-table1").bootstrapTable('remove', { field: subColumn, values: ids });
 }
-
+$("#bootstrap-table2").on("post-body.bs.table", function (e, args) {
+    $("input[name$='uploadTime']").datetimepicker({
+        format: "yyyy-mm-dd hh:ii:ss",
+        minView: "month",
+        autoclose: true,
+        pickerPosition:'top-right'
+    });
+});
 //增加工艺标准行
 function addColumn2() {
     var count = $("#bootstrap-table2").bootstrapTable('getData').length;
@@ -43,20 +60,20 @@ function addColumn2() {
             ptype: "1",
             fileTitle: "",
             fileName: "",
-            uploadUser: $("input[name='createBy']").val(),
-            uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd  HH:mm:ss"),
+            uploadUser: $("input[name='createByName']").val(),
+            uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
             isValid: "1",
             createBy: $("input[name='createBy']").val(),
-            createTime: $.common.dateFormat(new Date(),"yyyy-MM-dd  HH:mm:ss"),
+            createTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
             updateBy: $("input[name='updateBy']").val(),
-            updateTime: $.common.dateFormat(new Date(),"yyyy-MM-dd  HH:mm:ss")
+            updateTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss")
         }
     });
 }
 //删除工艺标准行
 function delColumn2() {
     sub.editColumn();
-    var subColumn = "index" ;
+    var subColumn = "fileTitle";
     var ids = $.table.selectColumns(subColumn);
     if (ids.length == 0) {
         $.modal.alertWarning("请至少选择一条记录");

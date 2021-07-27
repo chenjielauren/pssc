@@ -29,8 +29,9 @@
             <h4 class="form-header h4">首检标准</h4>
             <div class="row">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn1()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="delColumn1()"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn('0','')"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="delColumn('0')"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-info btn-sm" onclick="$.table.custImportExcel('0','','','')"><i class="fa fa-upload"></i> 导入</button>
                     <div class="col-sm-12 select-table table-striped">
                         <table id="bootstrap-table1"></table>
                     </div>
@@ -39,8 +40,9 @@
             <h4 class="form-header h4">自检标准</h4>
             <div class="row">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn2()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="delColumn2()"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn('1','')"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="delColumn('1')"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-info btn-sm" onclick="$.table.custImportExcel('1','','','')"><i class="fa fa-upload"></i> 导入</button>
                     <div class="col-sm-12 select-table table-striped">
                         <table id="bootstrap-table2"></table>
                     </div>
@@ -49,8 +51,9 @@
             <h4 class="form-header h4">巡检标准</h4>
             <div class="row">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn3()"><i class="fa fa-plus"> 增加</i></button>
-                    <button type="button" class="btn btn-white btn-sm" onclick="delColumn3()"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn('2','')"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="delColumn('2')"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-info btn-sm" onclick="$.table.custImportExcel('2','','','')"><i class="fa fa-upload"></i> 导入</button>
                     <div class="col-sm-12 select-table table-striped">
                         <table id="bootstrap-table3"></table>
                     </div>
@@ -75,6 +78,9 @@
         $(function() {
             //首检初始化列表
             var options1 = {
+                modalName: "首检信息",
+                importUrl: ctx + "bs/pqcdetail/importData",
+                importTemplateUrl: ctx + "bs/pqcdetail/importTemplate",
                 id:"bootstrap-table1",
                 data: [[${bsPqcMain.sjDetailList}]],
                 pagination: false,
@@ -138,6 +144,9 @@
         //自检初始化列表
         $(function() {
             var options2 = {
+                modalName: "自检信息",
+                importUrl: ctx + "bs/pqcdetail/importData",
+                importTemplateUrl: ctx + "bs/pqcdetail/importTemplate",
                 id:"bootstrap-table2",
                 data: [[${bsPqcMain.zjDetailList}]],
                 pagination: false,
@@ -201,6 +210,9 @@
         //巡检列表
         $(function() {
             var options3 = {
+                modalName: "巡检信息",
+                importUrl: ctx + "bs/pqcdetail/importData",
+                importTemplateUrl: ctx + "bs/pqcdetail/importTemplate",
                 id:"bootstrap-table3",
                 data: [[${bsPqcMain.xjDetailList}]],
                 pagination: false,
@@ -263,4 +275,17 @@
         });
     </script>
 </body>
+<script id="importTpl" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5">
+                下载模板:  &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
 </html>

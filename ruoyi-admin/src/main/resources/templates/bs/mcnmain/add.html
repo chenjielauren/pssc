@@ -8,6 +8,7 @@
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-mcnmain-add">
             <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="createByName" th:value="${@permission.getPrincipalProperty('userName')}"> 
             <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
             <h4 class="form-header h4">基本信息</h4>
             <div class="form-group">    
@@ -206,8 +207,8 @@
                     mcontent: "",
                     fileName:"",
                     attachment: "",
-                    uploadUser: $("input[name='createBy']").val(),
-                    uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd  HH:mm:ss"),
+                    uploadUser: $("input[name='createByName']").val(),
+                    uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
                     isValid: "",
                     createBy: $("input[name='createBy']").val(),
                     createTime: "",

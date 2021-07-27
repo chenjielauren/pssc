@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.saas.common.annotation.Log;
 import com.saas.common.enums.BusinessType;
 import com.saas.pssc.domain.BsCraftSopDetail;
@@ -122,5 +124,28 @@ public class BsCraftSopDetailController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(bsCraftSopDetailService.deleteBsCraftSopDetailByIds(ids));
+    }
+
+    /**
+     * 下载模板
+    */
+    @GetMapping("/importTemplate")
+    @ResponseBody
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<BsCraftSopDetail> util = new ExcelUtil<BsCraftSopDetail>(BsCraftSopDetail.class);
+        return util.importTemplateExcel("工艺标准与CCP明细列表");
+    }
+    
+    /**
+     * 导入数据
+     */
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<BsCraftSopDetail> util = new ExcelUtil<BsCraftSopDetail>(BsCraftSopDetail.class);
+        List<BsCraftSopDetail> list = util.importExcel(file.getInputStream());
+        return AjaxResult.success(list);
     }
 }

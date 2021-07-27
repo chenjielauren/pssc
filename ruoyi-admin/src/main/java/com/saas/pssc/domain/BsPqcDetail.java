@@ -19,11 +19,10 @@ public class BsPqcDetail extends BaseEntity
     private Long id;
 
     /** 主表ID */
-    @Excel(name = "主表ID")
     private Long mainId;
 
     /** 检验类型 0首检 1自检 2巡检 3未知 */
-    @Excel(name = "检验类型", readConverterExp = "0=首检,1=自检,2=巡检")
+    // @Excel(name = "检验类型", readConverterExp = "0=首检,1=自检,2=巡检,3=未知")
     private String ptype;
 
     /** 项目编号 */
@@ -42,8 +41,7 @@ public class BsPqcDetail extends BaseEntity
     @Excel(name = "检验方法")
     private String method;
 
-    /** 是否有效 */
-    @Excel(name = "是否有效")
+    /** 有效否 */
     private String isValid;
 
     private String attribute1;

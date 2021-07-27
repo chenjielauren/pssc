@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.PpWoOnlinePlanMapper">
+    
+    <resultMap type="PpWoOnlinePlan" id="PpWoOnlinePlanResult">
+        <result property="id"    column="id"    />
+        <result property="wcode"    column="wcode"    />
+        <result property="ptime"    column="ptime"    />
+        <result property="puser"    column="puser"    />
+        <result property="pcode"    column="pcode"    />
+        <result property="pname"    column="pname"    />
+        <result property="qty"    column="qty"    />
+        <result property="pstarTime"    column="pstar_time"    />
+        <result property="pendTime"    column="pend_time"    />
+        <result property="pwork"    column="pwork"    />
+        <result property="machine"    column="machine"    />
+        <result property="changeTimes"    column="change_times"    />
+        <result property="produceTimes"    column="produce_times"    />
+        <result property="remark"    column="remark"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectPpWoOnlinePlanVo">
+        select o.id, wcode, ptime, puser, pcode, pname, qty, pstar_time, pend_time, pwork, machine, change_times, produce_times, o.remark, o.is_valid, su.user_name as create_by, o.create_time, o.update_by, o.update_time, attribute1, attribute2, attribute3 
+        from pp_wo_online_plan o left join sys_user su on o.create_by = su.login_name 
+    </sql>
+
+    <select id="selectPpWoOnlinePlanList" parameterType="PpWoOnlinePlan" resultMap="PpWoOnlinePlanResult">
+        <include refid="selectPpWoOnlinePlanVo"/>
+        <where>  
+            <if test="wcode != null  and wcode != ''"> and wcode = #{wcode}</if>
+            <if test="ptime != null "> and ptime = #{ptime}</if>
+            <if test="puser != null  and puser != ''"> and puser = #{puser}</if>
+            <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
+            <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="pstarTime != null "> and pstar_time >=  #{pstarTime}</if>
+            <if test="pendTime != null "> and pend_time &lt;= #{pendTime}</if>
+            <if test="pwork != null  and pwork != ''"> and pwork = #{pwork}</if>
+            <if test="machine != null  and machine != ''"> and machine = #{machine}</if>
+            <if test="changeTimes != null "> and change_times = #{changeTimes}</if>
+            <if test="produceTimes != null "> and produce_times = #{produceTimes}</if>
+            and is_valid = '1'  ${params.dataScope}
+            and is_valid = '1'
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
+        </where>
+        order by o.id desc
+    </select>
+    
+    <select id="selectPpWoOnlinePlanById" parameterType="Long" resultMap="PpWoOnlinePlanResult">
+        <include refid="selectPpWoOnlinePlanVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPpWoOnlinePlan" parameterType="PpWoOnlinePlan" useGeneratedKeys="true" keyProperty="id">
+        insert into pp_wo_online_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wcode != null and wcode != ''">wcode,</if>
+            <if test="ptime != null">ptime,</if>
+            <if test="puser != null">puser,</if>
+            <if test="pcode != null">pcode,</if>
+            <if test="pname != null">pname,</if>
+            <if test="qty != null">qty,</if>
+            <if test="pstarTime != null">pstar_time,</if>
+            <if test="pendTime != null">pend_time,</if>
+            <if test="pwork != null">pwork,</if>
+            <if test="machine != null">machine,</if>
+            <if test="changeTimes != null">change_times,</if>
+            <if test="produceTimes != null">produce_times,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wcode != null and wcode != ''">#{wcode},</if>
+            <if test="ptime != null">#{ptime},</if>
+            <if test="puser != null">#{puser},</if>
+            <if test="pcode != null">#{pcode},</if>
+            <if test="pname != null">#{pname},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="pstarTime != null">#{pstarTime},</if>
+            <if test="pendTime != null">#{pendTime},</if>
+            <if test="pwork != null">#{pwork},</if>
+            <if test="machine != null">#{machine},</if>
+            <if test="changeTimes != null">#{changeTimes},</if>
+            <if test="produceTimes != null">#{produceTimes},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePpWoOnlinePlan" parameterType="PpWoOnlinePlan">
+        update pp_wo_online_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wcode != null and wcode != ''">wcode = #{wcode},</if>
+            <if test="ptime != null">ptime = #{ptime},</if>
+            <if test="puser != null">puser = #{puser},</if>
+            <if test="pcode != null">pcode = #{pcode},</if>
+            <if test="pname != null">pname = #{pname},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="pstarTime != null">pstar_time = #{pstarTime},</if>
+            <if test="pendTime != null">pend_time = #{pendTime},</if>
+            <if test="pwork != null">pwork = #{pwork},</if>
+            <if test="machine != null">machine = #{machine},</if>
+            <if test="changeTimes != null">change_times = #{changeTimes},</if>
+            <if test="produceTimes != null">produce_times = #{produceTimes},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updatePpWoOnlinePlanById" parameterType="Long">
+        update pp_wo_online_plan set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updatePpWoOnlinePlanByIds" parameterType="String">
+        update pp_wo_online_plan set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deletePpWoOnlinePlanById" parameterType="Long">
+        delete from pp_wo_online_plan where id = #{id}
+    </delete>
+
+    <delete id="deletePpWoOnlinePlanByIds" parameterType="String">
+        delete from pp_wo_online_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

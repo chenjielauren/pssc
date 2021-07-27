@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute != null  and attribute != ''"> and attribute = #{attribute}</if>
             <if test="qty != null "> and qty = #{qty}</if>
             <if test="spec != null  and spec != ''"> and spec = #{spec}</if>
-            <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
+            and is_valid = '1'  ${params.dataScope}
             <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
             <if test="attribute2 != null  and attribute2 != ''"> and attribute2 = #{attribute2}</if>
             <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
@@ -62,7 +62,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qty != null">qty,</if>
             <if test="spec != null">spec,</if>
             <if test="remark != null">remark,</if>
-            <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
@@ -79,7 +78,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qty != null">#{qty},</if>
             <if test="spec != null">#{spec},</if>
             <if test="remark != null">#{remark},</if>
-            <if test="isValid != null">#{isValid},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
             <if test="updateBy != null">#{updateBy},</if>

@@ -188,7 +188,6 @@ public class BsProcLossSopController extends BaseController
                 {
                     loss.setCreateBy(ShiroUtils.getLoginName());
                     loss.setUpdateBy(ShiroUtils.getLoginName());
-                    loss.setIsValid("1");
                     bsProcLossSopService.insertBsProcLossSop(loss);//插入工序损耗标准
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、工序损耗标准 " +loss.getName() + " 导入成功");

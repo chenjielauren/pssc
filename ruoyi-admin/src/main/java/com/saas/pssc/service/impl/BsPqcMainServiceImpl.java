@@ -39,10 +39,10 @@ public class BsPqcMainServiceImpl implements IBsPqcMainService
     public BsPqcMain selectBsPqcMainById(Long Id)
     {
         BsPqcMain bsPqcMain = bsPqcMainMapper.selectBsPqcMainById(Id);
-        if(null!=bsPqcMain && !StringUtils.isEmpty(bsPqcMain.getBsPqcDetailList())){
-            List<BsPqcDetail> sjDetailList = new ArrayList<BsPqcDetail>();//首检标准列表
-            List<BsPqcDetail> zjDetailList = new ArrayList<BsPqcDetail>();//自检标准列表
-            List<BsPqcDetail> xjDetailList = new ArrayList<BsPqcDetail>();//巡检标准列表
+        List<BsPqcDetail> sjDetailList = new ArrayList<BsPqcDetail>();//首检标准列表
+        List<BsPqcDetail> zjDetailList = new ArrayList<BsPqcDetail>();//自检标准列表
+        List<BsPqcDetail> xjDetailList = new ArrayList<BsPqcDetail>();//巡检标准列表
+        if(null!=bsPqcMain && !StringUtils.isEmpty(bsPqcMain.getBsPqcDetailList())){           
             for(BsPqcDetail bqd : bsPqcMain.getBsPqcDetailList()){
                 if(Long.valueOf(bqd.getPtype()) == 0){
                     sjDetailList.add(bqd);
@@ -54,10 +54,10 @@ public class BsPqcMainServiceImpl implements IBsPqcMainService
                     xjDetailList.add(bqd);
                 }
             }
-            bsPqcMain.setSjDetailList(sjDetailList);
-            bsPqcMain.setZjDetailList(zjDetailList);
-            bsPqcMain.setXjDetailList(xjDetailList);
         }
+        bsPqcMain.setSjDetailList(sjDetailList);
+        bsPqcMain.setZjDetailList(zjDetailList);
+        bsPqcMain.setXjDetailList(xjDetailList);
         return bsPqcMain;
     }
 

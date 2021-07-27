@@ -46,8 +46,7 @@ public class BsVendor extends BaseEntity
     @Excel(name = "地址")
     private String address;
 
-    /** 是否有效 */
-    @Excel(name = "是否有效")
+    /** 有效否 */
     private String isValid;
     
     private String attribute1;

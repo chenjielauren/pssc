@@ -72,6 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
+        order by p.id desc
     </select>
     
     <select id="selectBsPqcMainById" parameterType="Long" resultMap="BsPqcMainBsPqcDetailResult">
@@ -89,7 +90,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null">name,</if>
             <if test="procName != null">proc_name,</if>
             <if test="remark != null">remark,</if>
-            <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
@@ -103,7 +103,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null">#{name},</if>
             <if test="procName != null">#{procName},</if>
             <if test="remark != null">#{remark},</if>
-            <if test="isValid != null">#{isValid},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
             <if test="updateBy != null">#{updateBy},</if>
@@ -167,9 +166,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <insert id="batchBsPqcDetail">
-        insert into bs_pqc_detail( Id, main_id, ptype, pcode, name, standard, method, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
+        insert into bs_pqc_detail( Id, main_id, ptype, pcode, name, standard, method, remark, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
 		<foreach item="item" index="index" collection="list" separator=",">
-            ( #{item.id}, #{item.mainId}, #{item.ptype}, #{item.pcode}, #{item.name}, #{item.standard}, #{item.method}, #{item.remark}, '1', #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
+            ( #{item.id}, #{item.mainId}, #{item.ptype}, #{item.pcode}, #{item.name}, #{item.standard}, #{item.method}, #{item.remark}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
         </foreach>
     </insert>
 

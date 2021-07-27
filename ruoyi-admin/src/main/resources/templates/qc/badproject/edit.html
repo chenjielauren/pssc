@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改不良项目汇总')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-badproject-edit" th:object="${qcBadProject}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group"> 
+                <label class="col-sm-2 control-label is-required">成品名称：</label>
+                <div class="col-sm-4">
+                    <input name="pname" th:field="*{pname}" class="form-control" type="text" required>
+                </div>   
+                <label class="col-sm-2 control-label is-required">成品编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" th:field="*{pcode}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">批次号：</label>
+                <div class="col-sm-4">
+                    <input name="lot" th:field="*{lot}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">不良项目：</label>
+                <div class="col-sm-4">
+                    <input name="project" th:field="*{project}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">不良数量：</label>
+                <div class="col-sm-4">
+                    <input name="qty" th:field="*{qty}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group" style="display: none;" >
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "qc/badproject";
+        $("#form-badproject-edit").validate({
+            onkeyup: false,
+			rules:{
+				qty:{
+					number:true
+                },
+			},
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-badproject-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

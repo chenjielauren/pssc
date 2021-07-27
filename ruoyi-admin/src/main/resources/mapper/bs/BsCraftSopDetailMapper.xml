@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
             <if test="uploadUser != null  and uploadUser != ''"> and upload_user = #{uploadUser}</if>
             <if test="uploadTime != null "> and upload_time = #{uploadTime}</if>
-            <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
+            and is_valid = '1'  ${params.dataScope}
             <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
             <if test="attribute2 != null  and attribute2 != ''"> and attribute2 = #{attribute2}</if>
             <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
@@ -56,7 +56,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="fileName != null">file_name,</if>
             <if test="uploadUser != null and uploadUser != ''">upload_user,</if>
             <if test="uploadTime != null">upload_time,</if>
-            <if test="isValid != null">is_valid,</if>
             <if test="createBy != null">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
@@ -71,8 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="fileTitle != null and fileTitle != ''">#{fileTitle},</if>
             <if test="fileName != null">#{fileName},</if>
             <if test="uploadUser != null and uploadUser != ''">#{uploadUser},</if>
-            <if test="uploadTime != null">#{uploadTime},</if>
-            <if test="isValid != null">#{isValid},</if>
+            <if test="uploadTime != null">#{uploadTime},</if>            
             <if test="createBy != null">#{createBy},</if>
             sysdate(),
             <if test="updateBy != null">#{updateBy},</if>

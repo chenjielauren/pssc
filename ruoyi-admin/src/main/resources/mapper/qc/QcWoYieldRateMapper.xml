@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.QcWoYieldRateMapper">
+    
+    <resultMap type="QcWoYieldRate" id="QcWoYieldRateResult">
+        <result property="id"    column="id"    />
+        <result property="wo"    column="wo"    />
+        <result property="pcode"    column="pcode"    />
+        <result property="pname"    column="pname"    />
+        <result property="iqty"    column="iqty"    />
+        <result property="oqty"    column="oqty"    />
+        <result property="rate"    column="rate"    />
+        <result property="remark"    column="remark"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectQcWoYieldRateVo">
+        select id, wo, pcode, pname, iqty, oqty, rate, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from qc_wo_yield_rate t left join sys_user su on t.create_by = su.login_name
+    </sql>
+
+    <select id="selectQcWoYieldRateList" parameterType="QcWoYieldRate" resultMap="QcWoYieldRateResult">
+        <include refid="selectQcWoYieldRateVo"/>
+        <where>  
+            <if test="wo != null  and wo != ''"> and wo = #{wo}</if>
+            <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
+            <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
+            and is_valid = '1'  ${params.dataScope}
+        </where>
+        order by pcode
+    </select>
+    
+    <select id="selectQcWoYieldRateById" parameterType="Long" resultMap="QcWoYieldRateResult">
+        <include refid="selectQcWoYieldRateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertQcWoYieldRate" parameterType="QcWoYieldRate" useGeneratedKeys="true" keyProperty="id">
+        insert into qc_wo_yield_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wo != null">wo,</if>
+            <if test="pcode != null">pcode,</if>
+            <if test="pname != null">pname,</if>
+            <if test="iqty != null">iqty,</if>
+            <if test="oqty != null">oqty,</if>
+            <if test="rate != null">rate,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wo != null">#{wo},</if>
+            <if test="pcode != null">#{pcode},</if>
+            <if test="pname != null">#{pname},</if>
+            <if test="iqty != null">#{iqty},</if>
+            <if test="oqty != null">#{oqty},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQcWoYieldRate" parameterType="QcWoYieldRate">
+        update qc_wo_yield_rate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wo != null">wo = #{wo},</if>
+            <if test="pcode != null">pcode = #{pcode},</if>
+            <if test="pname != null">pname = #{pname},</if>
+            <if test="iqty != null">iqty = #{iqty},</if>
+            <if test="oqty != null">oqty = #{oqty},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateQcWoYieldRateById" parameterType="Long">
+        update qc_wo_yield_rate set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updateQcWoYieldRateByIds" parameterType="String">
+        update qc_wo_yield_rate set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteQcWoYieldRateById" parameterType="Long">
+        delete from qc_wo_yield_rate where id = #{id}
+    </delete>
+
+    <delete id="deleteQcWoYieldRateByIds" parameterType="String">
+        delete from qc_wo_yield_rate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

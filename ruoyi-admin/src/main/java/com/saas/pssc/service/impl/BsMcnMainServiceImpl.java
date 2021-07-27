@@ -129,7 +129,6 @@ public class BsMcnMainServiceImpl implements IBsMcnMainService
             List<BsMcnDetail> list = new ArrayList<BsMcnDetail>();
             for (BsMcnDetail bsMcnDetail : bsMcnDetailList)
             {
-                bsMcnDetail.setIsValid("1");
                 bsMcnDetail.setCreateBy(ShiroUtils.getLoginName());
                 bsMcnDetail.setCreateTime(DateUtils.getNowDate());
                 bsMcnDetail.setUpdateBy(ShiroUtils.getLoginName());

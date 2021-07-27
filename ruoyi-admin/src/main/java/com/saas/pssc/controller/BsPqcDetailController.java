@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 产品检验标准明细Controller
@@ -124,5 +125,28 @@ public class BsPqcDetailController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(bsPqcDetailService.deleteBsPqcDetailByIds(ids));
+    }
+
+    /**
+     * 下载模板
+     */
+    @GetMapping("/importTemplate")
+    @ResponseBody
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<BsPqcDetail> util = new ExcelUtil<BsPqcDetail>(BsPqcDetail.class);
+        return util.importTemplateExcel("产品检验标准明细列表");
+    }
+    
+    /**
+     * 导入数据
+     */
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<BsPqcDetail> util = new ExcelUtil<BsPqcDetail>(BsPqcDetail.class);
+        List<BsPqcDetail> list = util.importExcel(file.getInputStream());
+        return AjaxResult.success(list);
     }
 }

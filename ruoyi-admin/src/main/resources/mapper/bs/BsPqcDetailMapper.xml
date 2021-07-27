@@ -58,7 +58,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="standard != null">standard,</if>
             <if test="method != null">method,</if>
             <if test="remark != null">remark,</if>
-            <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
@@ -75,7 +74,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="standard != null">#{standard},</if>
             <if test="method != null">#{method},</if>
             <if test="remark != null">#{remark},</if>
-            <if test="isValid != null">#{isValid},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
             <if test="updateBy != null">#{updateBy},</if>

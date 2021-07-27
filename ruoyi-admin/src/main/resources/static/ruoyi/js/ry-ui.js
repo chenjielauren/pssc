@@ -452,6 +452,63 @@ var table = {
                     }
             	});
             },
+            // 在增加或修改主子表 添加时自定义导入数据Excel
+            // type 标记类型。一张主表有可能对应多张子表
+            custImportExcel: function(type,formId, width, height) {
+            	table.set();
+                var currentId = $.common.isEmpty(formId) ? 'importTpl' : formId;
+                var _width = $.common.isEmpty(width) ? "400" : width;
+                var _height = $.common.isEmpty(height) ? "230" : height;
+                layer.open({
+                    type: 1,
+                    area: [_width + 'px', _height + 'px'],
+                    fix: false,
+                    //不固定
+                    maxmin: true,
+                    shade: 0.3,
+                    title: '导入' + table.options.modalName + '数据',
+                    content: $('#' + currentId).html(),
+                    btn: ['<i class="fa fa-check"></i> 导入', '<i class="fa fa-remove"></i> 取消'],
+                    // 弹层外区域关闭
+                    shadeClose: true,
+                    btn1: function(index, layero){
+                        var file = layero.find('#file').val();
+                        if (file == '' || (!$.common.endWith(file, '.xls') && !$.common.endWith(file, '.xlsx'))){
+                            $.modal.msgWarning("请选择后缀为 “xls”或“xlsx”的文件。");
+                            return false;
+                        }
+                        var index = layer.load(2, {shade: false});
+                        var formData = new FormData(layero.find('form')[0]);
+                        $.ajax({
+                            url: table.options.importUrl,
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            type: 'POST',
+                            success: function (result) {
+                                if (result.code == web_status.SUCCESS) {
+                                    $.modal.closeAll();
+                                    debugger;
+                                    var data = result.data;
+                                    for(var i=0;i<data.length;i++){
+                                        console.log(data[i].qcResult);
+                                        if($.common.isNotEmpty(type)){
+                                            addColumn(type,data[i]);
+                                        }else{
+                                            addColumn(data[i]);
+                                        }
+                                    }
+                                } else {
+                                    layer.close(index);
+                                    $.modal.enable();
+                                    $.modal.alertError(result.msg);
+                                }
+                            }
+                        });
+                    }
+                });
+            },
             // 刷新表格
             refresh: function(tableId, pageNumber, pageSize, url) {
             	var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
@@ -479,6 +536,7 @@ var table = {
             },
             // 查询表格指定列值
             selectColumns: function(column) {
+                debugger;
             	var rows = $.map($("#" + table.options.id).bootstrapTable('getSelections'), function (row) {
                     return $.common.getItemField(row, column);
             	});
@@ -1610,6 +1668,7 @@ var table = {
             },
             // 数组去重
             uniqueFn: function(array) {
+                debugger;
                 var result = [];
                 var hashObj = {};
                 for (var i = 0; i < array.length; i++) {

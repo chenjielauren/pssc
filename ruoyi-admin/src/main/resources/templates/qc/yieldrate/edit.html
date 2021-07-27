@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改工单良品率分析')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-yieldrate-edit" th:object="${qcWoYieldRate}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">成品名称：</label>
+                <div class="col-sm-4">
+                    <input name="pname" th:field="*{pname}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">成品编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" th:field="*{pcode}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">工单号：</label>
+                <div class="col-sm-4">
+                    <input name="wo" th:field="*{wo}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">投入数量：</label>
+                <div class="col-sm-4">
+                    <input name="iqty" th:field="*{iqty}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">产出数量：</label>
+                <div class="col-sm-4">
+                    <input name="oqty" th:field="*{oqty}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">良品率(%)：</label>
+                <div class="col-sm-4">
+                    <input name="rate" th:field="*{rate}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group" style="display: none;" >
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "qc/yieldrate";
+        $("#form-yieldrate-edit").validate({
+            onkeyup: false,
+			rules:{
+				iqty:{
+					number:true
+                },
+                oqty:{
+					number:true
+                },
+                rate:{
+					number:true
+                },
+			},
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-yieldrate-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

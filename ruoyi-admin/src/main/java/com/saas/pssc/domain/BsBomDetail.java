@@ -19,7 +19,6 @@ public class BsBomDetail extends TreeEntity
     private Long id;
 
     /** 主表ID */
-    @Excel(name = "主表ID")
     private Long mainId;
 
     /** 材料编号 */
@@ -42,8 +41,7 @@ public class BsBomDetail extends TreeEntity
     @Excel(name = "材料规格")
     private String spec;
 
-    /** 是否有效 */
-    @Excel(name = "是否有效")
+    /** 有效否 */
     private String isValid;
 
     /**  */

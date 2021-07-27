@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.PpWoBookDetailMapper">
+    
+    <resultMap type="PpWoBookDetail" id="PpWoBookDetailResult">
+        <result property="id"    column="id"    />
+        <result property="mainId"    column="main_id"    />
+        <result property="mtype"    column="mtype"    />
+        <result property="mcode"    column="mcode"    />
+        <result property="mname"    column="mname"    />
+        <result property="otime"    column="otime"    />
+        <result property="olot"    column="olot"    />
+        <result property="qcResult"    column="qc_result"    />
+        <result property="expectOtime"    column="expect_otime"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="pmcode"    column="pmcode"    />
+        <result property="pmname"    column="pmname"    />
+        <result property="ppcode"    column="ppcode"    />
+        <result property="ppname"    column="ppname"    />
+        <result property="incount"    column="incount"    />
+        <result property="outcount"    column="outcount"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectPpWoBookDetailVo">
+        select id, main_id, mtype, mcode, mname, otime, olot, qc_result, expect_otime, is_valid, pmcode, pmname, ppcode, ppname, incount, outcount, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from pp_wo_book_detail
+    </sql>
+
+    <select id="selectPpWoBookDetailList" parameterType="PpWoBookDetail" resultMap="PpWoBookDetailResult">
+        <include refid="selectPpWoBookDetailVo"/>
+        <where>  
+            <if test="mainId != null "> and main_id = #{mainId}</if>
+            <if test="mtype != null  and mtype != ''"> and mtype = #{mtype}</if>
+            <if test="mcode != null  and mcode != ''"> and mcode = #{mcode}</if>
+            <if test="mname != null  and mname != ''"> and mname like concat('%', #{mname}, '%')</if>
+            <if test="otime != null "> and otime = #{otime}</if>
+            <if test="olot != null  and olot != ''"> and olot = #{olot}</if>
+            <if test="qcResult != null  and qcResult != ''"> and qc_result = #{qcResult}</if>
+            <if test="expectOtime != null "> and expect_otime = #{expectOtime}</if>
+            and is_valid = '1'  ${params.dataScope}
+            <if test="pmcode != null  and pmcode != ''"> and pmcode = #{pmcode}</if>
+            <if test="pmname != null  and pmname != ''"> and pmname like concat('%', #{pmname}, '%')</if>
+            <if test="ppcode != null  and ppcode != ''"> and ppcode = #{ppcode}</if>
+            <if test="ppname != null  and ppname != ''"> and ppname like concat('%', #{ppname}, '%')</if>
+            <if test="incount != null "> and incount = #{incount}</if>
+            <if test="outcount != null "> and outcount = #{outcount}</if>
+        </where>
+    </select>
+    
+    <select id="selectPpWoBookDetailById" parameterType="Long" resultMap="PpWoBookDetailResult">
+        <include refid="selectPpWoBookDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPpWoBookDetail" parameterType="PpWoBookDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into pp_wo_book_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">main_id,</if>
+            <if test="mtype != null">mtype,</if>
+            <if test="mcode != null">mcode,</if>
+            <if test="mname != null">mname,</if>
+            <if test="otime != null">otime,</if>
+            <if test="olot != null">olot,</if>
+            <if test="qcResult != null">qc_result,</if>
+            <if test="expectOtime != null">expect_otime,</if>
+            <if test="pmcode != null">pmcode,</if>
+            <if test="pmname != null">pmname,</if>
+            <if test="ppcode != null">ppcode,</if>
+            <if test="ppname != null">ppname,</if>
+            <if test="incount != null">incount,</if>
+            <if test="outcount != null">outcount,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">#{mainId},</if>
+            <if test="mtype != null">#{mtype},</if>
+            <if test="mcode != null">#{mcode},</if>
+            <if test="mname != null">#{mname},</if>
+            <if test="otime != null">#{otime},</if>
+            <if test="olot != null">#{olot},</if>
+            <if test="qcResult != null">#{qcResult},</if>
+            <if test="expectOtime != null">#{expectOtime},</if>
+            <if test="pmcode != null">#{pmcode},</if>
+            <if test="pmname != null">#{pmname},</if>
+            <if test="ppcode != null">#{ppcode},</if>
+            <if test="ppname != null">#{ppname},</if>
+            <if test="incount != null">#{incount},</if>
+            <if test="outcount != null">#{outcount},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePpWoBookDetail" parameterType="PpWoBookDetail">
+        update pp_wo_book_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mainId != null">main_id = #{mainId},</if>
+            <if test="mtype != null">mtype = #{mtype},</if>
+            <if test="mcode != null">mcode = #{mcode},</if>
+            <if test="mname != null">mname = #{mname},</if>
+            <if test="otime != null">otime = #{otime},</if>
+            <if test="olot != null">olot = #{olot},</if>
+            <if test="qcResult != null">qc_result = #{qcResult},</if>
+            <if test="expectOtime != null">expect_otime = #{expectOtime},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="pmcode != null">pmcode = #{pmcode},</if>
+            <if test="pmname != null">pmname = #{pmname},</if>
+            <if test="ppcode != null">ppcode = #{ppcode},</if>
+            <if test="ppname != null">ppname = #{ppname},</if>
+            <if test="incount != null">incount = #{incount},</if>
+            <if test="outcount != null">outcount = #{outcount},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePpWoBookDetailById" parameterType="Long">
+        delete from pp_wo_book_detail where id = #{id}
+    </delete>
+
+    <delete id="deletePpWoBookDetailByIds" parameterType="String">
+        delete from pp_wo_book_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

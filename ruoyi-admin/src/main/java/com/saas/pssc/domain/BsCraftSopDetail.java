@@ -21,7 +21,6 @@ public class BsCraftSopDetail extends BaseEntity
     private Long id;
 
     /** 主表ID */
-    @Excel(name = "主表ID")
     private Long mainId;
 
     /** 检验类型 0技术标准 1工艺标准 2未知 */
@@ -41,12 +40,11 @@ public class BsCraftSopDetail extends BaseEntity
     private String uploadUser;
 
     /** 上传时间 默认为当前时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "上传时间 默认为当前时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @Excel(name = "上传时间 默认为当前时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date uploadTime;
 
-    /** 是否有效 */
-    @Excel(name = "是否有效")
+    /** 有效否 */
     private String isValid;
 
     /**  */

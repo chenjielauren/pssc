@@ -192,7 +192,6 @@ public class BsVendorController extends BaseController
                     // BsVendor sdv=new BsVendor();
                     vendor.setCreateBy(ShiroUtils.getLoginName());
                     vendor.setUpdateBy(ShiroUtils.getLoginName());
-                    vendor.setIsValid("1");
                     bsVendorService.insertBsVendor(vendor);//插入合格供方目录
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、合格供方目录 " +vendor.getName() + " 导入成功");

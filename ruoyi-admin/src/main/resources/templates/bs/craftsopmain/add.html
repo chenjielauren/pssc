@@ -2,11 +2,13 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="include :: header('新增工艺标准与CCP')" />
+    <th:block th:include="include :: datetimepicker-css" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-craftsopmain-add">
             <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="createByName" th:value="${@permission.getPrincipalProperty('userName')}">
             <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
             <h4 class="form-header h4">基本信息</h4>
             <div class="form-group">    
@@ -42,6 +44,7 @@
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
     <script th:src="@{/saas/js/craft_sop_main.js}"></script>
     <script th:inline="javascript">
         var prefix = ctx + "bs/craftsopmain"

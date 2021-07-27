@@ -7,8 +7,6 @@ import com.saas.common.core.controller.BaseController;
 import com.saas.common.core.domain.AjaxResult;
 import com.saas.common.core.page.TableDataInfo;
 import com.saas.common.enums.BusinessType;
-import com.saas.common.exception.BusinessException;
-import com.saas.common.utils.StringUtils;
 import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.pssc.domain.BsMcnDetail;
 import com.saas.pssc.service.IBsMcnDetailService;
@@ -128,31 +126,27 @@ public class BsMcnDetailController extends BaseController
     {
         return toAjax(bsMcnDetailService.deleteBsMcnDetailByIds(ids));
     }
+    
     /**
      * 下载模板
-     */
+    */
     @GetMapping("/importTemplate")
     @ResponseBody
     public AjaxResult importTemplate()
     {
         ExcelUtil<BsMcnDetail> util = new ExcelUtil<BsMcnDetail>(BsMcnDetail.class);
-        return util.importTemplateExcel("4M变更记录");
+        return util.importTemplateExcel("4M变更单明细列表");
     }
-
+    
     /**
      * 导入数据
      */
-    @RequiresPermissions("bs:mcndetail:import")
     @PostMapping("/importData")
     @ResponseBody
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
         ExcelUtil<BsMcnDetail> util = new ExcelUtil<BsMcnDetail>(BsMcnDetail.class);
-        List<BsMcnDetail> detailList = util.importExcel(file.getInputStream());
-        if (StringUtils.isEmpty(detailList) || detailList.size() == 0)
-        {
-            throw new BusinessException("导入4M变更记录数据不能为空！");
-        }
-        return AjaxResult.success(detailList);
+        List<BsMcnDetail> list = util.importExcel(file.getInputStream());
+        return AjaxResult.success(list);
     }
 }

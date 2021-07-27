@@ -41,8 +41,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
             <!-- 数据范围过滤 -->
             ${params.dataScope}
-            order by id desc
         </where>
+        order by id desc
     </select>
     
     <select id="selectBsProcLossSopById" parameterType="Long" resultMap="BsProcLossSopResult">
@@ -59,7 +59,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="convertTime != null">convert_time,</if>
             <if test="lossRate != null">loss_rate,</if>
             <if test="remark != null">remark,</if>
-            <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
@@ -74,8 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="capacity != null">#{capacity},</if>
             <if test="convertTime != null">#{convertTime},</if>
             <if test="lossRate != null">#{lossRate},</if>
-            <if test="remark != null">#{remark},</if>
-            <if test="isValid != null">#{isValid},</if>
+            <if test="remark != null">#{remark},</if>            
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
             <if test="updateBy != null">#{updateBy},</if>

@@ -187,7 +187,6 @@ public class BsPqcMainController extends BaseController
                 {
                     pqcMain.setCreateBy(ShiroUtils.getLoginName());
                     pqcMain.setUpdateBy(ShiroUtils.getLoginName());
-                    pqcMain.setIsValid("1");
                     bsPqcMainService.insertBsPqcMain(pqcMain);//插入产品检验标准标准
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、产品检验标准标准 " +pqcMain.getName() + " 导入成功");

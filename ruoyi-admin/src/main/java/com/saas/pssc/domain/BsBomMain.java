@@ -26,8 +26,7 @@ public class BsBomMain extends BaseEntity
     @Excel(name = "产品名称")
     private String name;
 
-    /** 是否有效 */
-    @Excel(name = "是否有效")
+    /** 有效否 */
     private String isValid;
 
     /**  */

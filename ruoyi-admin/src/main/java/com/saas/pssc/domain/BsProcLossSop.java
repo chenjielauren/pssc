@@ -32,14 +32,13 @@ public class BsProcLossSop extends BaseEntity
 
     /** 转换时间 */
     @Excel(name = "转换时间")
-    private Long convertTime;
+    private Double convertTime;
 
     /** 损耗率 */
     @Excel(name = "损耗率")
-    private Long lossRate;
+    private Double lossRate;
 
-    /** 是否有效 */
-    @Excel(name = "是否有效")
+    /** 有效否 */
     private String isValid;
 
     /**  */
@@ -90,21 +89,21 @@ public class BsProcLossSop extends BaseEntity
     {
         return capacity;
     }
-    public void setConvertTime(Long convertTime) 
+    public void setConvertTime(Double convertTime) 
     {
         this.convertTime = convertTime;
     }
 
-    public Long getConvertTime() 
+    public Double getConvertTime() 
     {
         return convertTime;
     }
-    public void setLossRate(Long lossRate) 
+    public void setLossRate(Double lossRate) 
     {
         this.lossRate = lossRate;
     }
 
-    public Long getLossRate() 
+    public Double getLossRate() 
     {
         return lossRate;
     }

@@ -57,8 +57,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
             <!-- 数据范围过滤 -->
             ${params.dataScope}
-            order by id desc
         </where>
+        order by id desc
     </select>
     
     <select id="selectBsCraftSopMainById" parameterType="Long" resultMap="BsCraftSopMainBsCraftSopDetailResult">
@@ -75,7 +75,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="name != null">name,</if>
             <if test="remark != null">remark,</if>
-            <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
@@ -88,7 +87,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pcode != null and pcode != ''">#{pcode},</if>
             <if test="name != null">#{name},</if>
             <if test="remark != null">#{remark},</if>
-            <if test="isValid != null">#{isValid},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
             <if test="updateBy != null">#{updateBy},</if>
@@ -151,9 +149,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <insert id="batchBsCraftSopDetail">
-        insert into bs_craft_sop_detail( id, main_id, ptype, file_title, file_name, upload_user, upload_time, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
+        insert into bs_craft_sop_detail( id, main_id, ptype, file_title, file_name, upload_user, upload_time, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
 		<foreach item="item" index="index" collection="list" separator=",">
-            ( #{item.id}, #{item.mainId}, #{item.ptype}, #{item.fileTitle}, #{item.fileName}, #{item.uploadUser}, #{item.uploadTime}, #{item.isValid}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
+            ( #{item.id}, #{item.mainId}, #{item.ptype}, #{item.fileTitle}, #{item.fileName}, #{item.uploadUser}, #{item.uploadTime}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
         </foreach>
     </insert>
 

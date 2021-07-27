@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改工序成品率')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-workyield-edit" th:object="${ppWorkYield}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">计划工单号：</label>
+                <div class="col-sm-8">
+                    <input name="wcode" th:field="*{wcode}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">产品编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" th:field="*{pcode}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">产品名称：</label>
+                <div class="col-sm-4">
+                    <input name="pname" th:field="*{pname}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">计划数量：</label>
+                <div class="col-sm-4">
+                    <input name="qty" th:field="*{qty}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">生产工序：</label>
+                <div class="col-sm-4">
+                    <input name="pwork" th:field="*{pwork}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">生产机台：</label>
+                <div class="col-sm-4">
+                    <input name="machine" th:field="*{machine}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">标准成品率(%)：</label>
+                <div class="col-sm-4">
+                    <input name="standardYield" th:field="*{standardYield}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">实际成品率(%)：</label>
+                <div class="col-sm-4">
+                    <input name="actualYield" th:field="*{actualYield}" class="form-control" type="text" required><label class="col-sm-1 control-label">%</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "pp/workyield";
+        $("#form-workyield-edit").validate({
+            onkeyup: false,
+			rules:{
+				qty:{
+					number:true
+                },
+                standardYield:{
+					number:true
+                },
+                actualYield:{
+					number:true
+                },
+			},
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-workyield-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

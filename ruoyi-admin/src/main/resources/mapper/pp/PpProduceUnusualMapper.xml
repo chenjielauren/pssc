@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.PpProduceUnusualMapper">
+    
+    <resultMap type="PpProduceUnusual" id="PpProduceUnusualResult">
+        <result property="id"    column="id"    />
+        <result property="wcode"    column="wcode"    />
+        <result property="utime"    column="utime"    />
+        <result property="uuser"    column="uuser"    />
+        <result property="pcode"    column="pcode"    />
+        <result property="pname"    column="pname"    />
+        <result property="pwork"    column="pwork"    />
+        <result property="qty"    column="qty"    />
+        <result property="lastTime"    column="last_time"    />
+        <result property="problemDesc"    column="problem_desc"    />
+        <result property="remark"    column="remark"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectPpProduceUnusualVo">
+        select id, wcode, utime, uuser, pcode, pname, pwork, qty, last_time, problem_desc, un.remark, un.is_valid, un.create_by, un.create_time, un.update_by, un.update_time, attribute1, attribute2, attribute3 
+        from pp_produce_unusual un left join sys_user su on un.update_by = su.login_name
+    </sql>
+
+    <select id="selectPpProduceUnusualList" parameterType="PpProduceUnusual" resultMap="PpProduceUnusualResult">
+        <include refid="selectPpProduceUnusualVo"/>
+        <where>
+            <if test="uStarttime != null "> and utime >= #{uStarttime}</if>
+            <if test="uEndtime != null "> and utime  &lt;=#{uEndtime}</if>  
+            <if test="wcode != null  and wcode != ''"> and wcode = #{wcode}</if>
+            <if test="utime != null "> and utime = #{utime}</if>
+            <if test="uuser != null  and uuser != ''"> and uuser = #{uuser}</if>
+            <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
+            <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
+            <if test="pwork != null  and pwork != ''"> and pwork = #{pwork}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="lastTime != null "> and last_time = #{lastTime}</if>
+            <if test="problemDesc != null  and problemDesc != ''"> and problem_desc = #{problemDesc}</if>
+            and is_valid = '1'  ${params.dataScope}
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
+        </where>
+        order by id desc
+    </select>
+    
+    <select id="selectPpProduceUnusualById" parameterType="Long" resultMap="PpProduceUnusualResult">
+        <include refid="selectPpProduceUnusualVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPpProduceUnusual" parameterType="PpProduceUnusual" useGeneratedKeys="true" keyProperty="id">
+        insert into pp_produce_unusual
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wcode != null and wcode != ''">wcode,</if>
+            <if test="utime != null">utime,</if>
+            <if test="uuser != null">uuser,</if>
+            <if test="pcode != null">pcode,</if>
+            <if test="pname != null">pname,</if>
+            <if test="pwork != null">pwork,</if>
+            <if test="qty != null">qty,</if>
+            <if test="lastTime != null">last_time,</if>
+            <if test="problemDesc != null">problem_desc,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wcode != null and wcode != ''">#{wcode},</if>
+            <if test="utime != null">#{utime},</if>
+            <if test="uuser != null">#{uuser},</if>
+            <if test="pcode != null">#{pcode},</if>
+            <if test="pname != null">#{pname},</if>
+            <if test="pwork != null">#{pwork},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="lastTime != null">#{lastTime},</if>
+            <if test="problemDesc != null">#{problemDesc},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePpProduceUnusual" parameterType="PpProduceUnusual">
+        update pp_produce_unusual
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wcode != null and wcode != ''">wcode = #{wcode},</if>
+            <if test="utime != null">utime = #{utime},</if>
+            <if test="uuser != null">uuser = #{uuser},</if>
+            <if test="pcode != null">pcode = #{pcode},</if>
+            <if test="pname != null">pname = #{pname},</if>
+            <if test="pwork != null">pwork = #{pwork},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="lastTime != null">last_time = #{lastTime},</if>
+            <if test="problemDesc != null">problem_desc = #{problemDesc},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updatePpProduceUnusualById" parameterType="Long">
+        update pp_produce_unusual set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updatePpProduceUnusualByIds" parameterType="String">
+        update pp_produce_unusual set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deletePpProduceUnusualById" parameterType="Long">
+        delete from pp_produce_unusual where id = #{id}
+    </delete>
+
+    <delete id="deletePpProduceUnusualByIds" parameterType="String">
+        delete from pp_produce_unusual where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
