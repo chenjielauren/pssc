@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qcResult != null  and qcResult != ''"> and qc_result = #{qcResult}</if>
             and is_valid = '1'  ${params.dataScope}
         </where>
-        order by qcode
+        order by t.create_time desc
     </select>
     
     <select id="selectQcProdCheckMainById" parameterType="Long" resultMap="QcProdCheckMainQcProdCheckDetailResult">

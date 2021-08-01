@@ -91,11 +91,17 @@
                 },
                 {
                     field: 'convertTime',
-                    title: '转换时间'
+                    title: '转换时间',
+                    formatter: function (value, row, index) {
+                    	return value + '小时';
+                    }
                 },
                 {
                     field: 'lossRate',
-                    title: '损耗率'
+                    title: '损耗率',
+                    formatter: function (value, row, index) {
+                    	return value + '%';
+                    }
                 },
                 {
                     field: 'updateTime',

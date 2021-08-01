@@ -23,7 +23,7 @@ import com.saas.common.core.page.TableDataInfo;
  * bom物料清单Controller
  * 
  * @author admin
- * @date 2021-07-19
+ * @date 2021-07-31
  */
 @Controller
 @RequestMapping("/bs/bommain")

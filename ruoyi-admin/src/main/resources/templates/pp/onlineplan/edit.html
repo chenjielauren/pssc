@@ -17,7 +17,7 @@
                 <label class="col-sm-2 control-label  is-required">计划编辑时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="ptime" th:value="${#dates.format(ppWoOnlinePlan.ptime, 'yyyy-MM-dd hh:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd hh:mm:ss" type="text" required>
+                        <input name="ptime" th:value="${#dates.format(ppWoOnlinePlan.ptime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 <label class="col-sm-2 control-label is-required">计划开工时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="pstarTime" th:value="${#dates.format(ppWoOnlinePlan.pstarTime, 'yyyy-MM-dd hh:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd hh:mm:ss" type="text" required>
+                        <input name="pstarTime" th:value="${#dates.format(ppWoOnlinePlan.pstarTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                 <label class="col-sm-2 control-label is-required">计划完工时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="pendTime" th:value="${#dates.format(ppWoOnlinePlan.pendTime, 'yyyy-MM-dd hh:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd hh:mm:ss" type="text" required>
+                        <input name="pendTime" th:value="${#dates.format(ppWoOnlinePlan.pendTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>

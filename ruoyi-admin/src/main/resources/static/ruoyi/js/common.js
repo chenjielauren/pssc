@@ -302,7 +302,7 @@ function refreshTab() {
 	var currentId = $('.page-tabs-content', topWindow).find('.active').attr('data-id');
 	var target = $('.RuoYi_iframe[data-id="' + currentId + '"]', topWindow);
     var url = target.attr('src');
-	target.attr('src', url).ready();
+    target.attr('src', url).ready();
 }
 
 // 滚动到指定选项卡

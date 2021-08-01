@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.saas.pssc.mapper.InFStoreDetailMapper">
+<mapper namespace="com.saas.pssc.mapper.InStoreDetailMapper">
     
-    <resultMap type="InFStoreDetail" id="InStoreDetailResult">
+    <resultMap type="InStoreDetail" id="InStoreDetailResult">
         <result property="id"    column="id"    />
         <result property="mainId"    column="main_id"    />
         <result property="mcode"    column="mcode"    />
@@ -25,14 +25,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectInStoreDetailVo">
-        select d.id, d.main_id, mcode, mname, mlot, vendor, qty, iqty, unit, d.is_valid, d.create_by, d.create_time, d.update_by, d.update_time, d.attribute1, d.attribute2, d.attribute3,
+        select t.id, t.main_id, mcode, mname, mlot, vendor, qty, iqty, unit, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, t.attribute1, t.attribute2, t.attribute3,
         m.pcode,su.user_name input_user,m.input_time 
-        from in_store_detail d 
-        left join in_store_main m on d.main_id = m.id 
+        from in_store_detail t 
+        left join in_store_main m on t.main_id = m.id 
         left join sys_user su on m.input_user = su.login_name
     </sql>
 
-    <select id="selectInStoreDetailList" parameterType="InFStoreDetail" resultMap="InStoreDetailResult">
+    <select id="selectInStoreDetailList" parameterType="InStoreDetail" resultMap="InStoreDetailResult">
         <include refid="selectInStoreDetailVo"/>
         <where>  
             <if test="mainId != null "> and main_id = #{mainId}</if>
@@ -44,11 +44,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qty != null "> and qty = #{qty}</if>
             <if test="iqty != null "> and iqty = #{iqty}</if>
             <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
-             and d.is_valid = '1'
+             and t.is_valid = '1'
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by d.id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectInStoreDetailById" parameterType="Long" resultMap="InStoreDetailResult">
@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where d.id = #{id}
     </select>
         
-    <insert id="insertInStoreDetail" parameterType="InFStoreDetail" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertInStoreDetail" parameterType="InStoreDetail" useGeneratedKeys="true" keyProperty="id">
         insert into in_store_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="mainId != null">main_id,</if>
@@ -96,7 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateInStoreDetail" parameterType="InFStoreDetail">
+    <update id="updateInStoreDetail" parameterType="InStoreDetail">
         update in_store_detail
         <trim prefix="SET" suffixOverrides=",">
             <if test="mainId != null">main_id = #{mainId},</if>

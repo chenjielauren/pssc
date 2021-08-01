@@ -134,7 +134,10 @@
                 },
                 {
                     field: 'progress',
-                    title: '生产进度'
+                    title: '生产进度',
+                    formatter: function (value, row, index) {
+                    	return value + '%';
+                    }
                 },
                 {
                     field: 'expectFtime',

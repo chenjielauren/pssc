@@ -25,8 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsVendorVo">
-        select Id, category, vcode, name, phone, contract_user, contract_mobile, address, v.remark,  v.is_valid,  v.create_by,  v.create_time,  su.user_name update_by,  v.update_time, attribute1, attribute2, attribute3 
-        from bs_vendor v left join sys_user su on v.update_by = su.login_name
+        select Id, category, vcode, name, phone, contract_user, contract_mobile, address, t.remark,  t.is_valid,  t.create_by,  t.create_time,  su.user_name update_by,  t.update_time, attribute1, attribute2, attribute3 
+        from bs_vendor t left join sys_user su on t.update_by = su.login_name
     </sql>
 
     <select id="selectBsVendorList" parameterType="BsVendor" resultMap="BsVendorResult">
@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectBsVendorById" parameterType="Long" resultMap="BsVendorResult">

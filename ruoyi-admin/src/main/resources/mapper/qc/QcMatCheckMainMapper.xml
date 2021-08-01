@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
             and is_valid = '1'  ${params.dataScope}
         </where>
-        order by qcode
+        order by t.create_time desc
     </select>
     
     <select id="selectQcMatCheckMainById" parameterType="Long" resultMap="QcMatCheckMainQcMatCheckDetailResult">

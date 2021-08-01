@@ -50,6 +50,10 @@ public class QcBadProject extends BaseEntity
     /**  */
     private String attribute3;
 
+    private String name;
+
+    private Long value;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -141,6 +145,23 @@ public class QcBadProject extends BaseEntity
         return attribute3;
     }
 
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getValue() {
+        return value;
+    }
+
+    public void setValue(Long value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -161,4 +182,5 @@ public class QcBadProject extends BaseEntity
             .append("attribute3", getAttribute3())
             .toString();
     }
+
 }

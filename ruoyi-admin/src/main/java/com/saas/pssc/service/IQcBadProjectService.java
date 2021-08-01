@@ -1,6 +1,7 @@
 package com.saas.pssc.service;
 
 import java.util.List;
+
 import com.saas.pssc.domain.QcBadProject;
 
 /**
@@ -58,4 +59,10 @@ public interface IQcBadProjectService
      * @return 结果
      */
     public int deleteQcBadProjectById(Long id);
+
+    //查询不良项目饼图数据
+    public List<QcBadProject> loadPieChartByProject(QcBadProject qcBadProject);
+    
+    //查询成品名称饼图数据
+	public List<QcBadProject> loadPieChartByPname(QcBadProject qcBadProject);
 }

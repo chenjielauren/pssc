@@ -25,8 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSdOrderVo">
-        select id, ocode, otime, qty, pcode, pname, ptype, pspec, o.remark, o.is_valid,su.user_name  as create_by, o.create_time, o.update_by, o.update_time, attribute1, attribute2, attribute3 
-        from sd_order o left join sys_user su on o.create_by = su.login_name  
+        select id, ocode, otime, qty, pcode, pname, ptype, pspec, t.remark, t.is_valid,su.user_name  as create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from sd_order t left join sys_user su on t.create_by = su.login_name  
     </sql>
 
     <select id="selectSdOrderList" parameterType="SdOrder" resultMap="SdOrderResult">
@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by o.id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectSdOrderById" parameterType="Long" resultMap="SdOrderResult">

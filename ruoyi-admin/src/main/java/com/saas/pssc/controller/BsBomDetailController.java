@@ -24,7 +24,7 @@ import com.saas.common.core.domain.Ztree;
  * bom物料清单明细Controller
  * 
  * @author admin
- * @date 2021-07-19
+ * @date 2021-07-31
  */
 @Controller
 @RequestMapping("/bs/bomdetail")

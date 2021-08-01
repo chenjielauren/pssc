@@ -19,8 +19,7 @@ import org.springframework.stereotype.Service;
  * @date 2021-07-25
  */
 @Service
-public class QcBadProjectServiceImpl implements IQcBadProjectService 
-{
+public class QcBadProjectServiceImpl implements IQcBadProjectService {
     @Autowired
     private QcBadProjectMapper qcBadProjectMapper;
 
@@ -31,8 +30,7 @@ public class QcBadProjectServiceImpl implements IQcBadProjectService
      * @return 不良项目汇总
      */
     @Override
-    public QcBadProject selectQcBadProjectById(Long id)
-    {
+    public QcBadProject selectQcBadProjectById(Long id) {
         return qcBadProjectMapper.selectQcBadProjectById(id);
     }
 
@@ -44,8 +42,7 @@ public class QcBadProjectServiceImpl implements IQcBadProjectService
      */
     @Override
     @DataScope(userAlias = "su")
-    public List<QcBadProject> selectQcBadProjectList(QcBadProject qcBadProject)
-    {
+    public List<QcBadProject> selectQcBadProjectList(QcBadProject qcBadProject) {
         return qcBadProjectMapper.selectQcBadProjectList(qcBadProject);
     }
 
@@ -56,8 +53,7 @@ public class QcBadProjectServiceImpl implements IQcBadProjectService
      * @return 结果
      */
     @Override
-    public int insertQcBadProject(QcBadProject qcBadProject)
-    {
+    public int insertQcBadProject(QcBadProject qcBadProject) {
         qcBadProject.setCreateTime(DateUtils.getNowDate());
         return qcBadProjectMapper.insertQcBadProject(qcBadProject);
     }
@@ -69,8 +65,7 @@ public class QcBadProjectServiceImpl implements IQcBadProjectService
      * @return 结果
      */
     @Override
-    public int updateQcBadProject(QcBadProject qcBadProject)
-    {
+    public int updateQcBadProject(QcBadProject qcBadProject) {
         qcBadProject.setUpdateTime(DateUtils.getNowDate());
         return qcBadProjectMapper.updateQcBadProject(qcBadProject);
     }
@@ -82,8 +77,7 @@ public class QcBadProjectServiceImpl implements IQcBadProjectService
      * @return 结果
      */
     @Override
-    public int deleteQcBadProjectByIds(String ids)
-    {
+    public int deleteQcBadProjectByIds(String ids) {
         return qcBadProjectMapper.updateQcBadProjectByIds(Convert.toStrArray(ids));
     }
 
@@ -94,8 +88,29 @@ public class QcBadProjectServiceImpl implements IQcBadProjectService
      * @return 结果
      */
     @Override
-    public int deleteQcBadProjectById(Long id)
-    {
+    public int deleteQcBadProjectById(Long id) {
         return qcBadProjectMapper.updateQcBadProjectById(id);
+    }
+
+    /**
+     * 查询不良项目TOP5饼图数据
+     * 
+     */
+    @Override
+    @DataScope(userAlias = "su")
+    public List<QcBadProject> loadPieChartByProject(QcBadProject qcBadProject) {
+        List<QcBadProject> projectList = qcBadProjectMapper.getPieChartByProject(qcBadProject);
+        return projectList;
+    }
+
+    /**
+     * 查询成品编号TOP5饼图数据
+     * 
+     */
+    @Override
+    @DataScope(userAlias = "su")
+    public List<QcBadProject> loadPieChartByPname(QcBadProject qcBadProject) {
+        List<QcBadProject> pnameList = qcBadProjectMapper.getPieChartByPname(qcBadProject);
+        return pnameList;
     }
 }

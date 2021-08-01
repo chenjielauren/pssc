@@ -8,7 +8,7 @@ import com.saas.common.core.domain.Ztree;
  * bom物料清单明细Service接口
  * 
  * @author admin
- * @date 2021-07-19
+ * @date 2021-07-31
  */
 public interface IBsBomDetailService 
 {

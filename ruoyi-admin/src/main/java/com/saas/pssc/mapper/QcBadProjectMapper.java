@@ -62,4 +62,8 @@ public interface QcBadProjectMapper
 	public int updateQcBadProjectById(Long id);
 
 	public int updateQcBadProjectByIds(String[] strArray);
+
+    public List<QcBadProject> getPieChartByProject(QcBadProject qcBadProject);
+    
+    public List<QcBadProject> getPieChartByPname(QcBadProject qcBadProject);
 }

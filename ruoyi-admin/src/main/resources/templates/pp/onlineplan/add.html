@@ -17,7 +17,7 @@
                 <label class="col-sm-2 control-label  is-required">计划编辑时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="ptime" class="form-control" placeholder="yyyy-MM-dd hh:mm:ss" type="text" required>
+                        <input name="ptime" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 <label class="col-sm-2 control-label is-required">计划开工时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="pstarTime" class="form-control" placeholder="yyyy-MM-dd hh:mm:ss" type="text" required>
+                        <input name="pstarTime" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                 <label class="col-sm-2 control-label is-required">计划完工时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="pendTime" class="form-control" placeholder="yyyy-MM-ddhh:mm:ss" type="text" required>
+                        <input name="pendTime" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -119,13 +119,13 @@
         });
 
         $("input[name='pstarTime']").datetimepicker({
-            format: "yyyy-mm-dd hh:ii:ss",
+            format: "yyyy-mm-dd",
             minView: "month",
             autoclose: true
         });
 
         $("input[name='pendTime']").datetimepicker({
-            format: "yyyy-mm-dd hh:ii:ss",
+            format: "yyyy-mm-dd",
             minView: "month",
             autoclose: true
         });

@@ -1,6 +1,18 @@
 package com.saas.pssc.controller;
 
 import java.util.List;
+
+import com.saas.common.annotation.Log;
+import com.saas.common.core.controller.BaseController;
+import com.saas.common.core.domain.AjaxResult;
+import com.saas.common.core.page.TableDataInfo;
+import com.saas.common.enums.BusinessType;
+import com.saas.common.exception.BusinessException;
+import com.saas.common.utils.ShiroUtils;
+import com.saas.common.utils.poi.ExcelUtil;
+import com.saas.pssc.domain.QcBadProject;
+import com.saas.pssc.service.IQcBadProjectService;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,17 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.saas.common.annotation.Log;
-import com.saas.common.enums.BusinessType;
-import com.saas.common.exception.BusinessException;
-import com.saas.pssc.domain.QcBadProject;
-import com.saas.pssc.service.IQcBadProjectService;
-import com.saas.common.core.controller.BaseController;
-import com.saas.common.core.domain.AjaxResult;
-import com.saas.common.utils.ShiroUtils;
-import com.saas.common.utils.poi.ExcelUtil;
-import com.saas.common.core.page.TableDataInfo;
 
 /**
  * 不良项目汇总Controller
@@ -222,4 +223,18 @@ public class QcBadProjectController extends BaseController
         }
         return successMsg.toString();
     }
+
+    //加载饼图
+    @PostMapping("/loadPieChart")
+	@ResponseBody
+	public AjaxResult loadPieChart(QcBadProject qcBadProject) {
+        AjaxResult ajaxResult = AjaxResult.success();
+        //查询不良项目饼图数据
+        List<QcBadProject> projectList= qcBadProjectService.loadPieChartByProject(qcBadProject);        
+        ajaxResult.put("projectList", projectList);
+        //查询不良项目饼图数据
+        List<QcBadProject> pnameList= qcBadProjectService.loadPieChartByPname(qcBadProject);        
+        ajaxResult.put("pnameList", pnameList);
+        return ajaxResult;
+	}
 }

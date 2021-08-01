@@ -30,8 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPpWoOnlinePlanVo">
-        select o.id, wcode, ptime, puser, pcode, pname, qty, pstar_time, pend_time, pwork, machine, change_times, produce_times, o.remark, o.is_valid, su.user_name as create_by, o.create_time, o.update_by, o.update_time, attribute1, attribute2, attribute3 
-        from pp_wo_online_plan o left join sys_user su on o.create_by = su.login_name 
+        select t.id, wcode, ptime, puser, pcode, pname, qty, pstar_time, pend_time, pwork, machine, change_times, produce_times, t.remark, t.is_valid, su.user_name as create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from pp_wo_online_plan t left join sys_user su on t.create_by = su.login_name 
     </sql>
 
     <select id="selectPpWoOnlinePlanList" parameterType="PpWoOnlinePlan" resultMap="PpWoOnlinePlanResult">
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by o.id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectPpWoOnlinePlanById" parameterType="Long" resultMap="PpWoOnlinePlanResult">

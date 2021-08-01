@@ -44,38 +44,110 @@
                         </ul>
                     </div>
                 </form>
-            </div>
-
-            <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="pp:workyield:add">
-                    <i class="fa fa-plus"></i> 添加
-                </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="pp:workyield:edit">
-                    <i class="fa fa-edit"></i> 修改
-                </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="pp:workyield:remove">
-                    <i class="fa fa-remove"></i> 删除
-                </a>
-                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="pp:workyield:import">
-				    <i class="fa fa-upload"></i> 导入
-				</a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="pp:workyield:export">
-                    <i class="fa fa-download"></i> 导出
-                </a>
-            </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="echarts" id="echarts-line-chart"></div>
+                    </div>
+                </div>
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="pp:workyield:add">
+                        <i class="fa fa-plus"></i> 添加
+                    </a>
+                    <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="pp:workyield:edit">
+                        <i class="fa fa-edit"></i> 修改
+                    </a>
+                    <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="pp:workyield:remove">
+                        <i class="fa fa-remove"></i> 删除
+                    </a>
+                    <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="pp:workyield:import">
+                        <i class="fa fa-upload"></i> 导入
+                    </a>
+                    <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="pp:workyield:export">
+                        <i class="fa fa-download"></i> 导出
+                    </a>
+                </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
             </div>
         </div>
     </div>
+    <th:block th:include="include :: echarts-js" />
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('pp:workyield:edit')}]];
         var removeFlag = [[${@permission.hasPermi('pp:workyield:remove')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
         var prefix = ctx + "pp/workyield";
-
+        
+        //加载折线图
+        function loadLineChart(){
+            $.ajax({
+                url : prefix + "/loadLineChart",
+                type : "POST",
+                async : false,
+                dataType : "json",
+                success : function(result) {
+                    console.log(result.wCodeList + "||"+result.standardYieldList+ "||"+ result.actualYieldList+"||")
+                    var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
+                    var lineoption = {
+                        title: {
+                            text: '工单成品率趋势'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: ['实际成品率', '标准成品率']
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                dataView: {
+                                    show:false
+                                },
+                                dataZoom: {
+                                    show:false,
+                                    yAxisIndex: 'none'
+                                },
+                                dataView: {readOnly: false},
+                                magicType: {type: ['line', 'bar']},
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: result.wCodeList
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
+                        },
+                        series: [
+                            {
+                                name: '实际成品率',
+                                type: 'line',
+                                data: result.actualYieldList
+                            },
+                            {
+                                name: '标准成品率',
+                                type: 'line',
+                                data: result.standardYieldList
+                            }
+                        ]
+                    };
+                    lineChart.setOption(lineoption);
+                    $(window).resize(lineChart.resize);
+                }
+            })
+            
+        }
         $(function() {
+            //初始化折线图
+            loadLineChart();
             var options = {
                 url: prefix + "/list",
                 createUrl: prefix + "/add",

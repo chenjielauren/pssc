@@ -107,7 +107,10 @@
                 },
                 {
                     field: 'rate',
-                    title: '良品率'
+                    title: '良品率',
+                    formatter: function (value, row, index) {
+                    	return value + '%';
+                    }
                 },
                 {
                     field: 'isValid',

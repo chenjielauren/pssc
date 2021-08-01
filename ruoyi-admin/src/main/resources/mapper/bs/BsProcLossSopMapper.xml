@@ -23,8 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsProcLossSopVo">
-        select Id, pcode, name, capacity, convert_time, loss_rate, p.remark, p.is_valid, p.create_by,p.create_time, su.user_name update_by, p.update_time, attribute1, attribute2, attribute3 
-        from bs_proc_loss_sop p left join sys_user su on p.update_by = su.login_name     
+        select Id, pcode, name, capacity, convert_time, loss_rate, t.remark, t.is_valid, t.create_by,t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
+        from bs_proc_loss_sop t left join sys_user su on t.update_by = su.login_name     
     </sql>
 
     <select id="selectBsProcLossSopList" parameterType="BsProcLossSop" resultMap="BsProcLossSopResult">
@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectBsProcLossSopById" parameterType="Long" resultMap="BsProcLossSopResult">

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增bom物料清单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-bom-add">
+            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">bom父节点id：</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <input id="treeId" name="idParent" type="hidden" th:value="${bsBom?.id}"/>
+                        <input class="form-control" type="text" onclick="selectBomTree()" id="treeName" readonly="true" th:value="${bsBom?.mname}">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">部件编号：</label>
+                <div class="col-sm-4">
+                    <input name="mcode" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">部件名称：</label>
+                <div class="col-sm-4">
+                    <input name="mname" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label is-required">部件规格：</label>
+                <div class="col-sm-10">
+                    <textarea name="spec" class="form-control" required></textarea>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">部件属性：</label>
+                <div class="col-sm-4">
+                    <select name="attribute" class="form-control m-b" th:with="type=${@dict.getType('bs_bom_attr')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label is-required">上机尺寸：</label>
+                <div class="col-sm-4">
+                    <input name="msize" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">模切拼数：</label>
+                <div class="col-sm-4">
+                    <input name="dnumber" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">切纸拼数：</label>
+                <div class="col-sm-4">
+                    <input name="pnumber" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">用量：</label>
+                <div class="col-sm-4">
+                    <input name="qty" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label is-required">备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="remark" class="form-control" required></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "bs/bom"
+        $("#form-bom-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-bom-add').serialize());
+            }
+        }
+
+        /*bom物料清单-新增-选择父bom物料清单树*/
+        function selectBomTree() {
+            var options = {
+                title: 'bom物料清单选择',
+                width: "380",
+                url: prefix + "/selectBomTree/" + $("#treeId").val(),
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var body = layer.getChildFrame('body', index);
+               $("#treeId").val(body.find('#treeId').val());
+               $("#treeName").val(body.find('#treeName').val());
+               layer.close(index);
+        }
+    </script>
+</body>
+</html>

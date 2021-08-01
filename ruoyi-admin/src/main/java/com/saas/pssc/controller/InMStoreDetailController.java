@@ -9,7 +9,8 @@ import com.saas.common.core.page.TableDataInfo;
 import com.saas.common.enums.BusinessType;
 import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.pssc.domain.InMStoreDetail;
-import com.saas.pssc.service.IInMStoreDetailService;
+import com.saas.pssc.domain.InStoreDetail;
+import com.saas.pssc.service.IInStoreDetailService;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class InMStoreDetailController extends BaseController
     private String prefix = "in/mstoredetail";
 
     @Autowired
-    private IInMStoreDetailService inStoreDetailService;
+    private IInStoreDetailService inStoreDetailService;
 
     @RequiresPermissions("in:mstoredetail:view")
     @GetMapping()
@@ -50,10 +51,10 @@ public class InMStoreDetailController extends BaseController
     @RequiresPermissions("in:mstoredetail:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(InMStoreDetail inStoreDetail)
+    public TableDataInfo list(InStoreDetail inStoreDetail)
     {
         startPage();
-        List<InMStoreDetail> list = inStoreDetailService.selectInStoreDetailList(inStoreDetail);
+        List<InStoreDetail> list = inStoreDetailService.selectInStoreDetailList(inStoreDetail);
         return getDataTable(list);
     }
 
@@ -64,10 +65,10 @@ public class InMStoreDetailController extends BaseController
     @Log(title = "材料库存明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(InMStoreDetail inStoreDetail)
+    public AjaxResult export(InStoreDetail inStoreDetail)
     {
-        List<InMStoreDetail> list = inStoreDetailService.selectInStoreDetailList(inStoreDetail);
-        ExcelUtil<InMStoreDetail> util = new ExcelUtil<InMStoreDetail>(InMStoreDetail.class);
+        List<InStoreDetail> list = inStoreDetailService.selectInStoreDetailList(inStoreDetail);
+        ExcelUtil<InStoreDetail> util = new ExcelUtil<InStoreDetail>(InStoreDetail.class);
         return util.exportExcel(list, "材料库存明细数据");
     }
 
@@ -87,7 +88,7 @@ public class InMStoreDetailController extends BaseController
     @Log(title = "材料库存明细", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(InMStoreDetail inStoreDetail)
+    public AjaxResult addSave(InStoreDetail inStoreDetail)
     {
         return toAjax(inStoreDetailService.insertInStoreDetail(inStoreDetail));
     }
@@ -98,7 +99,7 @@ public class InMStoreDetailController extends BaseController
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, ModelMap mmap)
     {
-        InMStoreDetail inStoreDetail = inStoreDetailService.selectInStoreDetailById(id);
+        InStoreDetail inStoreDetail = inStoreDetailService.selectInStoreDetailById(id);
         mmap.put("inStoreDetail", inStoreDetail);
         return prefix + "/edit";
     }
@@ -110,7 +111,7 @@ public class InMStoreDetailController extends BaseController
     @Log(title = "材料库存明细", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(InMStoreDetail inStoreDetail)
+    public AjaxResult editSave(InStoreDetail inStoreDetail)
     {
         return toAjax(inStoreDetailService.updateInStoreDetail(inStoreDetail));
     }
@@ -145,8 +146,8 @@ public class InMStoreDetailController extends BaseController
     @ResponseBody
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<InMStoreDetail> util = new ExcelUtil<InMStoreDetail>(InMStoreDetail.class);
-        List<InMStoreDetail> list = util.importExcel(file.getInputStream());
+        ExcelUtil<InStoreDetail> util = new ExcelUtil<InStoreDetail>(InStoreDetail.class);
+        List<InStoreDetail> list = util.importExcel(file.getInputStream());
         return AjaxResult.success(list);
     }
 }

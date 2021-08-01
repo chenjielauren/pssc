@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.SdDeliveryMapper">
+    
+    <resultMap type="SdDelivery" id="SdDeliveryResult">
+        <result property="id"    column="id"    />
+        <result property="dlot"    column="dlot"    />
+        <result property="dcode"    column="dcode"    />
+        <result property="pcode"    column="pcode"    />
+        <result property="pname"    column="pname"    />
+        <result property="pspec"    column="pspec"    />
+        <result property="flot"    column="flot"    />
+        <result property="qty"    column="qty"    />
+        <result property="remark"    column="remark"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectSdDeliveryVo">
+        select id, dlot, dcode, pcode, pname, pspec, flot, qty, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from sd_delivery t left join sys_user su on t.create_by = su.login_name  
+    </sql>
+
+    <select id="selectSdDeliveryList" parameterType="SdDelivery" resultMap="SdDeliveryResult">
+        <include refid="selectSdDeliveryVo"/>
+        <where>  
+            <if test="dlot != null  and dlot != ''"> and dlot = #{dlot}</if>
+            <if test="dcode != null  and dcode != ''"> and dcode = #{dcode}</if>
+            <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
+            <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
+            <if test="pspec != null  and pspec != ''"> and pspec = #{pspec}</if>
+            <if test="flot != null  and flot != ''"> and flot = #{flot}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            and is_valid = '1'
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
+        </where>
+        order by t.create_time desc
+    </select>
+    
+    <select id="selectSdDeliveryById" parameterType="Long" resultMap="SdDeliveryResult">
+        <include refid="selectSdDeliveryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSdDelivery" parameterType="SdDelivery" useGeneratedKeys="true" keyProperty="id">
+        insert into sd_delivery
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dlot != null and dlot != ''">dlot,</if>
+            <if test="dcode != null">dcode,</if>
+            <if test="pcode != null">pcode,</if>
+            <if test="pname != null">pname,</if>
+            <if test="pspec != null">pspec,</if>
+            <if test="flot != null and flot != ''">flot,</if>
+            <if test="qty != null">qty,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dlot != null and dlot != ''">#{dlot},</if>
+            <if test="dcode != null">#{dcode},</if>
+            <if test="pcode != null">#{pcode},</if>
+            <if test="pname != null">#{pname},</if>
+            <if test="pspec != null">#{pspec},</if>
+            <if test="flot != null and flot != ''">#{flot},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSdDelivery" parameterType="SdDelivery">
+        update sd_delivery
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dlot != null and dlot != ''">dlot = #{dlot},</if>
+            <if test="dcode != null">dcode = #{dcode},</if>
+            <if test="pcode != null">pcode = #{pcode},</if>
+            <if test="pname != null">pname = #{pname},</if>
+            <if test="pspec != null">pspec = #{pspec},</if>
+            <if test="flot != null and flot != ''">flot = #{flot},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateSdDeliveryById" parameterType="Long">
+        update sd_delivery set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updateSdDeliveryByIds" parameterType="String">
+        update sd_delivery set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteSdDeliveryById" parameterType="Long">
+        delete from sd_delivery where id = #{id}
+    </delete>
+
+    <delete id="deleteSdDeliveryByIds" parameterType="String">
+        delete from sd_delivery where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

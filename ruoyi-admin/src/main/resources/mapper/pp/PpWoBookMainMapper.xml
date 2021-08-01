@@ -60,8 +60,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPpWoBookMainVo">
-        select id, wcode, ptime, puser, pcode, pname, qty, curr_pro, pstar_time, pend_time, fqty, expect_ftime, progress, m.remark, m.is_valid, m.create_by, m.create_time, m.update_by, m.update_time, attribute1, attribute2, attribute3 
-        from pp_wo_book_main m left join sys_user su on m.create_by = su.login_name 
+        select id, wcode, ptime, puser, pcode, pname, qty, curr_pro, pstar_time, pend_time, fqty, expect_ftime, progress, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from pp_wo_book_main t left join sys_user su on t.create_by = su.login_name 
     </sql>
 
     <select id="selectPpWoBookMainList" parameterType="PpWoBookMain" resultMap="PpWoBookMainResult">
@@ -85,7 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectPpWoBookMainById" parameterType="Long" resultMap="PpWoBookMainPpWoBookDetailResult">

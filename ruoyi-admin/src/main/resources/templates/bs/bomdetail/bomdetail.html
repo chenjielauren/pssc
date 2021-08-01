@@ -11,7 +11,8 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>入库时间：</label>   <input type="text" name="mainId"/>
+                                <label>主表ID：</label>
+                                <input type="text" name="mainId"/>
                             </li>
                             <li>
                                 <label>材料编号：</label>
@@ -30,23 +31,23 @@
                                 <input type="text" name="qty"/>
                             </li>
                             <li>
+                                <label>上机尺寸：</label>
+                                <input type="text" name="msize"/>
+                            </li>
+                            <li>
+                                <label>模切拼数：</label>
+                                <input type="text" name="dnumber"/>
+                            </li>
+                            <li>
+                                <label>切纸拼数：</label>
+                                <input type="text" name="pnumber"/>
+                            </li>
+                            <li>
                                 <label>是否有效：</label>
                                 <select name="isValid" th:with="type=${@dict.getType('sys_is_valid')}">
                                     <option value="">所有</option>
                                     <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                                 </select>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="attribute1"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="attribute2"/>
-                            </li>
-                            <li>
-                                <label>：</label>
-                                <input type="text" name="attribute3"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.treeTable.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -123,13 +124,28 @@
                     align: 'left'
                 },
                 {
+                    field: 'msize',
+                    title: '上机尺寸',
+                    align: 'left'
+                },
+                {
                     field: 'spec',
                     title: '材料规格',
                     align: 'left'
                 },
                 {
+                    field: 'dnumber',
+                    title: '模切拼数',
+                    align: 'left'
+                },
+                {
                     field: 'remark',
                     title: '备注',
+                    align: 'left'
+                },
+                {
+                    field: 'pnumber',
+                    title: '切纸拼数',
                     align: 'left'
                 },
                 {
@@ -139,21 +155,6 @@
                     formatter: function(value, row, index) {
                         return $.table.selectDictLabel(isValidDatas, value);
                     }
-                },
-                {
-                    field: 'attribute1',
-                    title: '',
-                    align: 'left'
-                },
-                {
-                    field: 'attribute2',
-                    title: '',
-                    align: 'left'
-                },
-                {
-                    field: 'attribute3',
-                    title: '',
-                    align: 'left'
                 },
                 {
                     title: '操作',

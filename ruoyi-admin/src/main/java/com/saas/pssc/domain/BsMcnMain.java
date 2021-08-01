@@ -33,15 +33,12 @@ public class BsMcnMain extends BaseEntity
     private String isValid;
 
     /**  */
-    @Excel(name = "")
     private String attribute1;
 
     /**  */
-    @Excel(name = "")
     private String attribute2;
 
     /**  */
-    @Excel(name = "")
     private String attribute3;
 
     /** 4M变更单明细信息 */

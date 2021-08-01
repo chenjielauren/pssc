@@ -5,9 +5,9 @@ import java.util.List;
 import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
-import com.saas.pssc.domain.InFStoreDetail;
-import com.saas.pssc.mapper.InFStoreDetailMapper;
-import com.saas.pssc.service.IInFStoreDetailService;
+import com.saas.pssc.domain.InStoreDetail;
+import com.saas.pssc.mapper.InStoreDetailMapper;
+import com.saas.pssc.service.IInStoreDetailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
  * @date 2021-07-22
  */
 @Service
-public class InFStoreDetailServiceImpl implements IInFStoreDetailService 
+public class InStoreDetailServiceImpl implements IInStoreDetailService 
 {
     @Autowired
-    private InFStoreDetailMapper inStoreDetailMapper;
+    private InStoreDetailMapper inStoreDetailMapper;
 
     /**
      * 查询库存明细
@@ -31,7 +31,7 @@ public class InFStoreDetailServiceImpl implements IInFStoreDetailService
      * @return 库存明细
      */
     @Override
-    public InFStoreDetail selectInStoreDetailById(Long id)
+    public InStoreDetail selectInStoreDetailById(Long id)
     {
         return inStoreDetailMapper.selectInStoreDetailById(id);
     }
@@ -44,7 +44,7 @@ public class InFStoreDetailServiceImpl implements IInFStoreDetailService
      */
     @Override
     @DataScope(userAlias = "su")
-    public List<InFStoreDetail> selectInStoreDetailList(InFStoreDetail inStoreDetail)
+    public List<InStoreDetail> selectInStoreDetailList(InStoreDetail inStoreDetail)
     {
         return inStoreDetailMapper.selectInStoreDetailList(inStoreDetail);
     }
@@ -56,7 +56,7 @@ public class InFStoreDetailServiceImpl implements IInFStoreDetailService
      * @return 结果
      */
     @Override
-    public int insertInStoreDetail(InFStoreDetail inStoreDetail)
+    public int insertInStoreDetail(InStoreDetail inStoreDetail)
     {
         inStoreDetail.setCreateTime(DateUtils.getNowDate());
         return inStoreDetailMapper.insertInStoreDetail(inStoreDetail);
@@ -69,7 +69,7 @@ public class InFStoreDetailServiceImpl implements IInFStoreDetailService
      * @return 结果
      */
     @Override
-    public int updateInStoreDetail(InFStoreDetail inStoreDetail)
+    public int updateInStoreDetail(InStoreDetail inStoreDetail)
     {
         inStoreDetail.setUpdateTime(DateUtils.getNowDate());
         return inStoreDetailMapper.updateInStoreDetail(inStoreDetail);

@@ -1,6 +1,23 @@
 package com.saas.pssc.controller;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.saas.common.annotation.Log;
+import com.saas.common.core.controller.BaseController;
+import com.saas.common.core.domain.AjaxResult;
+import com.saas.common.core.page.TableDataInfo;
+import com.saas.common.enums.BusinessType;
+import com.saas.common.exception.BusinessException;
+import com.saas.common.utils.ShiroUtils;
+import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.poi.ExcelUtil;
+import com.saas.pssc.domain.PpWorkYield;
+import com.saas.pssc.service.IPpWorkYieldService;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,17 +29,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.saas.common.annotation.Log;
-import com.saas.common.enums.BusinessType;
-import com.saas.common.exception.BusinessException;
-import com.saas.pssc.domain.PpWorkYield;
-import com.saas.pssc.service.IPpWorkYieldService;
-import com.saas.common.core.controller.BaseController;
-import com.saas.common.core.domain.AjaxResult;
-import com.saas.common.utils.ShiroUtils;
-import com.saas.common.utils.poi.ExcelUtil;
-import com.saas.common.core.page.TableDataInfo;
 
 /**
  * 工序成品率Controller
@@ -221,5 +227,28 @@ public class PpWorkYieldController extends BaseController
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    
+    // 加载折线图
+	@PostMapping("/loadLineChart")
+	@ResponseBody
+	public Map<String, Object> loadLineChart() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        PpWorkYield ppWorkYield = new PpWorkYield();
+        List<PpWorkYield> qcWoYieldRateList = ppWorkYieldService.selectPpWorkYieldList(ppWorkYield);
+        if(StringUtils.isNotEmpty(qcWoYieldRateList)){
+            //计划工单号列表
+            List<String> wCodeList =  qcWoYieldRateList.stream().map(PpWorkYield::getWcode).collect(Collectors.toList());
+            map.put("wCodeList", StringUtils.isNotEmpty(wCodeList)?wCodeList.toArray():"");
+            //标准成品率
+            List<BigDecimal> standardYieldList = qcWoYieldRateList.stream().map(PpWorkYield::getStandardYield).collect(Collectors.toList());
+            map.put("standardYieldList",StringUtils.isNotEmpty(standardYieldList)?standardYieldList.toArray():"");
+            //实际成品率
+            List<BigDecimal> actualYieldList = qcWoYieldRateList.stream().map(PpWorkYield::getActualYield).collect(Collectors.toList());
+            map.put("actualYieldList",StringUtils.isNotEmpty(actualYieldList)?actualYieldList.toArray():"");
+            
+        }
+        return map;
     }
 }

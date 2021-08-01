@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="pcode"    column="pcode"    />
         <result property="name"    column="name"    />
+        <result property="pspec"    column="pspec"    />
         <result property="remark"    column="remark"    />
         <result property="isValid"    column="is_valid"    />
         <result property="createBy"    column="create_by"    />
@@ -20,7 +21,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsBomMainVo">
-        select id, pcode, name, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_bom_main
+        select id, pcode, name, pspec, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from bs_bom_main t left join sys_user su on t.create_by = su.login_name 
     </sql>
 
     <select id="selectBsBomMainList" parameterType="BsBomMain" resultMap="BsBomMainResult">
@@ -28,10 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            and is_valid = '1'  ${params.dataScope}
-            <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
-            <if test="attribute2 != null  and attribute2 != ''"> and attribute2 = #{attribute2}</if>
-            <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
+            <if test="pspec != null  and pspec != ''"> and pspec like concat('%', #{pspec}, '%')</if>
+            and is_valid = '1'  ${params.dataScope} 
         </where>
     </select>
     
@@ -45,6 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="name != null">name,</if>
+            <if test="pspec != null">pspec,</if>
             <if test="remark != null">remark,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
@@ -57,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="pcode != null and pcode != ''">#{pcode},</if>
             <if test="name != null">#{name},</if>
+            <if test="pspec != null">#{pspec},</if>
             <if test="remark != null">#{remark},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
@@ -73,6 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="pcode != null and pcode != ''">pcode = #{pcode},</if>
             <if test="name != null">name = #{name},</if>
+            <if test="pspec != null">pspec = #{pspec},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
             <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
@@ -84,6 +87,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3 = #{attribute3},</if>
         </trim>
         where id = #{id}
+    </update>
+
+    <update id="updateBsBomMainById" parameterType="Long">
+        update bs_bom_main set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updateBsBomMainByIds" parameterType="String">
+        update bs_bom_main set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </update>
 
     <delete id="deleteBsBomMainById" parameterType="Long">

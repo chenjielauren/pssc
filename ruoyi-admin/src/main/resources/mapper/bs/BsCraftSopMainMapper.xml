@@ -42,8 +42,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsCraftSopMainVo">
-        select id, pcode, m.name, m.remark, m.is_valid, m.create_by, m.create_time, su.user_name update_by, m.update_time, attribute1, attribute2, attribute3 
-        from bs_craft_sop_main m left join sys_user su on m.update_by = su.login_name 
+        select id, pcode, t.name, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
+        from bs_craft_sop_main t left join sys_user su on t.update_by = su.login_name 
     </sql>
 
     <select id="selectBsCraftSopMainList" parameterType="BsCraftSopMain" resultMap="BsCraftSopMainResult">
@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectBsCraftSopMainById" parameterType="Long" resultMap="BsCraftSopMainBsCraftSopDetailResult">

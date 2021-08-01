@@ -9,7 +9,7 @@ import com.saas.common.core.domain.BaseEntity;
  * bom物料清单对象 bs_bom_main
  * 
  * @author admin
- * @date 2021-07-19
+ * @date 2021-07-31
  */
 public class BsBomMain extends BaseEntity
 {
@@ -26,19 +26,21 @@ public class BsBomMain extends BaseEntity
     @Excel(name = "产品名称")
     private String name;
 
-    /** 有效否 */
+    /** 产品规格 */
+    @Excel(name = "产品规格")
+    private String pspec;
+
+    /** 是否有效 */
+    @Excel(name = "是否有效")
     private String isValid;
 
     /**  */
-    @Excel(name = "")
     private String attribute1;
 
     /**  */
-    @Excel(name = "")
     private String attribute2;
 
     /**  */
-    @Excel(name = "")
     private String attribute3;
 
     public void setId(Long id) 
@@ -67,6 +69,15 @@ public class BsBomMain extends BaseEntity
     public String getName() 
     {
         return name;
+    }
+    public void setPspec(String pspec) 
+    {
+        this.pspec = pspec;
+    }
+
+    public String getPspec() 
+    {
+        return pspec;
     }
     public void setIsValid(String isValid) 
     {
@@ -111,6 +122,7 @@ public class BsBomMain extends BaseEntity
             .append("id", getId())
             .append("pcode", getPcode())
             .append("name", getName())
+            .append("pspec", getPspec())
             .append("remark", getRemark())
             .append("isValid", getIsValid())
             .append("createBy", getCreateBy())

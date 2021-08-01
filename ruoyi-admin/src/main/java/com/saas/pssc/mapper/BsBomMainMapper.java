@@ -7,7 +7,7 @@ import com.saas.pssc.domain.BsBomMain;
  * bom物料清单Mapper接口
  * 
  * @author admin
- * @date 2021-07-19
+ * @date 2021-07-31
  */
 public interface BsBomMainMapper 
 {
@@ -42,6 +42,22 @@ public interface BsBomMainMapper
      * @return 结果
      */
     public int updateBsBomMain(BsBomMain bsBomMain);
+
+    /**
+     * 失效bom物料清单
+     * 
+     * @param id bom物料清单ID
+     * @return 结果
+     */
+    public int updateBsBomMainById(Long id);
+
+    /**
+     * 批量失效bom物料清单
+     * 
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    public int updateBsBomMainByIds(String[] ids);
 
     /**
      * 删除bom物料清单

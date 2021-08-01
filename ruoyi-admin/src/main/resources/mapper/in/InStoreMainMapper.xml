@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.saas.pssc.mapper.InMStoreMainMapper">
+<mapper namespace="com.saas.pssc.mapper.InStoreMainMapper">
     
-    <resultMap type="InMStoreMain" id="InStoreMainResult">
+    <resultMap type="InStoreMain" id="InStoreMainResult">
         <result property="id"    column="id"    />
         <result property="ptype"    column="ptype"    />
         <result property="pcode"    column="pcode"    />
@@ -21,11 +21,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="attribute3"    column="attribute3"    />
     </resultMap>
 
-    <resultMap id="InStoreMainInStoreDetailResult" type="InMStoreMain" extends="InStoreMainResult">
+    <resultMap id="InStoreMainInStoreDetailResult" type="InStoreMain" extends="InStoreMainResult">
         <collection property="inStoreDetailList" notNullColumn="sub_id" javaType="java.util.List" resultMap="InStoreDetailResult" />
     </resultMap>
 
-    <resultMap type="InMStoreDetail" id="InStoreDetailResult">
+    <resultMap type="InStoreDetail" id="InStoreDetailResult">
         <result property="id"    column="sub_id"    />
         <result property="mainId"    column="sub_main_id"    />
         <result property="mcode"    column="sub_mcode"    />
@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join sys_user su on t.create_by = su.login_name 
     </sql>
 
-    <select id="selectInStoreMainList" parameterType="InMStoreMain" resultMap="InStoreMainResult">
+    <select id="selectInStoreMainList" parameterType="InStoreMain" resultMap="InStoreMainResult">
         <include refid="selectInStoreMainVo"/>
         <where>  
             <if test="inputStarttime != null "> and t.input_time >= #{inputStarttime}</if>
@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="inputTime != null "> and input_time = #{inputTime}</if>
             and is_valid = '1'  ${params.dataScope}
         </where>
-        order by t.id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectInStoreMainById" parameterType="Long" resultMap="InStoreMainInStoreDetailResult">
@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where a.id = #{id}
     </select>
         
-    <insert id="insertInStoreMain" parameterType="InMStoreMain" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertInStoreMain" parameterType="InStoreMain" useGeneratedKeys="true" keyProperty="id">
         insert into in_store_main
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ptype != null">ptype,</if>
@@ -105,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateInStoreMain" parameterType="InMStoreMain">
+    <update id="updateInStoreMain" parameterType="InStoreMain">
         update in_store_main
         <trim prefix="SET" suffixOverrides=",">
             <if test="ptype != null">ptype = #{ptype},</if>

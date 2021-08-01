@@ -1,15 +1,15 @@
 package com.saas.pssc.mapper;
 
 import java.util.List;
-import com.saas.pssc.domain.InMStoreDetail;
+import com.saas.pssc.domain.InStoreDetail;
 
 /**
  * 库存明细Mapper接口
  * 
  * @author admin
- * @date 2021-07-22
+ * @date 2021-07-27
  */
-public interface InMStoreDetailMapper 
+public interface InStoreDetailMapper 
 {
     /**
      * 查询库存明细
@@ -17,7 +17,7 @@ public interface InMStoreDetailMapper
      * @param id 库存明细ID
      * @return 库存明细
      */
-    public InMStoreDetail selectInStoreDetailById(Long id);
+    public InStoreDetail selectInStoreDetailById(Long id);
 
     /**
      * 查询库存明细列表
@@ -25,7 +25,7 @@ public interface InMStoreDetailMapper
      * @param inStoreDetail 库存明细
      * @return 库存明细集合
      */
-    public List<InMStoreDetail> selectInStoreDetailList(InMStoreDetail inStoreDetail);
+    public List<InStoreDetail> selectInStoreDetailList(InStoreDetail inStoreDetail);
 
     /**
      * 新增库存明细
@@ -33,7 +33,7 @@ public interface InMStoreDetailMapper
      * @param inStoreDetail 库存明细
      * @return 结果
      */
-    public int insertInStoreDetail(InMStoreDetail inStoreDetail);
+    public int insertInStoreDetail(InStoreDetail inStoreDetail);
 
     /**
      * 修改库存明细
@@ -41,7 +41,8 @@ public interface InMStoreDetailMapper
      * @param inStoreDetail 库存明细
      * @return 结果
      */
-    public int updateInStoreDetail(InMStoreDetail inStoreDetail);
+    public int updateInStoreDetail(InStoreDetail inStoreDetail);
+
 
     /**
      * 删除库存明细

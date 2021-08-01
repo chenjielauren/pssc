@@ -27,8 +27,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPpProduceUnusualVo">
-        select id, wcode, utime, uuser, pcode, pname, pwork, qty, last_time, problem_desc, un.remark, un.is_valid, un.create_by, un.create_time, un.update_by, un.update_time, attribute1, attribute2, attribute3 
-        from pp_produce_unusual un left join sys_user su on un.update_by = su.login_name
+        select id, wcode, utime, uuser, pcode, pname, pwork, qty, last_time, problem_desc, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from pp_produce_unusual t left join sys_user su on t.update_by = su.login_name
     </sql>
 
     <select id="selectPpProduceUnusualList" parameterType="PpProduceUnusual" resultMap="PpProduceUnusualResult">
@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectPpProduceUnusualById" parameterType="Long" resultMap="PpProduceUnusualResult">

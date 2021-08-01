@@ -3,14 +3,15 @@ package com.saas.pssc.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.StringUtils;
-import com.saas.pssc.domain.InFStoreDetail;
-import com.saas.pssc.domain.InFStoreMain;
-import com.saas.pssc.mapper.InFStoreMainMapper;
-import com.saas.pssc.service.IInFStoreMainService;
+import com.saas.pssc.domain.InStoreDetail;
+import com.saas.pssc.domain.InStoreMain;
+import com.saas.pssc.mapper.InStoreMainMapper;
+import com.saas.pssc.service.IInStoreMainService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2021-07-22
  */
 @Service
-public class InFStoreMainServiceImpl implements IInFStoreMainService 
+public class InStoreMainServiceImpl implements IInStoreMainService 
 {
     @Autowired
-    private InFStoreMainMapper inStoreMainMapper;
+    private InStoreMainMapper inStoreMainMapper;
 
     /**
      * 查询库存
@@ -35,7 +36,7 @@ public class InFStoreMainServiceImpl implements IInFStoreMainService
      * @return 库存
      */
     @Override
-    public InFStoreMain selectInStoreMainById(Long id)
+    public InStoreMain selectInStoreMainById(Long id)
     {
         return inStoreMainMapper.selectInStoreMainById(id);
     }
@@ -47,7 +48,8 @@ public class InFStoreMainServiceImpl implements IInFStoreMainService
      * @return 库存
      */
     @Override
-    public List<InFStoreMain> selectInStoreMainList(InFStoreMain inStoreMain)
+    @DataScope(userAlias = "su")
+    public List<InStoreMain> selectInStoreMainList(InStoreMain inStoreMain)
     {
         return inStoreMainMapper.selectInStoreMainList(inStoreMain);
     }
@@ -60,7 +62,7 @@ public class InFStoreMainServiceImpl implements IInFStoreMainService
      */
     @Transactional
     @Override
-    public int insertInStoreMain(InFStoreMain inStoreMain)
+    public int insertInStoreMain(InStoreMain inStoreMain)
     {
         inStoreMain.setCreateTime(DateUtils.getNowDate());
         int rows = inStoreMainMapper.insertInStoreMain(inStoreMain);
@@ -76,7 +78,7 @@ public class InFStoreMainServiceImpl implements IInFStoreMainService
      */
     @Transactional
     @Override
-    public int updateInStoreMain(InFStoreMain inStoreMain)
+    public int updateInStoreMain(InStoreMain inStoreMain)
     {
         inStoreMain.setUpdateTime(DateUtils.getNowDate());
         inStoreMainMapper.deleteInStoreDetailByMainId(inStoreMain.getId());
@@ -116,14 +118,14 @@ public class InFStoreMainServiceImpl implements IInFStoreMainService
      * 
      * @param inStoreMain 库存对象
      */
-    public void insertInStoreDetail(InFStoreMain inStoreMain)
+    public void insertInStoreDetail(InStoreMain inStoreMain)
     {
-        List<InFStoreDetail> inStoreDetailList = inStoreMain.getInStoreDetailList();
+        List<InStoreDetail> inStoreDetailList = inStoreMain.getInStoreDetailList();
         Long id = inStoreMain.getId();
         if (StringUtils.isNotNull(inStoreDetailList))
         {
-            List<InFStoreDetail> list = new ArrayList<InFStoreDetail>();
-            for (InFStoreDetail inStoreDetail : inStoreDetailList)
+            List<InStoreDetail> list = new ArrayList<InStoreDetail>();
+            for (InStoreDetail inStoreDetail : inStoreDetailList)
             {
                 inStoreDetail.setCreateBy(ShiroUtils.getLoginName());
                 inStoreDetail.setUpdateBy(ShiroUtils.getLoginName());

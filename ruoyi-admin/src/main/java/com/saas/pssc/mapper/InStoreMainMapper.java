@@ -1,17 +1,16 @@
 package com.saas.pssc.mapper;
 
 import java.util.List;
-
-import com.saas.pssc.domain.InFStoreDetail;
-import com.saas.pssc.domain.InFStoreMain;
+import com.saas.pssc.domain.InStoreMain;
+import com.saas.pssc.domain.InStoreDetail;
 
 /**
  * 库存Mapper接口
  * 
  * @author admin
- * @date 2021-07-22
+ * @date 2021-07-27
  */
-public interface InFStoreMainMapper 
+public interface InStoreMainMapper 
 {
     /**
      * 查询库存
@@ -19,7 +18,7 @@ public interface InFStoreMainMapper
      * @param id 库存ID
      * @return 库存
      */
-    public InFStoreMain selectInStoreMainById(Long id);
+    public InStoreMain selectInStoreMainById(Long id);
 
     /**
      * 查询库存列表
@@ -27,7 +26,7 @@ public interface InFStoreMainMapper
      * @param inStoreMain 库存
      * @return 库存集合
      */
-    public List<InFStoreMain> selectInStoreMainList(InFStoreMain inStoreMain);
+    public List<InStoreMain> selectInStoreMainList(InStoreMain inStoreMain);
 
     /**
      * 新增库存
@@ -35,7 +34,7 @@ public interface InFStoreMainMapper
      * @param inStoreMain 库存
      * @return 结果
      */
-    public int insertInStoreMain(InFStoreMain inStoreMain);
+    public int insertInStoreMain(InStoreMain inStoreMain);
 
     /**
      * 修改库存
@@ -43,7 +42,7 @@ public interface InFStoreMainMapper
      * @param inStoreMain 库存
      * @return 结果
      */
-    public int updateInStoreMain(InFStoreMain inStoreMain);
+    public int updateInStoreMain(InStoreMain inStoreMain);
 
     /**
      * 失效库存
@@ -60,7 +59,7 @@ public interface InFStoreMainMapper
      * @return 结果
      */
     public int updateInStoreMainByIds(String[] ids);
-    
+
     /**
      * 删除库存
      * 
@@ -91,7 +90,7 @@ public interface InFStoreMainMapper
      * @param inStoreDetailList 库存明细列表
      * @return 结果
      */
-    public int batchInStoreDetail(List<InFStoreDetail> inStoreDetailList);
+    public int batchInStoreDetail(List<InStoreDetail> inStoreDetailList);
     
 
     /**

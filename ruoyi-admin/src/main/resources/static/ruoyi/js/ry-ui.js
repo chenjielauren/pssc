@@ -489,7 +489,6 @@ var table = {
                             success: function (result) {
                                 if (result.code == web_status.SUCCESS) {
                                     $.modal.closeAll();
-                                    debugger;
                                     var data = result.data;
                                     for(var i=0;i<data.length;i++){
                                         console.log(data[i].qcResult);
@@ -528,6 +527,14 @@ var table = {
                     pageNumber: pageNumber,
                     pageSize: pageSize
                 });
+                //工序成品率分析, 刷新时加载折线图
+                if(url == "/pp/workyield/list"){
+                    loadLineChart();
+                }
+                //不良项目汇总, 刷新时加载2张饼图
+                if(url == "/qc/badproject/list"){
+                    loadPieChart();
+                }
             },
             // 刷新options配置
             refreshOptions: function(options, tableId) {
@@ -536,7 +543,6 @@ var table = {
             },
             // 查询表格指定列值
             selectColumns: function(column) {
-                debugger;
             	var rows = $.map($("#" + table.options.id).bootstrapTable('getSelections'), function (row) {
                     return $.common.getItemField(row, column);
             	});
@@ -1668,7 +1674,6 @@ var table = {
             },
             // 数组去重
             uniqueFn: function(array) {
-                debugger;
                 var result = [];
                 var hashObj = {};
                 for (var i = 0; i < array.length; i++) {

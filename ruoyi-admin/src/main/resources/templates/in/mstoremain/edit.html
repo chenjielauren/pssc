@@ -33,7 +33,7 @@
                 <label class="col-sm-2 control-label is-required">入库时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="inputTime" th:value="${#dates.format(inStoreMain.inputTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
+                        <input name="inputTime" th:value="${#dates.format(inStoreMain.inputTime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>

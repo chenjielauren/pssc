@@ -9,7 +9,7 @@ import com.saas.common.core.domain.TreeEntity;
  * bom物料清单明细对象 bs_bom_detail
  * 
  * @author admin
- * @date 2021-07-19
+ * @date 2021-07-31
  */
 public class BsBomDetail extends TreeEntity
 {
@@ -19,7 +19,12 @@ public class BsBomDetail extends TreeEntity
     private Long id;
 
     /** 主表ID */
+    @Excel(name = "主表ID")
     private Long mainId;
+
+    /** 上级物料类型 */
+    @Excel(name = "上级物料类型")
+    private Long idParent;
 
     /** 材料编号 */
     @Excel(name = "材料编号")
@@ -41,19 +46,29 @@ public class BsBomDetail extends TreeEntity
     @Excel(name = "材料规格")
     private String spec;
 
-    /** 有效否 */
+    /** 上机尺寸 */
+    @Excel(name = "上机尺寸")
+    private String msize;
+
+    /** 模切拼数 */
+    @Excel(name = "模切拼数")
+    private Long dnumber;
+
+    /** 是否有效 */
+    @Excel(name = "是否有效")
     private String isValid;
 
+    /** 切纸拼数 */
+    @Excel(name = "切纸拼数")
+    private Long pnumber;
+
     /**  */
-    @Excel(name = "")
     private String attribute1;
 
     /**  */
-    @Excel(name = "")
     private String attribute2;
 
     /**  */
-    @Excel(name = "")
     private String attribute3;
 
     public void setId(Long id) 
@@ -73,6 +88,15 @@ public class BsBomDetail extends TreeEntity
     public Long getMainId() 
     {
         return mainId;
+    }
+    public void setIdParent(Long idParent) 
+    {
+        this.idParent = idParent;
+    }
+
+    public Long getIdParent() 
+    {
+        return idParent;
     }
     public void setMcode(String mcode) 
     {
@@ -119,6 +143,24 @@ public class BsBomDetail extends TreeEntity
     {
         return spec;
     }
+    public void setMsize(String msize) 
+    {
+        this.msize = msize;
+    }
+
+    public String getMsize() 
+    {
+        return msize;
+    }
+    public void setDnumber(Long dnumber) 
+    {
+        this.dnumber = dnumber;
+    }
+
+    public Long getDnumber() 
+    {
+        return dnumber;
+    }
     public void setIsValid(String isValid) 
     {
         this.isValid = isValid;
@@ -127,6 +169,15 @@ public class BsBomDetail extends TreeEntity
     public String getIsValid() 
     {
         return isValid;
+    }
+    public void setPnumber(Long pnumber) 
+    {
+        this.pnumber = pnumber;
+    }
+
+    public Long getPnumber() 
+    {
+        return pnumber;
     }
     public void setAttribute1(String attribute1) 
     {
@@ -161,13 +212,17 @@ public class BsBomDetail extends TreeEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("mainId", getMainId())
+            .append("idParent", getIdParent())
             .append("mcode", getMcode())
             .append("mname", getMname())
             .append("attribute", getAttribute())
             .append("qty", getQty())
             .append("spec", getSpec())
+            .append("msize", getMsize())
             .append("remark", getRemark())
+            .append("dnumber", getDnumber())
             .append("isValid", getIsValid())
+            .append("pnumber", getPnumber())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

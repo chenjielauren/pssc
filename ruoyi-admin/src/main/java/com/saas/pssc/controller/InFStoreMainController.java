@@ -10,8 +10,8 @@ import com.saas.common.enums.BusinessType;
 import com.saas.common.exception.BusinessException;
 import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.poi.ExcelUtil;
-import com.saas.pssc.domain.InFStoreMain;
-import com.saas.pssc.service.IInFStoreMainService;
+import com.saas.pssc.domain.InStoreMain;
+import com.saas.pssc.service.IInStoreMainService;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class InFStoreMainController extends BaseController
     private String prefix = "in/fstoremain";
 
     @Autowired
-    private IInFStoreMainService inStoreMainService;
+    private IInStoreMainService inStoreMainService;
 
     @RequiresPermissions("in:fstoremain:view")
     @GetMapping()
@@ -53,10 +53,10 @@ public class InFStoreMainController extends BaseController
     @RequiresPermissions("in:fstoremain:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(InFStoreMain inStoreMain)
+    public TableDataInfo list(InStoreMain inStoreMain)
     {
         startPage();
-        List<InFStoreMain> list = inStoreMainService.selectInStoreMainList(inStoreMain);
+        List<InStoreMain> list = inStoreMainService.selectInStoreMainList(inStoreMain);
         return getDataTable(list);
     }
 
@@ -67,12 +67,12 @@ public class InFStoreMainController extends BaseController
     @Log(title = "成品库存", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(InFStoreMain inStoreMain)
+    public AjaxResult export(InStoreMain inStoreMain)
     {
         inStoreMain.setPtype("2");//成品库存
         inStoreMain.setIsValid("1");
-        List<InFStoreMain> list = inStoreMainService.selectInStoreMainList(inStoreMain);
-        ExcelUtil<InFStoreMain> util = new ExcelUtil<InFStoreMain>(InFStoreMain.class);
+        List<InStoreMain> list = inStoreMainService.selectInStoreMainList(inStoreMain);
+        ExcelUtil<InStoreMain> util = new ExcelUtil<InStoreMain>(InStoreMain.class);
         return util.exportExcel(list, "成品库存数据");
     }
 
@@ -92,7 +92,7 @@ public class InFStoreMainController extends BaseController
     @Log(title = "成品库存", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(InFStoreMain inStoreMain)
+    public AjaxResult addSave(InStoreMain inStoreMain)
     {
         inStoreMain.setPtype("2");//成品库存
         return toAjax(inStoreMainService.insertInStoreMain(inStoreMain));
@@ -104,7 +104,7 @@ public class InFStoreMainController extends BaseController
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, ModelMap mmap)
     {
-        InFStoreMain inStoreMain = inStoreMainService.selectInStoreMainById(id);
+        InStoreMain inStoreMain = inStoreMainService.selectInStoreMainById(id);
         mmap.put("inStoreMain", inStoreMain);
         return prefix + "/edit";
     }
@@ -116,7 +116,7 @@ public class InFStoreMainController extends BaseController
     @Log(title = "成品库存", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(InFStoreMain inStoreMain)
+    public AjaxResult editSave(InStoreMain inStoreMain)
     {
         return toAjax(inStoreMainService.updateInStoreMain(inStoreMain));
     }
@@ -140,7 +140,7 @@ public class InFStoreMainController extends BaseController
     @ResponseBody
     public AjaxResult importTemplate()
     {
-        ExcelUtil<InFStoreMain> util = new ExcelUtil<InFStoreMain>(InFStoreMain.class);
+        ExcelUtil<InStoreMain> util = new ExcelUtil<InStoreMain>(InStoreMain.class);
         return util.importTemplateExcel("成品库存");
     }
     
@@ -152,8 +152,8 @@ public class InFStoreMainController extends BaseController
     @ResponseBody
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<InFStoreMain> util = new ExcelUtil<InFStoreMain>(InFStoreMain.class);
-        List<InFStoreMain> list = util.importExcel(file.getInputStream());
+        ExcelUtil<InStoreMain> util = new ExcelUtil<InStoreMain>(InStoreMain.class);
+        List<InStoreMain> list = util.importExcel(file.getInputStream());
         String message = importInStoreMain(list, updateSupport);
         return AjaxResult.success(message);
     }
@@ -165,7 +165,7 @@ public class InFStoreMainController extends BaseController
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
      * @return 结果
      */
-    public String importInStoreMain(List<InFStoreMain> list, Boolean isUpdateSupport)
+    public String importInStoreMain(List<InStoreMain> list, Boolean isUpdateSupport)
     {
         if (CollectionUtils.isEmpty(list) || list.size() == 0)
         {
@@ -175,14 +175,14 @@ public class InFStoreMainController extends BaseController
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (InFStoreMain inStoreMain : list)
+        for (InStoreMain inStoreMain : list)
         {
             try
             {
                 inStoreMain.setPtype("2");//成品库存
                 inStoreMain.setIsValid("1");
                 boolean lossFlag = false;
-                List<InFStoreMain>  dblist= inStoreMainService.selectInStoreMainList(inStoreMain);
+                List<InStoreMain>  dblist= inStoreMainService.selectInStoreMainList(inStoreMain);
                 logger.info("同名成品库存条数："+dblist.size());
                 if (dblist.size()>0) {
                 	lossFlag = true;  // 验证是否存在这个成品库存

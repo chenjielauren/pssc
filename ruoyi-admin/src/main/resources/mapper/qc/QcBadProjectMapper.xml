@@ -20,22 +20,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="attribute1"    column="attribute1"    />
         <result property="attribute2"    column="attribute2"    />
         <result property="attribute3"    column="attribute3"    />
+        <result property="name"    column="name"    />
+        <result property="value"    column="value"    />
     </resultMap>
 
     <sql id="selectQcBadProjectVo">
         select id, pcode, pname, project, lot, qty, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
         from qc_bad_project  t left join sys_user su on t.create_by = su.login_name
     </sql>
-
-    <select id="selectQcBadProjectList" parameterType="QcBadProject" resultMap="QcBadProjectResult">
-        <include refid="selectQcBadProjectVo"/>
+    <sql id="selectQcBadProjectWhere">
         <where>  
             <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
             <if test="lot != null  and lot != ''"> and lot = #{lot}</if>
             and is_valid = '1'  ${params.dataScope}
         </where>
-        order by pcode
+    </sql>
+
+    <select id="selectQcBadProjectList" parameterType="QcBadProject" resultMap="QcBadProjectResult">
+        <include refid="selectQcBadProjectVo"/>
+        <include refid="selectQcBadProjectWhere"/>
+        order by t.create_time desc
     </select>
     
     <select id="selectQcBadProjectById" parameterType="Long" resultMap="QcBadProjectResult">
@@ -119,5 +124,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="getPieChartByProject" parameterType="QcBadProject" resultMap="QcBadProjectResult">
+        select project as name,sum(qty) as value 
+        from qc_bad_project t left join sys_user su on t.create_by = su.login_name
+        <include refid="selectQcBadProjectWhere"/>
+        group by project
+        order by sum(qty) desc
+        limit 5
+    </select>
+    <select id="getPieChartByPname" parameterType="QcBadProject" resultMap="QcBadProjectResult">
+        select pname as name,sum(qty) as value 
+        from qc_bad_project t left join sys_user su on t.create_by = su.login_name
+        <include refid="selectQcBadProjectWhere"/>
+        group by pname
+        order by sum(qty) desc
+        limit 5
+    </select>
 
 </mapper>

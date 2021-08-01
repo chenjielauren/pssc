@@ -47,16 +47,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsPqcMainVo">
-        select Id, pcode, name, proc_name, p.remark, is_valid,su.user_name update_by, p.update_time
-        from bs_pqc_main p left join sys_user su on p.update_by = su.login_name
+        select Id, pcode, name, proc_name, t.remark, is_valid,su.user_name update_by, t.update_time
+        from bs_pqc_main t left join sys_user su on t.update_by = su.login_name
     </sql>
 
     <sql id="selectBsPqcMainAndDetailVo">
-        select Id, pcode, name, proc_name, p.remark, is_valid,su.user_name update_by, p.update_time,
-        (select count(1) from bs_pqc_detail bpd  where bpd.main_id = p.Id and bpd.ptype='0') as sjcount,
-        (select count(1) from bs_pqc_detail bpd  where bpd.main_id = p.Id and bpd.ptype='1') as zjcount,
-        (select count(1) from bs_pqc_detail bpd  where bpd.main_id = p.Id and bpd.ptype='2') as xjcount
-        from bs_pqc_main p left join sys_user su on p.update_by = su.login_name
+        select Id, pcode, name, proc_name, t.remark, is_valid,su.user_name update_by, t.update_time,
+        (select count(1) from bs_pqc_detail bpd  where bpd.main_id = t.Id and bpd.ptype='0') as sjcount,
+        (select count(1) from bs_pqc_detail bpd  where bpd.main_id = t.Id and bpd.ptype='1') as zjcount,
+        (select count(1) from bs_pqc_detail bpd  where bpd.main_id = t.Id and bpd.ptype='2') as xjcount
+        from bs_pqc_main t left join sys_user su on t.update_by = su.login_name
     </sql>
 
     <select id="selectBsPqcMainList" parameterType="BsPqcMain" resultMap="BsPqcMainResult">
@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
-        order by p.id desc
+        order by t.create_time desc
     </select>
     
     <select id="selectBsPqcMainById" parameterType="Long" resultMap="BsPqcMainBsPqcDetailResult">

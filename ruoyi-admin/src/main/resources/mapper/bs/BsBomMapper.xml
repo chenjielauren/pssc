@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.BsBomMapper">
+    
+    <resultMap type="BsBom" id="BsBomResult">
+        <result property="id"    column="id"    />
+        <result property="idParent"    column="id_parent"    />
+        <result property="mcode"    column="mcode"    />
+        <result property="mname"    column="mname"    />
+        <result property="spec"    column="spec"    />
+        <result property="attribute"    column="attribute"    />
+        <result property="msize"    column="msize"    />
+        <result property="dnumber"    column="dnumber"    />
+        <result property="pnumber"    column="pnumber"    />
+        <result property="qty"    column="qty"    />
+        <result property="remark"    column="remark"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="selectBsBomVo">
+        select id, id_parent, mcode, mname, spec, attribute, msize, dnumber, pnumber, qty, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from bs_bom t left join sys_user su on t.create_by = su.login_name 
+    </sql>
+
+    <select id="selectBsBomList" parameterType="BsBom" resultMap="BsBomResult">
+        <include refid="selectBsBomVo"/>
+        <where>  
+            <if test="idParent != null "> and id_parent = #{idParent}</if>
+            <if test="mcode != null  and mcode != ''"> and mcode = #{mcode}</if>
+            <if test="mname != null  and mname != ''"> and mname like concat('%', #{mname}, '%')</if>
+            <if test="spec != null  and spec != ''"> and spec = #{spec}</if>
+            <if test="attribute != null  and attribute != ''"> and attribute = #{attribute}</if>
+            <if test="msize != null  and msize != ''"> and msize = #{msize}</if>
+            <if test="dnumber != null "> and dnumber = #{dnumber}</if>
+            <if test="pnumber != null "> and pnumber = #{pnumber}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            and is_valid = '1'
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
+        </where>
+        order by id_parent
+    </select>
+    
+    <select id="selectBsBomById" parameterType="Long" resultMap="BsBomResult">
+        select t.id, t.id_parent, t.mcode, t.mname, t.spec, t.attribute, t.msize, t.dnumber, t.pnumber, t.qty, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, t.attribute1, t.attribute2, t.attribute3, p.mname as parent_name
+        from bs_bom t
+        left join bs_bom p on p.id = t.id_parent
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertBsBom" parameterType="BsBom" useGeneratedKeys="true" keyProperty="id">
+        insert into bs_bom
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="idParent != null">id_parent,</if>
+            <if test="mcode != null">mcode,</if>
+            <if test="mname != null">mname,</if>
+            <if test="spec != null">spec,</if>
+            <if test="attribute != null">attribute,</if>
+            <if test="msize != null">msize,</if>
+            <if test="dnumber != null">dnumber,</if>
+            <if test="pnumber != null">pnumber,</if>
+            <if test="qty != null">qty,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="idParent != null">#{idParent},</if>
+            <if test="mcode != null">#{mcode},</if>
+            <if test="mname != null">#{mname},</if>
+            <if test="spec != null">#{spec},</if>
+            <if test="attribute != null">#{attribute},</if>
+            <if test="msize != null">#{msize},</if>
+            <if test="dnumber != null">#{dnumber},</if>
+            <if test="pnumber != null">#{pnumber},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBsBom" parameterType="BsBom">
+        update bs_bom
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="idParent != null">id_parent = #{idParent},</if>
+            <if test="mcode != null">mcode = #{mcode},</if>
+            <if test="mname != null">mname = #{mname},</if>
+            <if test="spec != null">spec = #{spec},</if>
+            <if test="attribute != null">attribute = #{attribute},</if>
+            <if test="msize != null">msize = #{msize},</if>
+            <if test="dnumber != null">dnumber = #{dnumber},</if>
+            <if test="pnumber != null">pnumber = #{pnumber},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateBsBomById" parameterType="Long">
+        update bs_bom set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updateBsBomByIds" parameterType="String">
+        update bs_bom set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteBsBomById" parameterType="Long">
+        delete from bs_bom where id = #{id}
+    </delete>
+
+    <delete id="deleteBsBomByIds" parameterType="String">
+        delete from bs_bom where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.saas.pssc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.saas.common.annotation.Log;
@@ -7,9 +8,12 @@ import com.saas.common.core.controller.BaseController;
 import com.saas.common.core.domain.AjaxResult;
 import com.saas.common.core.page.TableDataInfo;
 import com.saas.common.enums.BusinessType;
+import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.bean.BeanUtils;
 import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.pssc.domain.InSfStoreDetail;
-import com.saas.pssc.service.IInSfStoreDetailService;
+import com.saas.pssc.domain.InStoreDetail;
+import com.saas.pssc.service.IInStoreDetailService;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +39,7 @@ public class InSfStoreDetailController extends BaseController
     private String prefix = "in/sfstoredetail";
 
     @Autowired
-    private IInSfStoreDetailService inStoreDetailService;
+    private IInStoreDetailService inStoreDetailService;
 
     @RequiresPermissions("in:sfstoredetail:view")
     @GetMapping()
@@ -50,10 +54,10 @@ public class InSfStoreDetailController extends BaseController
     @RequiresPermissions("in:sfstoredetail:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(InSfStoreDetail inStoreDetail)
+    public TableDataInfo list(InStoreDetail inStoreDetail)
     {
         startPage();
-        List<InSfStoreDetail> list = inStoreDetailService.selectInStoreDetailList(inStoreDetail);
+        List<InStoreDetail> list = inStoreDetailService.selectInStoreDetailList(inStoreDetail);
         return getDataTable(list);
     }
 
@@ -64,10 +68,10 @@ public class InSfStoreDetailController extends BaseController
     @Log(title = "半成品库存明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(InSfStoreDetail inStoreDetail)
+    public AjaxResult export(InStoreDetail inStoreDetail)
     {
-        List<InSfStoreDetail> list = inStoreDetailService.selectInStoreDetailList(inStoreDetail);
-        ExcelUtil<InSfStoreDetail> util = new ExcelUtil<InSfStoreDetail>(InSfStoreDetail.class);
+        List<InStoreDetail> list = inStoreDetailService.selectInStoreDetailList(inStoreDetail);
+        ExcelUtil<InStoreDetail> util = new ExcelUtil<InStoreDetail>(InStoreDetail.class);
         return util.exportExcel(list, "半成品库存明细数据");
     }
 
@@ -87,7 +91,7 @@ public class InSfStoreDetailController extends BaseController
     @Log(title = "半成品库存明细", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(InSfStoreDetail inStoreDetail)
+    public AjaxResult addSave(InStoreDetail inStoreDetail)
     {
         return toAjax(inStoreDetailService.insertInStoreDetail(inStoreDetail));
     }
@@ -98,7 +102,7 @@ public class InSfStoreDetailController extends BaseController
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, ModelMap mmap)
     {
-        InSfStoreDetail inStoreDetail = inStoreDetailService.selectInStoreDetailById(id);
+        InStoreDetail inStoreDetail = inStoreDetailService.selectInStoreDetailById(id);
         mmap.put("inStoreDetail", inStoreDetail);
         return prefix + "/edit";
     }
@@ -110,7 +114,7 @@ public class InSfStoreDetailController extends BaseController
     @Log(title = "半成品库存明细", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(InSfStoreDetail inStoreDetail)
+    public AjaxResult editSave(InStoreDetail inStoreDetail)
     {
         return toAjax(inStoreDetailService.updateInStoreDetail(inStoreDetail));
     }
@@ -147,6 +151,14 @@ public class InSfStoreDetailController extends BaseController
     {
         ExcelUtil<InSfStoreDetail> util = new ExcelUtil<InSfStoreDetail>(InSfStoreDetail.class);
         List<InSfStoreDetail> list = util.importExcel(file.getInputStream());
-        return AjaxResult.success(list);
+        List<InStoreDetail> retList = new ArrayList<InStoreDetail>();
+        if(StringUtils.isNotEmpty(list)){
+            for(InSfStoreDetail sfdetail:list){
+                InStoreDetail detail = new InStoreDetail();
+                BeanUtils.copyProperties(sfdetail, detail);
+                retList.add(detail);
+            }
+        }
+        return AjaxResult.success(retList);
     }
 }

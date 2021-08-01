@@ -36,6 +36,26 @@
                         </ul>
                     </div>
                 </form>
+                <div class="col-sm-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>未处理不良项目TOP5</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div style="height:350px" class="echarts" id="echarts-pie-chart-project"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>未处理不良项目TOP5</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div style="height:350px" class="echarts" id="echarts-pie-chart-pname"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
@@ -60,6 +80,7 @@
             </div>
         </div>
     </div>
+    <th:block th:include="include :: echarts-js" />
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('qc:badproject:edit')}]];
@@ -67,7 +88,117 @@
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
         var prefix = ctx + "qc/badproject";
 
+        //加载饼图
+        function loadPieChart(){
+            $.ajax({
+                url : prefix + "/loadPieChart",
+                type : "POST",
+                async : false,
+                data: $.common.formToJSON("formId"),
+                dataType : "json",
+                success : function(result) {
+                    console.log(JSON.stringify(result.projectList) + "||"+JSON.stringify(result.pnameList));
+                    //不良项目饼图
+                    var pieChartProject = echarts.init(document.getElementById("echarts-pie-chart-project"));
+                    var optionProject = {
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            top: 'bottom',
+                            padding:1,
+                            left: 'center'
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                dataZoom: {
+                                    show:false,
+                                    yAxisIndex: 'none'
+                                },
+                                dataView: {readOnly: false},
+                                saveAsImage: {}
+                            }
+                        },
+                        series: [
+                            {
+                                type: 'pie',
+                                radius: ['40%', '70%'],
+                                avoidLabelOverlap: false,
+                                label: {
+                                    formatter: '{b}:({d}%)'
+                                },
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                },
+                                labelLine: {
+                                    show: true
+                                },
+                                data: result.projectList
+                                // data: [
+                                //     {value: 1048, name: '搜索引擎'},
+                                //     {value: 735, name: '直接访问'},
+                                //     {value: 580, name: '邮件营销'},
+                                //     {value: 484, name: '联盟广告'},
+                                //     {value: 300, name: '视频广告'}
+                                // ]
+                            }
+                        ]
+                    };
+                    pieChartProject.setOption(optionProject);
+                    $(window).resize(pieChartProject.resize);
+                    //成品名称饼图
+                    var pieChartPname = echarts.init(document.getElementById("echarts-pie-chart-pname"));
+                    var optionPname  = {
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            top: 'bottom',
+                            padding: -4,
+                            left: 'center'
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                dataZoom: {
+                                    show:false,
+                                    yAxisIndex: 'none'
+                                },
+                                dataView: {readOnly: false},
+                                saveAsImage: {}
+                            }
+                        },
+                        series: [
+                            {
+                                type: 'pie',
+                                radius: ['40%', '70%'],
+                                center: ['50%', '50%'],
+                                avoidLabelOverlap: false,
+                                label: {
+                                    formatter: '{b}:({d}%)'
+                                },
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                },
+                                labelLine: {
+                                    show: true
+                                },
+                                data: result.pnameList
+                            }
+                        ]
+                    };
+                    pieChartPname.setOption(optionPname);
+                    $(window).resize(pieChartPname.resize);
+                }
+            })            
+        }
         $(function() {
+            loadPieChart();
             var options = {
                 url: prefix + "/list",
                 createUrl: prefix + "/add",

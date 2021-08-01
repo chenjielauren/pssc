@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import com.saas.pssc.mapper.BsBomMainMapper;
 import com.saas.pssc.domain.BsBomMain;
 import com.saas.pssc.service.IBsBomMainService;
+import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
 
 /**
  * bom物料清单Service业务层处理
  * 
  * @author admin
- * @date 2021-07-19
+ * @date 2021-07-31
  */
 @Service
 public class BsBomMainServiceImpl implements IBsBomMainService 
@@ -40,6 +41,7 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      * @return bom物料清单
      */
     @Override
+    @DataScope(userAlias = "su")
     public List<BsBomMain> selectBsBomMainList(BsBomMain bsBomMain)
     {
         return bsBomMainMapper.selectBsBomMainList(bsBomMain);
