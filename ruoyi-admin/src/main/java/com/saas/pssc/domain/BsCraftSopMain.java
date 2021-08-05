@@ -33,15 +33,12 @@ public class BsCraftSopMain extends BaseEntity
     private String isValid;
 
     /**  */
-    @Excel(name = "")
     private String attribute1;
 
     /**  */
-    @Excel(name = "")
     private String attribute2;
 
     /**  */
-    @Excel(name = "")
     private String attribute3;
 
     /** 工艺标准与CCP明细信息 */

@@ -181,6 +181,55 @@ insert into sys_menu values('113',  '缓存监控', '2', '5', '/monitor/cache', 
 insert into sys_menu values('114',  '表单构建', '3', '1', '/tool/build',           '', 'C', '0', '1', 'tool:build:view',          'fa fa-wpforms',         'admin', sysdate(), '', null, '表单构建菜单');
 insert into sys_menu values('115',  '代码生成', '3', '2', '/tool/gen',             '', 'C', '0', '1', 'tool:gen:view',            'fa fa-code',            'admin', sysdate(), '', null, '代码生成菜单');
 insert into sys_menu values('116',  '系统接口', '3', '3', '/tool/swagger',         '', 'C', '0', '1', 'tool:swagger:view',        'fa fa-gg',              'admin', sysdate(), '', null, '系统接口菜单');
+--标准
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(118, 'BOM物料清单', 4, 1, '/bs/bom', 'menuItem', 'C', '0', '1', 'bs:bom:*', '#', 'admin', '2021-07-16 16:56:20', 'admin', '2021-07-16 16:56:20', 'BOM物料清单');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(117, '工艺技术标准', 4, 2, '/bs/craftsopmain', 'menuItem', 'C', '0', '1', 'bs:craftsopmain:*', '#', 'admin', '2021-07-16 16:56:20', 'admin', '2021-07-19 11:03:08', '工艺技术标准');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(120, '材料检验标准', 4, 3, '/bs/matmain', 'menuItem', 'C', '0', '1', 'bs:matmain:*', '#', 'admin', '2021-08-03 19:36:17', 'admin', '2021-08-03 19:36:17', '材料检验标准');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(121, '4M变更单', 4, 4, '/bs/mcnmain', 'menuItem', 'C', '0', '1', 'bs:mcnmain:*', '#', 'admin', '2021-08-03 19:36:17', 'admin', '2021-08-03 19:36:17', '4M变更单菜单');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(122, '工序检验标准', 4, 5, '/bs/pqcmain', 'menuItem', 'C', '0', '1', 'bs:pqcmain:*', '#', 'admin', '2021-08-03 19:36:18', 'admin', '2021-08-03 19:36:18', '工序检验标准');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(123, '成品检验标准', 4, 6, '/bs/promain', 'menuItem', 'C', '0', '1', 'bs:promain:*', '#', 'admin', '2021-08-03 19:36:18', 'admin', '2021-08-03 19:36:18', '成品检验标准');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(124, '合格供方名录', 4, 7, '/bs/vendor', 'menuItem', 'C', '0', '1', 'bs:vendor:*', '#', 'admin', '2021-08-03 19:36:18', 'admin', '2021-08-03 19:36:18', '合格供方名录');
+--库存管理
+INSERT INTO sys_menu VALUES('125', '库存信息', 5, 1, '/in/instore', 'menuItem', 'C', '0', '1', 'in:instore:*', '#', 'admin', sysdate(), 'admin', sysdate(), '库存信息');
+--订单管理
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(126, '发货信息', 6, 1, '/sd/delivery', 'menuItem', 'C', '0', '1', 'sd:delivery:*', '#', 'admin', '2021-07-22 10:03:51', 'admin', '2021-07-22 10:03:51', '发货信息菜单');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(127, '订单信息', 6, 2, '/sd/order', 'menuItem', 'C', '0', '1', 'sd:order:*', '#', 'admin', '2021-07-22 10:03:51', 'admin', '2021-07-22 10:03:51', '订单信息菜单');
+--生产信息
+INSERT INTO sys_menu VALUES('128', '工单报工记录', 7, 1, '/pp/wbmain', 'menuItem', 'C', '0', '1', 'pp:wbmain:*', '#', 'admin', sysdate(), 'admin', sysdate(), '工单报工记录菜单');
+--质量信息
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(130, '不良项目汇总', 8, 1, '/qc/badpromain', 'menuItem', 'C', '0', '1', 'qc:badpromain:*', '#', 'admin', '2021-07-25 14:10:54', 'admin', '2021-07-25 14:10:54', '不良项目汇总菜单');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(131, '原材料检验记录', 8, 2, '/qc/matcm', 'menuItem', 'C', '0', '1', 'qc:*:*', '#', 'admin', '2021-07-25 14:10:54', 'admin', '2021-07-27 13:37:26', '原材料检验记录菜单');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(132, '过程检验记录', 8, 3, '/qc/proccm', 'menuItem', 'C', '0', '1', 'qc:proccm:*', '#', 'admin', '2021-07-25 14:10:54', 'admin', '2021-07-25 14:10:54', '过程检验记录');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(133, '成品检验记录', 8, 4, '/qc/prodcm', 'menuItem', 'C', '0', '1', 'qc:prodcm:*', '#', 'admin', '2021-07-25 14:10:54', 'admin', '2021-07-25 14:10:54', '成品检验记录');
+INSERT INTO pssc.sys_menu
+(menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, perms, icon, create_by, create_time, update_by, update_time, remark)
+VALUES(134, '工单良品率分析', 8, 5, '/qc/yieldrate', 'menuItem', 'C', '0', '1', 'qc:yieldrate:*', '#', 'admin', '2021-07-25 14:10:54', 'admin', '2021-07-25 14:10:54', '工单良品率分析菜单');
 -- 三级菜单
 insert into sys_menu values('500',  '操作日志', '108', '1', '/monitor/operlog',    '', 'C', '0', '1', 'monitor:operlog:view',     'fa fa-address-book',    'admin', sysdate(), '', null, '操作日志菜单');
 insert into sys_menu values('501',  '登录日志', '108', '2', '/monitor/logininfor', '', 'C', '0', '1', 'monitor:logininfor:view',  'fa fa-file-image-o',    'admin', sysdate(), '', null, '登录日志菜单');

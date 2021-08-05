@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.InStoreMapper">
+    
+    <resultMap type="InStore" id="InStoreResult">
+        <result property="id"    column="id"    />
+        <result property="ptype"    column="ptype"    />
+        <result property="mcode"    column="mcode"    />
+        <result property="mname"    column="mname"    />
+        <result property="mspec"    column="mspec"    />
+        <result property="mlot"    column="mlot"    />
+        <result property="unit"    column="unit"    />
+        <result property="vendor"    column="vendor"    />
+        <result property="iqty"    column="iqty"    />
+        <result property="uptime"    column="uptime"    />
+        <result property="remark"    column="remark"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectInStoreVo">
+        select id, ptype, mcode, mname, mspec, mlot, unit, vendor, iqty, uptime, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from in_store_main t left join sys_user su on t.update_by = su.login_name 
+    </sql>
+
+    <select id="selectInStoreList" parameterType="InStore" resultMap="InStoreResult">
+        <include refid="selectInStoreVo"/>
+        <where>  
+            <if test="ptype != null and ptype != ''"> and ptype = #{ptype}</if>
+            <if test="mcode != null  and mcode != ''"> and mcode like concat('%', #{mcode}, '%')</if>
+            <if test="mname != null  and mname != ''"> and mname like concat('%', #{mname}, '%')</if>
+            <if test="mspec != null  and mspec != ''"> and mspec like concat('%', #{mspec}, '%')</if>
+            <if test="mlot != null  and mlot != ''"> and mlot = #{mlot}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="vendor != null  and vendor != ''"> and vendor = #{vendor}</if>
+            <if test="iqty != null "> and iqty = #{iqty}</if>
+            <if test="uptime != null "> and uptime = #{uptime}</if>
+            and is_valid = '1' 
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
+        </where>
+        order by t.create_time desc
+    </select>
+    
+    <select id="selectInStoreById" parameterType="String" resultMap="InStoreResult">
+        <include refid="selectInStoreVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInStore" parameterType="InStore">
+        insert into in_store_main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="ptype != null">ptype,</if>
+            <if test="mcode != null and mcode != ''">mcode,</if>
+            <if test="mname != null and mname != ''">mname,</if>
+            <if test="mspec != null and mspec != ''">mspec,</if>
+            <if test="mlot != null and mlot != ''">mlot,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="vendor != null">vendor,</if>
+            <if test="iqty != null">iqty,</if>
+            <if test="uptime != null">uptime,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="ptype != null">#{ptype},</if>
+            <if test="mcode != null and mcode != ''">#{mcode},</if>
+            <if test="mname != null and mname != ''">#{mname},</if>
+            <if test="mspec != null and mspec != ''">#{mspec},</if>
+            <if test="mlot != null and mlot != ''">#{mlot},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="vendor != null">#{vendor},</if>
+            <if test="iqty != null">#{iqty},</if>
+            <if test="uptime != null">#{uptime},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate(),
+            <if test="updateBy != null">#{updateBy},</if>
+            sysdate(),
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInStore" parameterType="InStore">
+        update in_store_main
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ptype != null">ptype = #{ptype},</if>
+            <if test="mcode != null and mcode != ''">mcode = #{mcode},</if>
+            <if test="mname != null and mname != ''">mname = #{mname},</if>
+            <if test="mspec != null and mspec != ''">mspec = #{mspec},</if>
+            <if test="mlot != null and mlot != ''">mlot = #{mlot},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="vendor != null">vendor = #{vendor},</if>
+            <if test="iqty != null">iqty = #{iqty},</if>
+            <if test="uptime != null">uptime = #{uptime},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate(),
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateInStoreById" parameterType="String">
+        update in_store_main set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updateInStoreByIds" parameterType="String">
+        update in_store_main set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteInStoreById" parameterType="String">
+        delete from in_store_main where id = #{id}
+    </delete>
+
+    <delete id="deleteInStoreByIds" parameterType="String">
+        delete from in_store_main where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

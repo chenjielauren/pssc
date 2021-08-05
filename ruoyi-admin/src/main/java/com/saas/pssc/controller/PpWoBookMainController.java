@@ -25,31 +25,31 @@ import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.common.core.page.TableDataInfo;
 
 /**
- * 工单报工记录Controller
+ * 工单记录Controller
  * 
  * @author admin
- * @date 2021-07-24
+ * @date 2021-08-03
  */
 @Controller
-@RequestMapping("/pp/wobookmain")
+@RequestMapping("/pp/wbmain")
 public class PpWoBookMainController extends BaseController
 {
-    private String prefix = "pp/wobookmain";
+    private String prefix = "pp/wbmain";
 
     @Autowired
     private IPpWoBookMainService ppWoBookMainService;
 
-    @RequiresPermissions("pp:wobookmain:view")
+    @RequiresPermissions("pp:wbmain:view")
     @GetMapping()
-    public String wobookmain()
+    public String wbmain()
     {
-        return prefix + "/wobookmain";
+        return prefix + "/wbmain";
     }
 
     /**
-     * 查询工单报工记录列表
+     * 查询工单记录列表
      */
-    @RequiresPermissions("pp:wobookmain:list")
+    @RequiresPermissions("pp:wbmain:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(PpWoBookMain ppWoBookMain)
@@ -60,21 +60,21 @@ public class PpWoBookMainController extends BaseController
     }
 
     /**
-     * 导出工单报工记录列表
+     * 导出工单记录列表
      */
-    @RequiresPermissions("pp:wobookmain:export")
-    @Log(title = "工单报工记录", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("pp:wbmain:export")
+    @Log(title = "工单记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(PpWoBookMain ppWoBookMain)
     {
         List<PpWoBookMain> list = ppWoBookMainService.selectPpWoBookMainList(ppWoBookMain);
         ExcelUtil<PpWoBookMain> util = new ExcelUtil<PpWoBookMain>(PpWoBookMain.class);
-        return util.exportExcel(list, "工单报工记录数据");
+        return util.exportExcel(list, "工单记录数据");
     }
 
     /**
-     * 新增工单报工记录
+     * 新增工单记录
      */
     @GetMapping("/add")
     public String add()
@@ -83,10 +83,10 @@ public class PpWoBookMainController extends BaseController
     }
 
     /**
-     * 新增保存工单报工记录
+     * 新增保存工单记录
      */
-    @RequiresPermissions("pp:wobookmain:add")
-    @Log(title = "工单报工记录", businessType = BusinessType.INSERT)
+    @RequiresPermissions("pp:wbmain:add")
+    @Log(title = "工单记录", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(PpWoBookMain ppWoBookMain)
@@ -95,10 +95,10 @@ public class PpWoBookMainController extends BaseController
     }
 
     /**
-     * 修改工单报工记录
+     * 修改工单记录
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         PpWoBookMain ppWoBookMain = ppWoBookMainService.selectPpWoBookMainById(id);
         mmap.put("ppWoBookMain", ppWoBookMain);
@@ -106,10 +106,10 @@ public class PpWoBookMainController extends BaseController
     }
 
     /**
-     * 修改保存工单报工记录
+     * 修改保存工单记录
      */
-    @RequiresPermissions("pp:wobookmain:edit")
-    @Log(title = "工单报工记录", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("pp:wbmain:edit")
+    @Log(title = "工单记录", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(PpWoBookMain ppWoBookMain)
@@ -118,18 +118,17 @@ public class PpWoBookMainController extends BaseController
     }
 
     /**
-     * 删除工单报工记录
+     * 删除工单记录
      */
-    @RequiresPermissions("pp:wobookmain:remove")
-    @Log(title = "工单报工记录", businessType = BusinessType.DELETE)
+    @RequiresPermissions("pp:wbmain:remove")
+    @Log(title = "工单记录", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody
     public AjaxResult remove(String ids)
     {
         return toAjax(ppWoBookMainService.deletePpWoBookMainByIds(ids));
     }
-
-     /**
+    /**
      * 下载模板
      */
     @GetMapping("/importTemplate")
@@ -137,78 +136,78 @@ public class PpWoBookMainController extends BaseController
     public AjaxResult importTemplate()
     {
         ExcelUtil<PpWoBookMain> util = new ExcelUtil<PpWoBookMain>(PpWoBookMain.class);
-        return util.importTemplateExcel("工单报工记录列表");
+        return util.importTemplateExcel("工单记录列表");
     }
     
     /**
      * 导入数据
      */
-    @RequiresPermissions("pp:wobookmain:import")
+    @RequiresPermissions("qc:matcm:import")
     @PostMapping("/importData")
     @ResponseBody
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
         ExcelUtil<PpWoBookMain> util = new ExcelUtil<PpWoBookMain>(PpWoBookMain.class);
-        List<PpWoBookMain> list = util.importExcel(file.getInputStream());
-        String message = importPpWoBookMain(list, updateSupport);
+        List<PpWoBookMain> ppWoBookMainList = util.importExcel(file.getInputStream());
+        String message = importPpWoBookMain(ppWoBookMainList, updateSupport);
         return AjaxResult.success(message);
     }
 
     /**
-     * 导入工单报工记录数据
+     * 导入工单记录数据
      * 
-     * @param userList 工单报工记录数据列表
+     * @param userList 工单记录数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
      * @return 结果
      */
-    public String importPpWoBookMain(List<PpWoBookMain> list, Boolean isUpdateSupport)
+    public String importPpWoBookMain(List<PpWoBookMain> ppWoBookMainList, Boolean isUpdateSupport)
     {
-        if (CollectionUtils.isEmpty(list) || list.size() == 0)
+        if (CollectionUtils.isEmpty(ppWoBookMainList) || ppWoBookMainList.size() == 0)
         {
-            throw new BusinessException("导入工单报工记录数据不能为空！");
+            throw new BusinessException("导入工单记录数据不能为空！");
         }
         int successNum = 0;
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (PpWoBookMain ppWoBookMain : list)
+        for (PpWoBookMain ppWoBookMain : ppWoBookMainList)
         {
             try
             {
                 ppWoBookMain.setIsValid("1");
                 boolean lossFlag = false;
                 List<PpWoBookMain>  dblist= ppWoBookMainService.selectPpWoBookMainList(ppWoBookMain);
-                logger.info("同名工单报工记录条数："+dblist.size());
+                logger.info("同名工单记录条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个工单报工记录
+                	lossFlag = true;  // 验证是否存在这个工单记录
 				}
                 if (!lossFlag)
                 {
                     ppWoBookMain.setCreateBy(ShiroUtils.getLoginName());
                     ppWoBookMain.setUpdateBy(ShiroUtils.getLoginName());
                     // ppWoBookMain.setIsValid("1");
-                    ppWoBookMainService.insertPpWoBookMain(ppWoBookMain);//插入工单报工记录
+                    ppWoBookMainService.insertPpWoBookMain(ppWoBookMain);//插入工单记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工单报工记录 " +ppWoBookMain.getPname() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、工单记录 " +ppWoBookMain.getPname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
                     ppWoBookMain.setId(dblist.get(0).getId());
                     ppWoBookMain.setUpdateBy(ShiroUtils.getLoginName());
-                	ppWoBookMainService.updatePpWoBookMain(ppWoBookMain);//修改工单报工记录
+                	ppWoBookMainService.updatePpWoBookMain(ppWoBookMain);//修改工单记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工单报工记录 " +ppWoBookMain.getPname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、工单记录 " +ppWoBookMain.getPname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、工单报工记录 " +ppWoBookMain.getPname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、工单记录 " +ppWoBookMain.getPname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、工单报工记录 " + ppWoBookMain.getPname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、工单记录 " + ppWoBookMain.getPname()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }
@@ -223,5 +222,4 @@ public class PpWoBookMainController extends BaseController
         }
         return successMsg.toString();
     }
-
 }

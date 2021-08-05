@@ -19,7 +19,7 @@ public class BsBomDetail extends TreeEntity
     private Long id;
 
     /** 主表ID */
-    @Excel(name = "主表ID")
+    
     private Long mainId;
 
     /** 上级物料类型 */

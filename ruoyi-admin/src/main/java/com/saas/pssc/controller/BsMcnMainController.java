@@ -7,6 +7,9 @@ import com.saas.common.core.controller.BaseController;
 import com.saas.common.core.domain.AjaxResult;
 import com.saas.common.core.page.TableDataInfo;
 import com.saas.common.enums.BusinessType;
+import com.saas.common.exception.BusinessException;
+import com.saas.common.utils.ShiroUtils;
+import com.saas.common.utils.StringUtils;
 import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.pssc.domain.BsMcnMain;
 import com.saas.pssc.service.IBsMcnMainService;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 4M变更单Controller
@@ -131,5 +135,99 @@ public class BsMcnMainController extends BaseController
     {
         mmap.put("rowIndex", rowIndex);
         return prefix + "/upload";
+    }
+
+    /**
+     * 下载模板
+     */
+    @GetMapping("/importTemplate")
+    @ResponseBody
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<BsMcnMain> util = new ExcelUtil<BsMcnMain>(BsMcnMain.class);
+        return util.importTemplateExcel("4M变更单数据");
+    }
+
+    /**
+     * 导入数据
+     */
+    @RequiresPermissions("bs:mcnmain:import")
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<BsMcnMain> util = new ExcelUtil<BsMcnMain>(BsMcnMain.class);
+        List<BsMcnMain> mcnMainList = util.importExcel(file.getInputStream());
+        String message = importMcnMain(mcnMainList, updateSupport);
+        return AjaxResult.success(message);
+    }
+
+    /**
+     * 导入4M变更单数据
+     * 
+     * @param userList 4M变更单数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @return 结果
+     */
+    public String importMcnMain(List<BsMcnMain> mcnMainList, Boolean isUpdateSupport)
+    {
+        if (StringUtils.isEmpty(mcnMainList) || mcnMainList.size() == 0)
+        {
+            throw new BusinessException("导入4M变更单标准数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        for (BsMcnMain bsMcnMain : mcnMainList)
+        {
+            try
+            {
+                bsMcnMain.setIsValid("1");
+                boolean flag = false;
+                List<BsMcnMain>  dblist= bsMcnMainService.selectBsMcnMainList(bsMcnMain);
+                logger.info("同名4M变更单标准条数："+dblist.size());
+                if (dblist.size()>0) {
+                	flag = true;  // 验证是否存在这个4M变更单标准
+				}
+                if (!flag)
+                {
+                    bsMcnMain.setCreateBy(ShiroUtils.getLoginName());
+                    bsMcnMain.setUpdateBy(ShiroUtils.getLoginName());
+                    bsMcnMainService.insertBsMcnMain(bsMcnMain);//插入4M变更单标准
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、4M变更单标准 " +bsMcnMain.getName() + " 导入成功");
+                }
+                else if (isUpdateSupport)
+                {
+                    bsMcnMain.setId(dblist.get(0).getId());
+                    bsMcnMain.setUpdateBy(ShiroUtils.getLoginName());
+                	bsMcnMainService.updateBsMcnMain(bsMcnMain);//修改4M变更单标准
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、4M变更单标准 " +bsMcnMain.getName() + " 更新成功");
+                }
+                else
+                {
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、4M变更单标准 " +bsMcnMain.getName() + " 已存在");
+                }
+            }
+            catch (Exception e)
+            {
+                failureNum++;
+                String msg = "<br/>" + failureNum + "、4M变更单标准 " + bsMcnMain.getName()+ " 导入失败：";
+                failureMsg.append(msg + e.getMessage());
+            }
+        }
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new BusinessException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();
     }
 }

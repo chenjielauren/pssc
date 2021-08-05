@@ -73,9 +73,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="isValid != null">is_valid,</if>
             <if test="pnumber != null">pnumber,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
-            <if test="createTime != null">create_time,</if>
+            create_time,
             <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            update_time,
             <if test="attribute1 != null">attribute1,</if>
             <if test="attribute2 != null">attribute2,</if>
             <if test="attribute3 != null">attribute3,</if>

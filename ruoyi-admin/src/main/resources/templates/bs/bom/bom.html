@@ -15,7 +15,7 @@
                                 <input type="text" name="idParent"/>
                             </li>
                             <li>
-                                <label>部件编号：</label>
+                                <label>材料编号：</label>
                                 <input type="text" name="mcode"/>
                             </li>
                             <li>
@@ -79,48 +79,54 @@
                     visible: false
                 },
                 {
-                    field: 'mcode',
-                    title: '部件编号',
-                    align: 'left',
-                    visible: false
-                },
-                {
                     field: 'mname',
                     title: '部件名称',
-                    align: 'left'
-                },
-                {
-                    field: 'spec',
-                    title: '部件规格',
-                    align: 'left'
+                    align: 'left',
+                    cellStyle: function(value, row, index) {
+                        return { css: { "white-space": "inherit" } };
+                    }
                 },
                 {
                     field: 'attribute',
-                    title: '部件属性(生产/采购)',
+                    title: '属性',
                     align: 'left',
                     formatter: function(value, row, index) {
                         return $.table.selectDictLabel(attributeDatas, value);
                     }
                 },
                 {
+                    field: 'qty',
+                    title: '用量',
+                    align: 'left'
+                },
+                {
+                    field: 'mcode',
+                    title: '材料编号',
+                    align: 'left'
+                },
+                {
+                    field: 'spec',
+                    title: '材料规格',
+                    align: 'left'
+                },
+                
+                {
                     field: 'msize',
                     title: '上机尺寸',
-                    align: 'left'
+                    align: 'left',
+                    visible: false
                 },
                 {
                     field: 'dnumber',
                     title: '模切拼数',
-                    align: 'left'
+                    align: 'left',
+                    visible: false
                 },
                 {
                     field: 'pnumber',
                     title: '切纸拼数',
-                    align: 'left'
-                },
-                {
-                    field: 'qty',
-                    title: '用量',
-                    align: 'left'
+                    align: 'left',
+                    visible: false
                 },
                 {
                     field: 'remark',
@@ -131,6 +137,7 @@
                     field: 'isValid',
                     title: '有效否 0失效1有效',
                     align: 'left',
+                    visible: false,
                     formatter: function(value, row, index) {
                         return $.table.selectDictLabel(isValidDatas, value);
                     }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改库存信息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-instore-edit" th:object="${inStore}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">库存类型：</label>
+                <div class="col-sm-4">
+                    <select name="ptype" class="form-control m-b" th:with="type=${@dict.getType('in_store_ptype')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{ptype}"></option>
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label is-required">材料/半成品/成品编号：</label>
+                <div class="col-sm-4">
+                    <input name="mcode" th:field="*{mcode}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">材料/半成品/成品名称：</label>
+                <div class="col-sm-4">
+                    <input name="mname" th:field="*{mname}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">材料/半成品/成品规格：</label>
+                <div class="col-sm-4">
+                    <input name="mspec" th:field="*{mspec}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">材料/半成品/成品批次号：</label>
+                <div class="col-sm-4">
+                    <input name="mlot" th:field="*{mlot}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">单位：</label>
+                <div class="col-sm-4">
+                    <input name="unit" th:field="*{unit}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">供应商：</label>
+                <div class="col-sm-4">
+                    <textarea name="vendor" class="form-control">[[*{vendor}]]</textarea>
+                </div>
+                <label class="col-sm-2 control-label is-required">库存数量：</label>
+                <div class="col-sm-4">
+                    <input name="iqty" th:field="*{iqty}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">库存更新时间：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <input name="uptime" th:value="${#dates.format(inStore.uptime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label is-required">备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="remark" class="form-control" required>[[*{remark}]]</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "in/instore";
+        $("#form-instore-edit").validate({
+            onkeyup: false,
+			rules:{
+				iqty:{
+					number:true
+                },
+			},
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-instore-edit').serialize());
+            }
+        }
+
+        $("input[name='uptime']").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

@@ -453,7 +453,8 @@ var table = {
             	});
             },
             // 在增加或修改主子表 添加时自定义导入数据Excel
-            // type 标记类型。一张主表有可能对应多张子表
+            // type 标记类型。一张主表有可能对应多张子表 ,需根据type判断点击的是哪一张表的"导入"按钮
+            //type=0 表示对应的第一张子表; type=1 表示对应的第二张子表;
             custImportExcel: function(type,formId, width, height) {
             	table.set();
                 var currentId = $.common.isEmpty(formId) ? 'importTpl' : formId;
@@ -491,7 +492,7 @@ var table = {
                                     $.modal.closeAll();
                                     var data = result.data;
                                     for(var i=0;i<data.length;i++){
-                                        console.log(data[i].qcResult);
+                                        console.log(data[i]);
                                         if($.common.isNotEmpty(type)){
                                             addColumn(type,data[i]);
                                         }else{
@@ -1705,7 +1706,7 @@ var table = {
             },
             // 数据字典转下拉框
             dictToSelect: function(datas, value, name) {
-            	var actions = [];
+                var actions = [];
             	actions.push($.common.sprintf("<select class='form-control' name='%s'>", name));
                 $.each(datas, function(index, dict) {
                     actions.push($.common.sprintf("<option value='%s'", dict.dictValue));

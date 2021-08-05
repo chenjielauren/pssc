@@ -1,5 +1,6 @@
 package com.saas.pssc.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -9,30 +10,25 @@ import com.saas.common.annotation.Excel;
 import com.saas.common.core.domain.BaseEntity;
 
 /**
- * 工单报工记录对象 pp_wo_book_main
+ * 工单记录对象 pp_wo_book_main
  * 
  * @author admin
- * @date 2021-07-24
+ * @date 2021-08-03
  */
 public class PpWoBookMain extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 计划工单号ID */
-    private Long id;
+    /** ID */
+    private String id;
 
-    /** 计划工单号 */
-    @Excel(name = "计划工单号")
+    /** 工单号 */
+    @Excel(name = "工单号")
     private String wcode;
 
-    /** 计划编制时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    @Excel(name = "计划编制时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date ptime;
-
-    /** 计划编制人 */
-    @Excel(name = "计划编制人")
-    private String puser;
+    /** 订单号 */
+    @Excel(name = "订单号")
+    private String orderno;
 
     /** 产品编号 */
     @Excel(name = "产品编号")
@@ -42,40 +38,31 @@ public class PpWoBookMain extends BaseEntity
     @Excel(name = "产品名称")
     private String pname;
 
-    /** 计划数量 */
-    @Excel(name = "计划数量")
-    private Long qty;
+    /** 产品规格 */
+    @Excel(name = "产品规格")
+    private String pspec;
 
-    /** 当前工序 */
-    @Excel(name = "当前工序")
-    private String currPro;
+    /** 生产数量 */
+    @Excel(name = "生产数量")
+    private BigDecimal qty;
 
-    /** 计划开工时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    @Excel(name = "计划开工时间", width = 30, dateFormat = "yyyy-MM-dd")
+    /** 开工时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @Excel(name = "开工时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date pstarTime;
 
-    /** 计划完工时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    @Excel(name = "计划完工时间", width = 30, dateFormat = "yyyy-MM-dd")
+    /** 完工时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @Excel(name = "完工时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date pendTime;
-
-    /** 完工数量 */
-    @Excel(name = "完工数量")
-    private Long fqty;
-
-    /** 预计完工时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    @Excel(name = "预计完工时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date expectFtime;
-
-    /** 生产进度 */
-    @Excel(name = "生产进度")
-    private Long progress;
 
     /** 有效否 0失效1有效 */
     private String isValid;
 
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+    
     /**  */
     private String attribute1;
 
@@ -85,23 +72,18 @@ public class PpWoBookMain extends BaseEntity
     /**  */
     private String attribute3;
 
-    /** 工单报工记录明细信息 */
+    /** 工单制造信息信息 */
     private List<PpWoBookDetail> ppWoBookDetailList;
 
-    private List<PpWoBookDetail> mdetailList; //用料信息
+    /** 工单BOM信息 */
+    private List<PpWoBookBom> ppWoBookBomList;
 
-    private List<PpWoBookDetail> craftdetailList;//工艺信息
-
-    private Date pendStarttime;//预计完成开始时间
-
-    private Date pendEndtime;//预计完成结束时间
-
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -114,23 +96,14 @@ public class PpWoBookMain extends BaseEntity
     {
         return wcode;
     }
-    public void setPtime(Date ptime) 
+    public void setOrderno(String orderno) 
     {
-        this.ptime = ptime;
+        this.orderno = orderno;
     }
 
-    public Date getPtime() 
+    public String getOrderno() 
     {
-        return ptime;
-    }
-    public void setPuser(String puser) 
-    {
-        this.puser = puser;
-    }
-
-    public String getPuser() 
-    {
-        return puser;
+        return orderno;
     }
     public void setPcode(String pcode) 
     {
@@ -150,23 +123,23 @@ public class PpWoBookMain extends BaseEntity
     {
         return pname;
     }
-    public void setQty(Long qty) 
+    public void setPspec(String pspec) 
+    {
+        this.pspec = pspec;
+    }
+
+    public String getPspec() 
+    {
+        return pspec;
+    }
+    public void setQty(BigDecimal qty) 
     {
         this.qty = qty;
     }
 
-    public Long getQty() 
+    public BigDecimal getQty() 
     {
         return qty;
-    }
-    public void setCurrPro(String currPro) 
-    {
-        this.currPro = currPro;
-    }
-
-    public String getCurrPro() 
-    {
-        return currPro;
     }
     public void setPstarTime(Date pstarTime) 
     {
@@ -185,33 +158,6 @@ public class PpWoBookMain extends BaseEntity
     public Date getPendTime() 
     {
         return pendTime;
-    }
-    public void setFqty(Long fqty) 
-    {
-        this.fqty = fqty;
-    }
-
-    public Long getFqty() 
-    {
-        return fqty;
-    }
-    public void setExpectFtime(Date expectFtime) 
-    {
-        this.expectFtime = expectFtime;
-    }
-
-    public Date getExpectFtime() 
-    {
-        return expectFtime;
-    }
-    public void setProgress(Long progress) 
-    {
-        this.progress = progress;
-    }
-
-    public Long getProgress() 
-    {
-        return progress;
     }
     public void setIsValid(String isValid) 
     {
@@ -259,55 +205,27 @@ public class PpWoBookMain extends BaseEntity
     {
         this.ppWoBookDetailList = ppWoBookDetailList;
     }
+
+    public List<PpWoBookBom> getPpWoBookBomList() {
+        return ppWoBookBomList;
+    }
+
+    public void setPpWoBookBomList(List<PpWoBookBom> ppWoBookBomList) {
+        this.ppWoBookBomList = ppWoBookBomList;
+    }
     
-    public List<PpWoBookDetail> getMdetailList() {
-        return mdetailList;
-    }
-
-    public void setMdetailList(List<PpWoBookDetail> mdetailList) {
-        this.mdetailList = mdetailList;
-    }
-
-    public List<PpWoBookDetail> getCraftdetailList() {
-        return craftdetailList;
-    }
-
-    public void setCraftdetailList(List<PpWoBookDetail> craftdetailList) {
-        this.craftdetailList = craftdetailList;
-    }
-
-    public Date getPendStarttime() {
-        return pendStarttime;
-    }
-
-    public void setPendStarttime(Date pendStarttime) {
-        this.pendStarttime = pendStarttime;
-    }
-
-    public Date getPendEndtime() {
-        return pendEndtime;
-    }
-
-    public void setPendEndtime(Date pendEndtime) {
-        this.pendEndtime = pendEndtime;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("wcode", getWcode())
-            .append("ptime", getPtime())
-            .append("puser", getPuser())
+            .append("orderno", getOrderno())
             .append("pcode", getPcode())
             .append("pname", getPname())
+            .append("pspec", getPspec())
             .append("qty", getQty())
-            .append("currPro", getCurrPro())
             .append("pstarTime", getPstarTime())
             .append("pendTime", getPendTime())
-            .append("fqty", getFqty())
-            .append("expectFtime", getExpectFtime())
-            .append("progress", getProgress())
             .append("remark", getRemark())
             .append("isValid", getIsValid())
             .append("createBy", getCreateBy())
@@ -320,6 +238,5 @@ public class PpWoBookMain extends BaseEntity
             .append("ppWoBookDetailList", getPpWoBookDetailList())
             .toString();
     }
-
 
 }

@@ -53,15 +53,12 @@ public class BsMcnDetail extends BaseEntity
     private String isValid;
 
     /**  */
-    @Excel(name = "")
     private String attribute1;
 
     /**  */
-    @Excel(name = "")
     private String attribute2;
 
     /**  */
-    @Excel(name = "")
     private String attribute3;
 
     public void setId(Long id) 

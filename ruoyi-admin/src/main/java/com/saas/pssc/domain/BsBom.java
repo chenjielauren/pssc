@@ -22,20 +22,20 @@ public class BsBom extends TreeEntity
     @Excel(name = "上级物料类型")
     private Long idParent;
 
-    /** 部件编号 */
-    @Excel(name = "部件编号")
+    /** 材料编号 */
+    @Excel(name = "材料编号")
     private String mcode;
 
     /** 部件名称 */
     @Excel(name = "部件名称")
     private String mname;
 
-    /** 部件规格 */
-    @Excel(name = "部件规格")
+    /** 材料规格 */
+    @Excel(name = "材料规格")
     private String spec;
 
-    /** 部件属性(生产/采购) */
-    @Excel(name = "部件属性(生产/采购)")
+    /** 属性 */
+    @Excel(name = "属性")
     private String attribute;
 
     /** 上机尺寸 */

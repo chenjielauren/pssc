@@ -7,20 +7,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="PpWoBookDetail" id="PpWoBookDetailResult">
         <result property="id"    column="id"    />
         <result property="mainId"    column="main_id"    />
-        <result property="mtype"    column="mtype"    />
+        <result property="soncode"    column="soncode"    />
         <result property="mcode"    column="mcode"    />
         <result property="mname"    column="mname"    />
-        <result property="otime"    column="otime"    />
-        <result property="olot"    column="olot"    />
-        <result property="qcResult"    column="qc_result"    />
-        <result property="expectOtime"    column="expect_otime"    />
+        <result property="mspec"    column="mspec"    />
+        <result property="stime"    column="stime"    />
+        <result property="etime"    column="etime"    />
+        <result property="cwork"    column="cwork"    />
+        <result property="cstation"    column="cstation"    />
+        <result property="planqty"    column="planqty"    />
+        <result property="inputqty"    column="inputqty"    />
+        <result property="outputqty"    column="outputqty"    />
+        <result property="stdtime"    column="stdtime"    />
+        <result property="stdrate"    column="stdrate"    />
+        <result property="acttime"    column="acttime"    />
+        <result property="actrate"    column="actrate"    />
+        <result property="remark"    column="remark"    />
         <result property="isValid"    column="is_valid"    />
-        <result property="pmcode"    column="pmcode"    />
-        <result property="pmname"    column="pmname"    />
-        <result property="ppcode"    column="ppcode"    />
-        <result property="ppname"    column="ppname"    />
-        <result property="incount"    column="incount"    />
-        <result property="outcount"    column="outcount"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
@@ -31,52 +34,58 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPpWoBookDetailVo">
-        select id, main_id, mtype, mcode, mname, otime, olot, qc_result, expect_otime, is_valid, pmcode, pmname, ppcode, ppname, incount, outcount, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from pp_wo_book_detail
+        select id, main_id, soncode, mcode, mname, mspec, stime, etime, cwork, cstation, planqty, inputqty, outputqty, stdtime, stdrate, acttime, actrate, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from pp_wo_book_detail
     </sql>
 
     <select id="selectPpWoBookDetailList" parameterType="PpWoBookDetail" resultMap="PpWoBookDetailResult">
         <include refid="selectPpWoBookDetailVo"/>
         <where>  
-            <if test="mainId != null "> and main_id = #{mainId}</if>
-            <if test="mtype != null  and mtype != ''"> and mtype = #{mtype}</if>
+            <if test="mainId != null  and mainId != ''"> and main_id = #{mainId}</if>
+            <if test="soncode != null  and soncode != ''"> and soncode = #{soncode}</if>
             <if test="mcode != null  and mcode != ''"> and mcode = #{mcode}</if>
             <if test="mname != null  and mname != ''"> and mname like concat('%', #{mname}, '%')</if>
-            <if test="otime != null "> and otime = #{otime}</if>
-            <if test="olot != null  and olot != ''"> and olot = #{olot}</if>
-            <if test="qcResult != null  and qcResult != ''"> and qc_result = #{qcResult}</if>
-            <if test="expectOtime != null "> and expect_otime = #{expectOtime}</if>
-            and is_valid = '1'  ${params.dataScope}
-            <if test="pmcode != null  and pmcode != ''"> and pmcode = #{pmcode}</if>
-            <if test="pmname != null  and pmname != ''"> and pmname like concat('%', #{pmname}, '%')</if>
-            <if test="ppcode != null  and ppcode != ''"> and ppcode = #{ppcode}</if>
-            <if test="ppname != null  and ppname != ''"> and ppname like concat('%', #{ppname}, '%')</if>
-            <if test="incount != null "> and incount = #{incount}</if>
-            <if test="outcount != null "> and outcount = #{outcount}</if>
+            <if test="mspec != null  and mspec != ''"> and mspec = #{mspec}</if>
+            <if test="stime != null "> and stime = #{stime}</if>
+            <if test="etime != null "> and etime = #{etime}</if>
+            <if test="cwork != null  and cwork != ''"> and cwork = #{cwork}</if>
+            <if test="cstation != null  and cstation != ''"> and cstation = #{cstation}</if>
+            <if test="planqty != null  and planqty != ''"> and planqty = #{planqty}</if>
+            <if test="inputqty != null  and inputqty != ''"> and inputqty = #{inputqty}</if>
+            <if test="outputqty != null  and outputqty != ''"> and outputqty = #{outputqty}</if>
+            <if test="stdtime != null  and stdtime != ''"> and stdtime = #{stdtime}</if>
+            <if test="stdrate != null  and stdrate != ''"> and stdrate = #{stdrate}</if>
+            <if test="acttime != null  and acttime != ''"> and acttime = #{acttime}</if>
+            <if test="actrate != null  and actrate != ''"> and actrate = #{actrate}</if>
         </where>
     </select>
     
-    <select id="selectPpWoBookDetailById" parameterType="Long" resultMap="PpWoBookDetailResult">
+    <select id="selectPpWoBookDetailById" parameterType="String" resultMap="PpWoBookDetailResult">
         <include refid="selectPpWoBookDetailVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertPpWoBookDetail" parameterType="PpWoBookDetail" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertPpWoBookDetail" parameterType="PpWoBookDetail">
         insert into pp_wo_book_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="mainId != null">main_id,</if>
-            <if test="mtype != null">mtype,</if>
-            <if test="mcode != null">mcode,</if>
-            <if test="mname != null">mname,</if>
-            <if test="otime != null">otime,</if>
-            <if test="olot != null">olot,</if>
-            <if test="qcResult != null">qc_result,</if>
-            <if test="expectOtime != null">expect_otime,</if>
-            <if test="pmcode != null">pmcode,</if>
-            <if test="pmname != null">pmname,</if>
-            <if test="ppcode != null">ppcode,</if>
-            <if test="ppname != null">ppname,</if>
-            <if test="incount != null">incount,</if>
-            <if test="outcount != null">outcount,</if>
+            <if test="id != null">id,</if>
+            <if test="mainId != null and mainId != ''">main_id,</if>
+            <if test="soncode != null and soncode != ''">soncode,</if>
+            <if test="mcode != null and mcode != ''">mcode,</if>
+            <if test="mname != null and mname != ''">mname,</if>
+            <if test="mspec != null and mspec != ''">mspec,</if>
+            <if test="stime != null">stime,</if>
+            <if test="etime != null">etime,</if>
+            <if test="cwork != null and cwork != ''">cwork,</if>
+            <if test="cstation != null and cstation != ''">cstation,</if>
+            <if test="planqty != null and planqty != ''">planqty,</if>
+            <if test="inputqty != null and inputqty != ''">inputqty,</if>
+            <if test="outputqty != null and outputqty != ''">outputqty,</if>
+            <if test="stdtime != null and stdtime != ''">stdtime,</if>
+            <if test="stdrate != null and stdrate != ''">stdrate,</if>
+            <if test="acttime != null and acttime != ''">acttime,</if>
+            <if test="actrate != null and actrate != ''">actrate,</if>
+            <if test="remark != null">remark,</if>
+            <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
@@ -86,24 +95,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="mainId != null">#{mainId},</if>
-            <if test="mtype != null">#{mtype},</if>
-            <if test="mcode != null">#{mcode},</if>
-            <if test="mname != null">#{mname},</if>
-            <if test="otime != null">#{otime},</if>
-            <if test="olot != null">#{olot},</if>
-            <if test="qcResult != null">#{qcResult},</if>
-            <if test="expectOtime != null">#{expectOtime},</if>
-            <if test="pmcode != null">#{pmcode},</if>
-            <if test="pmname != null">#{pmname},</if>
-            <if test="ppcode != null">#{ppcode},</if>
-            <if test="ppname != null">#{ppname},</if>
-            <if test="incount != null">#{incount},</if>
-            <if test="outcount != null">#{outcount},</if>
+            <if test="id != null">#{id},</if>
+            <if test="mainId != null and mainId != ''">#{mainId},</if>
+            <if test="soncode != null and soncode != ''">#{soncode},</if>
+            <if test="mcode != null and mcode != ''">#{mcode},</if>
+            <if test="mname != null and mname != ''">#{mname},</if>
+            <if test="mspec != null and mspec != ''">#{mspec},</if>
+            <if test="stime != null">#{stime},</if>
+            <if test="etime != null">#{etime},</if>
+            <if test="cwork != null and cwork != ''">#{cwork},</if>
+            <if test="cstation != null and cstation != ''">#{cstation},</if>
+            <if test="planqty != null and planqty != ''">#{planqty},</if>
+            <if test="inputqty != null and inputqty != ''">#{inputqty},</if>
+            <if test="outputqty != null and outputqty != ''">#{outputqty},</if>
+            <if test="stdtime != null and stdtime != ''">#{stdtime},</if>
+            <if test="stdrate != null and stdrate != ''">#{stdrate},</if>
+            <if test="acttime != null and acttime != ''">#{acttime},</if>
+            <if test="actrate != null and actrate != ''">#{actrate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="isValid != null">#{isValid},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
-            sysdate(),
+            <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
-            sysdate(),
+            <if test="updateTime != null">#{updateTime},</if>
             <if test="attribute1 != null">#{attribute1},</if>
             <if test="attribute2 != null">#{attribute2},</if>
             <if test="attribute3 != null">#{attribute3},</if>
@@ -113,25 +127,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatePpWoBookDetail" parameterType="PpWoBookDetail">
         update pp_wo_book_detail
         <trim prefix="SET" suffixOverrides=",">
-            <if test="mainId != null">main_id = #{mainId},</if>
-            <if test="mtype != null">mtype = #{mtype},</if>
-            <if test="mcode != null">mcode = #{mcode},</if>
-            <if test="mname != null">mname = #{mname},</if>
-            <if test="otime != null">otime = #{otime},</if>
-            <if test="olot != null">olot = #{olot},</if>
-            <if test="qcResult != null">qc_result = #{qcResult},</if>
-            <if test="expectOtime != null">expect_otime = #{expectOtime},</if>
+            <if test="mainId != null and mainId != ''">main_id = #{mainId},</if>
+            <if test="soncode != null and soncode != ''">soncode = #{soncode},</if>
+            <if test="mcode != null and mcode != ''">mcode = #{mcode},</if>
+            <if test="mname != null and mname != ''">mname = #{mname},</if>
+            <if test="mspec != null and mspec != ''">mspec = #{mspec},</if>
+            <if test="stime != null">stime = #{stime},</if>
+            <if test="etime != null">etime = #{etime},</if>
+            <if test="cwork != null and cwork != ''">cwork = #{cwork},</if>
+            <if test="cstation != null and cstation != ''">cstation = #{cstation},</if>
+            <if test="planqty != null and planqty != ''">planqty = #{planqty},</if>
+            <if test="inputqty != null and inputqty != ''">inputqty = #{inputqty},</if>
+            <if test="outputqty != null and outputqty != ''">outputqty = #{outputqty},</if>
+            <if test="stdtime != null and stdtime != ''">stdtime = #{stdtime},</if>
+            <if test="stdrate != null and stdrate != ''">stdrate = #{stdrate},</if>
+            <if test="acttime != null and acttime != ''">acttime = #{acttime},</if>
+            <if test="actrate != null and actrate != ''">actrate = #{actrate},</if>
+            <if test="remark != null">remark = #{remark},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
-            <if test="pmcode != null">pmcode = #{pmcode},</if>
-            <if test="pmname != null">pmname = #{pmname},</if>
-            <if test="ppcode != null">ppcode = #{ppcode},</if>
-            <if test="ppname != null">ppname = #{ppname},</if>
-            <if test="incount != null">incount = #{incount},</if>
-            <if test="outcount != null">outcount = #{outcount},</if>
             <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
-            sysdate(),
+            <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="attribute1 != null">attribute1 = #{attribute1},</if>
             <if test="attribute2 != null">attribute2 = #{attribute2},</if>
             <if test="attribute3 != null">attribute3 = #{attribute3},</if>
@@ -139,7 +156,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deletePpWoBookDetailById" parameterType="Long">
+    <delete id="deletePpWoBookDetailById" parameterType="String">
         delete from pp_wo_book_detail where id = #{id}
     </delete>
 

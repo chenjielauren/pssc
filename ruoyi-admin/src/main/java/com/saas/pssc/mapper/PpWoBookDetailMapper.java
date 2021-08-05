@@ -4,55 +4,55 @@ import java.util.List;
 import com.saas.pssc.domain.PpWoBookDetail;
 
 /**
- * 工单报工记录明细Mapper接口
+ * 工单制造信息Mapper接口
  * 
  * @author admin
- * @date 2021-07-24
+ * @date 2021-08-03
  */
 public interface PpWoBookDetailMapper 
 {
     /**
-     * 查询工单报工记录明细
+     * 查询工单制造信息
      * 
-     * @param id 工单报工记录明细ID
-     * @return 工单报工记录明细
+     * @param id 工单制造信息ID
+     * @return 工单制造信息
      */
-    public PpWoBookDetail selectPpWoBookDetailById(Long id);
+    public PpWoBookDetail selectPpWoBookDetailById(String id);
 
     /**
-     * 查询工单报工记录明细列表
+     * 查询工单制造信息列表
      * 
-     * @param ppWoBookDetail 工单报工记录明细
-     * @return 工单报工记录明细集合
+     * @param ppWoBookDetail 工单制造信息
+     * @return 工单制造信息集合
      */
     public List<PpWoBookDetail> selectPpWoBookDetailList(PpWoBookDetail ppWoBookDetail);
 
     /**
-     * 新增工单报工记录明细
+     * 新增工单制造信息
      * 
-     * @param ppWoBookDetail 工单报工记录明细
+     * @param ppWoBookDetail 工单制造信息
      * @return 结果
      */
     public int insertPpWoBookDetail(PpWoBookDetail ppWoBookDetail);
 
     /**
-     * 修改工单报工记录明细
+     * 修改工单制造信息
      * 
-     * @param ppWoBookDetail 工单报工记录明细
+     * @param ppWoBookDetail 工单制造信息
      * @return 结果
      */
     public int updatePpWoBookDetail(PpWoBookDetail ppWoBookDetail);
 
     /**
-     * 删除工单报工记录明细
+     * 删除工单制造信息
      * 
-     * @param id 工单报工记录明细ID
+     * @param id 工单制造信息ID
      * @return 结果
      */
-    public int deletePpWoBookDetailById(Long id);
+    public int deletePpWoBookDetailById(String id);
 
     /**
-     * 批量删除工单报工记录明细
+     * 批量删除工单制造信息
      * 
      * @param ids 需要删除的数据ID
      * @return 结果

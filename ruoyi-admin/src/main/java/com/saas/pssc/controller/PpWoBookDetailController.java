@@ -22,31 +22,31 @@ import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.common.core.page.TableDataInfo;
 
 /**
- * 工单报工记录明细Controller
+ * 工单制造信息Controller
  * 
  * @author admin
- * @date 2021-07-24
+ * @date 2021-08-03
  */
 @Controller
-@RequestMapping("/pp/wobookdetail")
+@RequestMapping("/pp/wbdetail")
 public class PpWoBookDetailController extends BaseController
 {
-    private String prefix = "pp/wobookdetail";
+    private String prefix = "pp/wbdetail";
 
     @Autowired
     private IPpWoBookDetailService ppWoBookDetailService;
 
-    @RequiresPermissions("pp:wobookdetail:view")
+    @RequiresPermissions("pp:wbdetail:view")
     @GetMapping()
-    public String wobookdetail()
+    public String wbdetail()
     {
-        return prefix + "/wobookdetail";
+        return prefix + "/wbdetail";
     }
 
     /**
-     * 查询工单报工记录明细列表
+     * 查询工单制造信息列表
      */
-    @RequiresPermissions("pp:wobookdetail:list")
+    @RequiresPermissions("pp:wbdetail:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(PpWoBookDetail ppWoBookDetail)
@@ -57,21 +57,21 @@ public class PpWoBookDetailController extends BaseController
     }
 
     /**
-     * 导出工单报工记录明细列表
+     * 导出工单制造信息列表
      */
-    @RequiresPermissions("pp:wobookdetail:export")
-    @Log(title = "工单报工记录明细", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("pp:wbdetail:export")
+    @Log(title = "工单制造信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(PpWoBookDetail ppWoBookDetail)
     {
         List<PpWoBookDetail> list = ppWoBookDetailService.selectPpWoBookDetailList(ppWoBookDetail);
         ExcelUtil<PpWoBookDetail> util = new ExcelUtil<PpWoBookDetail>(PpWoBookDetail.class);
-        return util.exportExcel(list, "工单报工记录明细数据");
+        return util.exportExcel(list, "工单制造信息数据");
     }
 
     /**
-     * 新增工单报工记录明细
+     * 新增工单制造信息
      */
     @GetMapping("/add")
     public String add()
@@ -80,10 +80,10 @@ public class PpWoBookDetailController extends BaseController
     }
 
     /**
-     * 新增保存工单报工记录明细
+     * 新增保存工单制造信息
      */
-    @RequiresPermissions("pp:wobookdetail:add")
-    @Log(title = "工单报工记录明细", businessType = BusinessType.INSERT)
+    @RequiresPermissions("pp:wbdetail:add")
+    @Log(title = "工单制造信息", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(PpWoBookDetail ppWoBookDetail)
@@ -92,10 +92,10 @@ public class PpWoBookDetailController extends BaseController
     }
 
     /**
-     * 修改工单报工记录明细
+     * 修改工单制造信息
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         PpWoBookDetail ppWoBookDetail = ppWoBookDetailService.selectPpWoBookDetailById(id);
         mmap.put("ppWoBookDetail", ppWoBookDetail);
@@ -103,10 +103,10 @@ public class PpWoBookDetailController extends BaseController
     }
 
     /**
-     * 修改保存工单报工记录明细
+     * 修改保存工单制造信息
      */
-    @RequiresPermissions("pp:wobookdetail:edit")
-    @Log(title = "工单报工记录明细", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("pp:wbdetail:edit")
+    @Log(title = "工单制造信息", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(PpWoBookDetail ppWoBookDetail)
@@ -115,26 +115,25 @@ public class PpWoBookDetailController extends BaseController
     }
 
     /**
-     * 删除工单报工记录明细
+     * 删除工单制造信息
      */
-    @RequiresPermissions("pp:wobookdetail:remove")
-    @Log(title = "工单报工记录明细", businessType = BusinessType.DELETE)
+    @RequiresPermissions("pp:wbdetail:remove")
+    @Log(title = "工单制造信息", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody
     public AjaxResult remove(String ids)
     {
         return toAjax(ppWoBookDetailService.deletePpWoBookDetailByIds(ids));
     }
-
     /**
      * 下载模板
-     */
+    */
     @GetMapping("/importTemplate")
     @ResponseBody
     public AjaxResult importTemplate()
     {
         ExcelUtil<PpWoBookDetail> util = new ExcelUtil<PpWoBookDetail>(PpWoBookDetail.class);
-        return util.importTemplateExcel("工单报工记录详细信息列表");
+        return util.importTemplateExcel("工单制造信息列表");
     }
     
     /**

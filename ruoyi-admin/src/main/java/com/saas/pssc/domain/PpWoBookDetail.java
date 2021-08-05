@@ -8,77 +8,90 @@ import com.saas.common.annotation.Excel;
 import com.saas.common.core.domain.BaseEntity;
 
 /**
- * 工单报工记录明细对象 pp_wo_book_detail
+ * 工单制造信息对象 pp_wo_book_detail
  * 
  * @author admin
- * @date 2021-07-24
+ * @date 2021-08-03
  */
 public class PpWoBookDetail extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    private Long id;
+    private String id;
 
     /** 主表ID */
-    private Long mainId;
+    private String mainId;
 
-    /** 材料类型 0用料信息 1工序信息 2未知 */
-    private String mtype;
+    /** 子工单号 */
+    @Excel(name = "子工单号")
+    private String soncode;
 
-    /** 材料编号 */
-    @Excel(name = "材料编号")
+    /** 产品编号 */
+    @Excel(name = "产品编号")
     private String mcode;
 
-    /** 材料名称 */
-    @Excel(name = "材料名称")
+    /** 产品名称 */
+    @Excel(name = "产品名称")
     private String mname;
 
-    /** 出库时间 */
+    /** 产品规格 */
+    @Excel(name = "产品规格")
+    private String mspec;
+
+    /** 开工时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    @Excel(name = "出库时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date otime;
+    @Excel(name = "开工时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date stime;
 
-    /** 出库批次号 */
-    @Excel(name = "出库批次号")
-    private String olot;
+    /** 完工时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @Excel(name = "完工时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date etime;
 
-    /** 材料检验结果 */
-    @Excel(name = "材料检验结果",readConverterExp = "0=异常,1=合格,2=未知")
-    private String qcResult;
+    /** 生产工序 */
+    @Excel(name = "生产工序")
+    private String cwork;
 
-    /** 预计上线时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    @Excel(name = "预计上线时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date expectOtime;
+    /** 生产机台 */
+    @Excel(name = "生产机台")
+    private String cstation;
+
+    /** 计划数量 */
+    @Excel(name = "计划数量")
+    private String planqty;
+
+    /** 投入数量 */
+    @Excel(name = "投入数量")
+    private String inputqty;
+
+    /** 产出数量 */
+    @Excel(name = "产出数量")
+    private String outputqty;
+
+    /** 标准耗时（小时） */
+    @Excel(name = "标准耗时")
+    private String stdtime;
+
+    /** 标准成品率% */
+    @Excel(name = "标准成品率%")
+    private String stdrate;
+
+    /** 实际耗时（小时） */
+    @Excel(name = "实际耗时")
+    private String acttime;
+
+    /** 实际成品率% */
+    @Excel(name = "实际成品率%")
+    private String actrate;
 
     /** 有效否 0失效1有效 */
     private String isValid;
 
-    /** 加工机台编号 */
-    @Excel(name = "加工机台编号")
-    private String pmcode;
-
-    /** 加工机台名称 */
-    @Excel(name = "加工机台名称")
-    private String pmname;
-
-    /** 加工人员编号 */
-    @Excel(name = "加工人员编号")
-    private String ppcode;
-
-    /** 加工人员名称 */
-    @Excel(name = "加工人员名称")
-    private String ppname;
-
-    /** 投入数量 */
-    @Excel(name = "投入数量")
-    private Long incount;
-
-    /** 产出数量 */
-    @Excel(name = "产出数量")
-    private Long outcount;
-
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+    
     /**  */
     private String attribute1;
 
@@ -88,32 +101,32 @@ public class PpWoBookDetail extends BaseEntity
     /**  */
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
-    public void setMainId(Long mainId) 
+    public void setMainId(String mainId) 
     {
         this.mainId = mainId;
     }
 
-    public Long getMainId() 
+    public String getMainId() 
     {
         return mainId;
     }
-    public void setMtype(String mtype) 
+    public void setSoncode(String soncode) 
     {
-        this.mtype = mtype;
+        this.soncode = soncode;
     }
 
-    public String getMtype() 
+    public String getSoncode() 
     {
-        return mtype;
+        return soncode;
     }
     public void setMcode(String mcode) 
     {
@@ -133,41 +146,113 @@ public class PpWoBookDetail extends BaseEntity
     {
         return mname;
     }
-    public void setOtime(Date otime) 
+    public void setMspec(String mspec) 
     {
-        this.otime = otime;
+        this.mspec = mspec;
     }
 
-    public Date getOtime() 
+    public String getMspec() 
     {
-        return otime;
+        return mspec;
     }
-    public void setOlot(String olot) 
+    public void setStime(Date stime) 
     {
-        this.olot = olot;
-    }
-
-    public String getOlot() 
-    {
-        return olot;
-    }
-    public void setQcResult(String qcResult) 
-    {
-        this.qcResult = qcResult;
+        this.stime = stime;
     }
 
-    public String getQcResult() 
+    public Date getStime() 
     {
-        return qcResult;
+        return stime;
     }
-    public void setExpectOtime(Date expectOtime) 
+    public void setEtime(Date etime) 
     {
-        this.expectOtime = expectOtime;
+        this.etime = etime;
     }
 
-    public Date getExpectOtime() 
+    public Date getEtime() 
     {
-        return expectOtime;
+        return etime;
+    }
+    public void setCwork(String cwork) 
+    {
+        this.cwork = cwork;
+    }
+
+    public String getCwork() 
+    {
+        return cwork;
+    }
+    public void setCstation(String cstation) 
+    {
+        this.cstation = cstation;
+    }
+
+    public String getCstation() 
+    {
+        return cstation;
+    }
+    public void setPlanqty(String planqty) 
+    {
+        this.planqty = planqty;
+    }
+
+    public String getPlanqty() 
+    {
+        return planqty;
+    }
+    public void setInputqty(String inputqty) 
+    {
+        this.inputqty = inputqty;
+    }
+
+    public String getInputqty() 
+    {
+        return inputqty;
+    }
+    public void setOutputqty(String outputqty) 
+    {
+        this.outputqty = outputqty;
+    }
+
+    public String getOutputqty() 
+    {
+        return outputqty;
+    }
+    public void setStdtime(String stdtime) 
+    {
+        this.stdtime = stdtime;
+    }
+
+    public String getStdtime() 
+    {
+        return stdtime;
+    }
+    public void setStdrate(String stdrate) 
+    {
+        this.stdrate = stdrate;
+    }
+
+    public String getStdrate() 
+    {
+        return stdrate;
+    }
+    public void setActtime(String acttime) 
+    {
+        this.acttime = acttime;
+    }
+
+    public String getActtime() 
+    {
+        return acttime;
+    }
+    public void setActrate(String actrate) 
+    {
+        this.actrate = actrate;
+    }
+
+    public String getActrate() 
+    {
+        return actrate;
     }
     public void setIsValid(String isValid) 
     {
@@ -178,60 +263,15 @@ public class PpWoBookDetail extends BaseEntity
     {
         return isValid;
     }
-    public void setPmcode(String pmcode) 
-    {
-        this.pmcode = pmcode;
+
+    public String getRemark() {
+        return remark;
     }
 
-    public String getPmcode() 
-    {
-        return pmcode;
-    }
-    public void setPmname(String pmname) 
-    {
-        this.pmname = pmname;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
-    public String getPmname() 
-    {
-        return pmname;
-    }
-    public void setPpcode(String ppcode) 
-    {
-        this.ppcode = ppcode;
-    }
-
-    public String getPpcode() 
-    {
-        return ppcode;
-    }
-    public void setPpname(String ppname) 
-    {
-        this.ppname = ppname;
-    }
-
-    public String getPpname() 
-    {
-        return ppname;
-    }
-    public void setIncount(Long incount) 
-    {
-        this.incount = incount;
-    }
-
-    public Long getIncount() 
-    {
-        return incount;
-    }
-    public void setOutcount(Long outcount) 
-    {
-        this.outcount = outcount;
-    }
-
-    public Long getOutcount() 
-    {
-        return outcount;
-    }
     public void setAttribute1(String attribute1) 
     {
         this.attribute1 = attribute1;
@@ -265,20 +305,23 @@ public class PpWoBookDetail extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("mainId", getMainId())
-            .append("mtype", getMtype())
+            .append("soncode", getSoncode())
             .append("mcode", getMcode())
             .append("mname", getMname())
-            .append("otime", getOtime())
-            .append("olot", getOlot())
-            .append("qcResult", getQcResult())
-            .append("expectOtime", getExpectOtime())
+            .append("mspec", getMspec())
+            .append("stime", getStime())
+            .append("etime", getEtime())
+            .append("cwork", getCwork())
+            .append("cstation", getCstation())
+            .append("planqty", getPlanqty())
+            .append("inputqty", getInputqty())
+            .append("outputqty", getOutputqty())
+            .append("stdtime", getStdtime())
+            .append("stdrate", getStdrate())
+            .append("acttime", getActtime())
+            .append("actrate", getActrate())
+            .append("remark", getRemark())
             .append("isValid", getIsValid())
-            .append("pmcode", getPmcode())
-            .append("pmname", getPmname())
-            .append("ppcode", getPpcode())
-            .append("ppname", getPpname())
-            .append("incount", getIncount())
-            .append("outcount", getOutcount())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

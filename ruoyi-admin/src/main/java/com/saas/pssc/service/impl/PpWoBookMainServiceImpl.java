@@ -8,6 +8,8 @@ import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.uuid.IdUtils;
+import com.saas.pssc.domain.PpWoBookBom;
 import com.saas.pssc.domain.PpWoBookDetail;
 import com.saas.pssc.domain.PpWoBookMain;
 import com.saas.pssc.mapper.PpWoBookMainMapper;
@@ -18,10 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 工单报工记录Service业务层处理
+ * 工单记录Service业务层处理
  * 
  * @author admin
- * @date 2021-07-24
+ * @date 2021-08-03
  */
 @Service
 public class PpWoBookMainServiceImpl implements IPpWoBookMainService 
@@ -30,37 +32,22 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
     private PpWoBookMainMapper ppWoBookMainMapper;
 
     /**
-     * 查询工单报工记录
+     * 查询工单记录
      * 
-     * @param id 工单报工记录ID
-     * @return 工单报工记录
+     * @param id 工单记录ID
+     * @return 工单记录
      */
     @Override
-    public PpWoBookMain selectPpWoBookMainById(Long id)
+    public PpWoBookMain selectPpWoBookMainById(String id)
     {
-        PpWoBookMain bookMain = ppWoBookMainMapper.selectPpWoBookMainById(id);
-        List<PpWoBookDetail> mdetailList = new ArrayList<PpWoBookDetail>();//用料信息
-        List<PpWoBookDetail> craftdetailList = new ArrayList<PpWoBookDetail>();//工艺信息
-        if(null!=bookMain && !StringUtils.isEmpty(bookMain.getPpWoBookDetailList())){
-            for(PpWoBookDetail detail : bookMain.getPpWoBookDetailList()){
-                if(Long.valueOf(detail.getMtype()) == 0){
-                    mdetailList.add(detail);
-                }
-                if(Long.valueOf(detail.getMtype()) == 1){
-                    craftdetailList.add(detail);
-                }
-            }
-        }
-        bookMain.setMdetailList(mdetailList);
-        bookMain.setCraftdetailList(craftdetailList);
-        return bookMain;
+        return ppWoBookMainMapper.selectPpWoBookMainById(id);
     }
 
     /**
-     * 查询工单报工记录列表
+     * 查询工单记录列表
      * 
-     * @param ppWoBookMain 工单报工记录
-     * @return 工单报工记录
+     * @param ppWoBookMain 工单记录
+     * @return 工单记录
      */
     @Override
     @DataScope(userAlias = "su")
@@ -70,26 +57,26 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
     }
 
     /**
-     * 新增工单报工记录
+     * 新增工单记录
      * 
-     * @param ppWoBookMain 工单报工记录
+     * @param ppWoBookMain 工单记录
      * @return 结果
      */
     @Transactional
     @Override
     public int insertPpWoBookMain(PpWoBookMain ppWoBookMain)
     {
+        ppWoBookMain.setId(IdUtils.fastSimpleUUID());
         ppWoBookMain.setCreateTime(DateUtils.getNowDate());
-        ppWoBookMain.setUpdateTime(DateUtils.getNowDate());
         int rows = ppWoBookMainMapper.insertPpWoBookMain(ppWoBookMain);
-        insertPpWoBookDetail(ppWoBookMain);
+        insertPpWoBookDetailAndBom(ppWoBookMain);
         return rows;
     }
 
     /**
-     * 修改工单报工记录
+     * 修改工单记录
      * 
-     * @param ppWoBookMain 工单报工记录
+     * @param ppWoBookMain 工单记录
      * @return 结果
      */
     @Transactional
@@ -98,12 +85,13 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
     {
         ppWoBookMain.setUpdateTime(DateUtils.getNowDate());
         ppWoBookMainMapper.deletePpWoBookDetailByMainId(ppWoBookMain.getId());
-        insertPpWoBookDetail(ppWoBookMain);
+        ppWoBookMainMapper.deletePpWoBookBomByMainId(ppWoBookMain.getId());
+        insertPpWoBookDetailAndBom(ppWoBookMain);
         return ppWoBookMainMapper.updatePpWoBookMain(ppWoBookMain);
     }
 
     /**
-     * 删除工单报工记录对象
+     * 删除工单记录对象
      * 
      * @param ids 需要删除的数据ID
      * @return 结果
@@ -113,60 +101,65 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
     public int deletePpWoBookMainByIds(String ids)
     {
         ppWoBookMainMapper.deletePpWoBookDetailByMainIds(Convert.toStrArray(ids));
+        ppWoBookMainMapper.deletePpWoBookBomByMainIds(Convert.toStrArray(ids));
         return ppWoBookMainMapper.updatePpWoBookMainByIds(Convert.toStrArray(ids));
     }
 
     /**
-     * 删除工单报工记录信息
+     * 删除工单记录信息
      * 
-     * @param id 工单报工记录ID
+     * @param id 工单记录ID
      * @return 结果
      */
     @Override
-    public int deletePpWoBookMainById(Long id)
+    public int deletePpWoBookMainById(String id)
     {
         ppWoBookMainMapper.deletePpWoBookDetailByMainId(id);
         return ppWoBookMainMapper.updatePpWoBookMainById(id);
     }
 
     /**
-     * 新增工单报工记录明细信息
+     * 新增工单制造信息
      * 
-     * @param ppWoBookMain 工单报工记录对象
+     * @param ppWoBookMain 工单记录对象
      */
-    public void insertPpWoBookDetail(PpWoBookMain ppWoBookMain)
+    public void insertPpWoBookDetailAndBom(PpWoBookMain ppWoBookMain)
     {
-        List<PpWoBookDetail> ppWoBookDetailList =  new ArrayList<>();
-        //用料信息
-        if(!StringUtils.isEmpty(ppWoBookMain.getMdetailList())){
-            for(PpWoBookDetail detail : ppWoBookMain.getMdetailList()){
-                detail.setMtype("0");
-                detail.setCreateBy(ShiroUtils.getLoginName());
-                detail.setUpdateBy(ShiroUtils.getLoginName());
-            }
-            ppWoBookDetailList.addAll(ppWoBookMain.getMdetailList());
-        }
-        //工艺信息
-        if(!StringUtils.isEmpty(ppWoBookMain.getCraftdetailList())){
-            for(PpWoBookDetail detail : ppWoBookMain.getCraftdetailList()){
-                detail.setMtype("1");
-                detail.setCreateBy(ShiroUtils.getLoginName());
-                detail.setUpdateBy(ShiroUtils.getLoginName());
-            }
-            ppWoBookDetailList.addAll(ppWoBookMain.getCraftdetailList());
-        }
-        Long id = ppWoBookMain.getId();
+        //工单制造信息
+        List<PpWoBookDetail> ppWoBookDetailList = ppWoBookMain.getPpWoBookDetailList();
+        String id = ppWoBookMain.getId();
         if (StringUtils.isNotNull(ppWoBookDetailList))
         {
             List<PpWoBookDetail> list = new ArrayList<PpWoBookDetail>();
             for (PpWoBookDetail ppWoBookDetail : ppWoBookDetailList)
             {
+                ppWoBookDetail.setId(IdUtils.fastSimpleUUID());
                 ppWoBookDetail.setMainId(id);
+                ppWoBookDetail.setCreateBy(ShiroUtils.getLoginName());
+                ppWoBookDetail.setUpdateBy(ShiroUtils.getLoginName());
                 list.add(ppWoBookDetail);
             }
             if (list.size() > 0)
             {
                 ppWoBookMainMapper.batchPpWoBookDetail(list);
+            }
+        }
+        //工单BOM信息
+        List<PpWoBookBom> ppWoBookBomList = ppWoBookMain.getPpWoBookBomList();
+        if (StringUtils.isNotNull(ppWoBookBomList))
+        {
+            List<PpWoBookBom> list = new ArrayList<PpWoBookBom>();
+            for (PpWoBookBom ppWoBookBom : ppWoBookBomList)
+            {
+                ppWoBookBom.setId(IdUtils.fastSimpleUUID());
+                ppWoBookBom.setMainId(id);
+                ppWoBookBom.setCreateBy(ShiroUtils.getLoginName());
+                ppWoBookBom.setUpdateBy(ShiroUtils.getLoginName());
+                list.add(ppWoBookBom);
+            }
+            if (list.size() > 0)
+            {
+                ppWoBookMainMapper.batchPpWoBookBom(list);
             }
         }
     }

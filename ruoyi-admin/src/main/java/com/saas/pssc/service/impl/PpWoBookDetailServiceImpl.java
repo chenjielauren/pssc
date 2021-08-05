@@ -10,10 +10,10 @@ import com.saas.pssc.service.IPpWoBookDetailService;
 import com.saas.common.core.text.Convert;
 
 /**
- * 工单报工记录明细Service业务层处理
+ * 工单制造信息Service业务层处理
  * 
  * @author admin
- * @date 2021-07-24
+ * @date 2021-08-03
  */
 @Service
 public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService 
@@ -22,22 +22,22 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
     private PpWoBookDetailMapper ppWoBookDetailMapper;
 
     /**
-     * 查询工单报工记录明细
+     * 查询工单制造信息
      * 
-     * @param id 工单报工记录明细ID
-     * @return 工单报工记录明细
+     * @param id 工单制造信息ID
+     * @return 工单制造信息
      */
     @Override
-    public PpWoBookDetail selectPpWoBookDetailById(Long id)
+    public PpWoBookDetail selectPpWoBookDetailById(String id)
     {
         return ppWoBookDetailMapper.selectPpWoBookDetailById(id);
     }
 
     /**
-     * 查询工单报工记录明细列表
+     * 查询工单制造信息列表
      * 
-     * @param ppWoBookDetail 工单报工记录明细
-     * @return 工单报工记录明细
+     * @param ppWoBookDetail 工单制造信息
+     * @return 工单制造信息
      */
     @Override
     public List<PpWoBookDetail> selectPpWoBookDetailList(PpWoBookDetail ppWoBookDetail)
@@ -46,9 +46,9 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
     }
 
     /**
-     * 新增工单报工记录明细
+     * 新增工单制造信息
      * 
-     * @param ppWoBookDetail 工单报工记录明细
+     * @param ppWoBookDetail 工单制造信息
      * @return 结果
      */
     @Override
@@ -59,9 +59,9 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
     }
 
     /**
-     * 修改工单报工记录明细
+     * 修改工单制造信息
      * 
-     * @param ppWoBookDetail 工单报工记录明细
+     * @param ppWoBookDetail 工单制造信息
      * @return 结果
      */
     @Override
@@ -72,7 +72,7 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
     }
 
     /**
-     * 删除工单报工记录明细对象
+     * 删除工单制造信息对象
      * 
      * @param ids 需要删除的数据ID
      * @return 结果
@@ -84,13 +84,13 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
     }
 
     /**
-     * 删除工单报工记录明细信息
+     * 删除工单制造信息信息
      * 
-     * @param id 工单报工记录明细ID
+     * @param id 工单制造信息ID
      * @return 结果
      */
     @Override
-    public int deletePpWoBookDetailById(Long id)
+    public int deletePpWoBookDetailById(String id)
     {
         return ppWoBookDetailMapper.deletePpWoBookDetailById(id);
     }

@@ -437,6 +437,7 @@ var sub = {
     	$("#" + table.options.id).bootstrapTable("updateRow", params);
     },
     delColumn: function(column) {
+        debugger;
     	sub.editColumn();
     	var subColumn = $.common.isEmpty(column) ? "index" : column;
     	var ids = $.table.selectColumns(subColumn);
