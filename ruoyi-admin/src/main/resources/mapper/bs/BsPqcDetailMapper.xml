@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBsPqcDetailById" parameterType="Long" resultMap="BsPqcDetailResult">
+    <select id="selectBsPqcDetailById" parameterType="String" resultMap="BsPqcDetailResult">
         <include refid="selectBsPqcDetailVo"/>
         where id = #{id}
     </select>
@@ -106,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteBsPqcDetailById" parameterType="Long">
+    <delete id="deleteBsPqcDetailById" parameterType="String">
         delete from bs_pqc_detail where id = #{id}
     </delete>
 

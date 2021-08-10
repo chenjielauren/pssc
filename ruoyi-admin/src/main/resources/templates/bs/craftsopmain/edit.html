@@ -76,7 +76,6 @@
                     field: 'index',
                     align: 'center',
                     title: "序号",
-                    visible: false,
                     formatter: function (value, row, index) {
                     	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
@@ -106,13 +105,11 @@
                     align: 'center',
                     title: '文件名称',
                     formatter: function(value, row, index) {
-                        if($.common.isNotEmpty(value)){
-                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsSopTechDetailList[%s].fileName' value='%s'><img id='img%s' class='img-circle img-xs' src='%s'/>", index, value,index, value);
-                            return html;
-                        } else {
-                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsSopTechDetailList[%s].fileName' value='%s'><img id='img%s' class='img-circle img-xs'/>", index,value,index);
-                            return html;
-                        }
+                        var actions = [];
+                        actions.push($.common.sprintf("<input class='form-control' type='hidden' name='bsSopTechDetailList[%s].fileName' value='%s'>", index, value));
+                        actions.push($.common.sprintf("<input class='form-control' type='hidden' name='bsSopTechDetailList[%s].fileUrl' value='%s'>", index, row.fileUrl));
+                        actions.push($.common.sprintf("<a id='a%s' href='%s' target='_blank'>%s</a>",index,row.fileUrl,value));                        
+                        return actions.join('');
                     }
                 },
                 {
@@ -242,13 +239,11 @@
                     align: 'center',
                     title: '文件名称',
                     formatter: function(value, row, index) {
-                        if($.common.isNotEmpty(value)){
-                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsSopProdDetailList[%s].fileName' value='%s'><img id='img%s' class='img-circle img-xs' src='%s'/>", index, value,index, value);
-                            return html;
-                        } else {
-                            var html = $.common.sprintf("<input class='form-control' type='hidden' name='bsSopProdDetailList[%s].fileName' value='%s'><img id='img%s' class='img-circle img-xs'/>", index,value,index);
-                            return html;
-                        }
+                        var actions = [];
+                        actions.push($.common.sprintf("<input class='form-control' type='hidden' name='bsSopProdDetailList[%s].fileName' value='%s'>", index, value));
+                        actions.push($.common.sprintf("<input class='form-control' type='hidden' name='bsSopProdDetailList[%s].fileUrl' value='%s'>", index, row.fileUrl));
+                        actions.push($.common.sprintf("<a id='a%s' href='%s' target='_blank'>%s</a>",index,row.fileUrl,value));                        
+                        return actions.join('');
                     }
                 },
                 {

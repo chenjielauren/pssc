@@ -19,7 +19,7 @@ public class QcMatCheckMain extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 计划工单号ID */
-    private Long id;
+    private String id;
 
     /** 检验单号 */
     @Excel(name = "检验单号")
@@ -32,6 +32,10 @@ public class QcMatCheckMain extends BaseEntity
     /** 材料名称 */
     @Excel(name = "材料名称")
     private String pname;
+
+    /** 材料规格 */
+    @Excel(name = "材料规格")
+    private String pspec;
 
     /** 批次号 */
     @Excel(name = "批次号")
@@ -53,6 +57,9 @@ public class QcMatCheckMain extends BaseEntity
     /** 检验结果 */
     @Excel(name = "检验结果",readConverterExp = "0=异常,1=合格,2=未知")
     private String qcResult;
+    
+    @Excel(name = "处理结果",readConverterExp = "0=合格入库,1=让步接受,2=退货,3=未知")
+    private String handleResult;
 
     /** 有效否 */
     private String isValid;
@@ -73,12 +80,12 @@ public class QcMatCheckMain extends BaseEntity
     /** 材料检验信息 */
     private List<QcMatCheckDetail> qcMatCheckDetailList;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -127,6 +134,15 @@ public class QcMatCheckMain extends BaseEntity
     {
         return pname;
     }
+    
+    public String getPspec() {
+        return pspec;
+    }
+
+    public void setPspec(String pspec) {
+        this.pspec = pspec;
+    }
+    
     public void setLot(String lot) 
     {
         this.lot = lot;
@@ -157,6 +173,14 @@ public class QcMatCheckMain extends BaseEntity
     public void setIsValid(String isValid) 
     {
         this.isValid = isValid;
+    }
+
+    public String getHandleResult() {
+        return handleResult;
+    }
+
+    public void setHandleResult(String handleResult) {
+        this.handleResult = handleResult;
     }
 
     public String getIsValid() 
@@ -242,5 +266,4 @@ public class QcMatCheckMain extends BaseEntity
             .append("qcMatCheckDetailList", getQcMatCheckDetailList())
             .toString();
     }
-    
 }

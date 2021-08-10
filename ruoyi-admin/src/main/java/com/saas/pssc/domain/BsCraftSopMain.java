@@ -19,7 +19,7 @@ public class BsCraftSopMain extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 工艺ID */
-    private Long id;
+    private String id;
 
     /** 产品编号 */
     @Excel(name = "产品编号")
@@ -31,6 +31,10 @@ public class BsCraftSopMain extends BaseEntity
 
     /** 有效否 */
     private String isValid;
+
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
 
     /**  */
     private String attribute1;
@@ -50,12 +54,12 @@ public class BsCraftSopMain extends BaseEntity
     /** 工艺标准信息 */
     private List<BsCraftSopDetail> bsSopProdDetailList;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -85,6 +89,13 @@ public class BsCraftSopMain extends BaseEntity
     public String getIsValid() 
     {
         return isValid;
+    }
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
     public void setAttribute1(String attribute1) 
     {

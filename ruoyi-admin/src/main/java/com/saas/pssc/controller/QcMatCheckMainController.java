@@ -98,7 +98,7 @@ public class QcMatCheckMainController extends BaseController
      * 修改原材料检验记录
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         QcMatCheckMain qcMatCheckMain = qcMatCheckMainService.selectQcMatCheckMainById(id);
         mmap.put("qcMatCheckMain", qcMatCheckMain);

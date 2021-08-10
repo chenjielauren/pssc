@@ -17,7 +17,7 @@ public class BsPqcMain extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 产品ID */
-    private Long id;
+    private String id;
 
     /** 产品编号 */
     @Excel(name = "产品编号")
@@ -27,12 +27,16 @@ public class BsPqcMain extends BaseEntity
     @Excel(name = "产品名称")
     private String name;
 
-    /** 检验工序 */
-    @Excel(name = "检验工序")
-    private String procName;
+    /** 产品规格 */
+    @Excel(name = "产品规格")
+    private String spec;
 
     /** 是否有效 */
     private String isValid;
+
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
 
     private String attribute1;
 
@@ -49,7 +53,7 @@ public class BsPqcMain extends BaseEntity
     /** 自检标准明细信息 */
     private List<BsPqcDetail> zjDetailList;
 
-    /** 巡检验标准明细信息 */
+    /** 专检验标准明细信息 */
     private List<BsPqcDetail> xjDetailList;
 
     private Long sjcount;
@@ -58,12 +62,12 @@ public class BsPqcMain extends BaseEntity
 
     private Long zjcount;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -85,14 +89,13 @@ public class BsPqcMain extends BaseEntity
     {
         return name;
     }
-    public void setProcName(String procName) 
-    {
-        this.procName = procName;
+    
+    public String getSpec() {
+        return spec;
     }
 
-    public String getProcName() 
-    {
-        return procName;
+    public void setSpec(String spec) {
+        this.spec = spec;
     }
     public void setIsValid(String isValid) 
     {
@@ -108,6 +111,14 @@ public class BsPqcMain extends BaseEntity
         this.attribute1 = attribute1;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    
     public String getAttribute1() 
     {
         return attribute1;
@@ -197,7 +208,6 @@ public class BsPqcMain extends BaseEntity
             .append("Id", getId())
             .append("pcode", getPcode())
             .append("name", getName())
-            .append("procName", getProcName())
             .append("remark", getRemark())
             .append("isValid", getIsValid())
             .append("createBy", getCreateBy())

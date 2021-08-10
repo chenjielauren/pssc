@@ -17,7 +17,7 @@ public interface ISdDeliveryService
      * @param id 发货信息ID
      * @return 发货信息
      */
-    public SdDelivery selectSdDeliveryById(Long id);
+    public SdDelivery selectSdDeliveryById(String id);
 
     /**
      * 查询发货信息列表
@@ -57,5 +57,5 @@ public interface ISdDeliveryService
      * @param id 发货信息ID
      * @return 结果
      */
-    public int deleteSdDeliveryById(Long id);
+    public int deleteSdDeliveryById(String id);
 }

@@ -28,7 +28,7 @@ public class QcMatCheckDetailServiceImpl implements IQcMatCheckDetailService
      * @return 原材料检验明细
      */
     @Override
-    public QcMatCheckDetail selectQcMatCheckDetailById(Long id)
+    public QcMatCheckDetail selectQcMatCheckDetailById(String id)
     {
         return qcMatCheckDetailMapper.selectQcMatCheckDetailById(id);
     }
@@ -90,7 +90,7 @@ public class QcMatCheckDetailServiceImpl implements IQcMatCheckDetailService
      * @return 结果
      */
     @Override
-    public int deleteQcMatCheckDetailById(Long id)
+    public int deleteQcMatCheckDetailById(String id)
     {
         return qcMatCheckDetailMapper.deleteQcMatCheckDetailById(id);
     }

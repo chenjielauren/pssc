@@ -58,4 +58,8 @@ public interface IQcBadProjectMainService
      * @return 结果
      */
     public int deleteQcBadProjectMainById(String id);
+
+	public List<QcBadProjectMain> loadPieChartByProject(QcBadProjectMain qcBadProjectMain);
+
+	public List<QcBadProjectMain> loadPieChartByPname(QcBadProjectMain qcBadProjectMain);
 }

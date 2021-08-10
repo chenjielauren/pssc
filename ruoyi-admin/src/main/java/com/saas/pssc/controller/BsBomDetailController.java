@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.saas.common.annotation.Log;
 import com.saas.common.enums.BusinessType;
 import com.saas.pssc.domain.BsBomDetail;
@@ -17,14 +19,13 @@ import com.saas.pssc.service.IBsBomDetailService;
 import com.saas.common.core.controller.BaseController;
 import com.saas.common.core.domain.AjaxResult;
 import com.saas.common.utils.poi.ExcelUtil;
-import com.saas.common.utils.StringUtils;
-import com.saas.common.core.domain.Ztree;
+import com.saas.common.core.page.TableDataInfo;
 
 /**
  * bom物料清单明细Controller
  * 
  * @author admin
- * @date 2021-07-31
+ * @date 2021-08-09
  */
 @Controller
 @RequestMapping("/bs/bomdetail")
@@ -43,15 +44,16 @@ public class BsBomDetailController extends BaseController
     }
 
     /**
-     * 查询bom物料清单明细树列表
+     * 查询bom物料清单明细列表
      */
     @RequiresPermissions("bs:bomdetail:list")
     @PostMapping("/list")
     @ResponseBody
-    public List<BsBomDetail> list(BsBomDetail bsBomDetail)
+    public TableDataInfo list(BsBomDetail bsBomDetail)
     {
+        startPage();
         List<BsBomDetail> list = bsBomDetailService.selectBsBomDetailList(bsBomDetail);
-        return list;
+        return getDataTable(list);
     }
 
     /**
@@ -71,13 +73,9 @@ public class BsBomDetailController extends BaseController
     /**
      * 新增bom物料清单明细
      */
-    @GetMapping(value = { "/add/{id}", "/add/" })
-    public String add(@PathVariable(value = "id", required = false) Long id, ModelMap mmap)
+    @GetMapping("/add")
+    public String add()
     {
-        if (StringUtils.isNotNull(id))
-        {
-            mmap.put("bsBomDetail", bsBomDetailService.selectBsBomDetailById(id));
-        }
         return prefix + "/add";
     }
 
@@ -97,7 +95,7 @@ public class BsBomDetailController extends BaseController
      * 修改bom物料清单明细
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         BsBomDetail bsBomDetail = bsBomDetailService.selectBsBomDetailById(id);
         mmap.put("bsBomDetail", bsBomDetail);
@@ -117,38 +115,37 @@ public class BsBomDetailController extends BaseController
     }
 
     /**
-     * 删除
+     * 删除bom物料清单明细
      */
     @RequiresPermissions("bs:bomdetail:remove")
     @Log(title = "bom物料清单明细", businessType = BusinessType.DELETE)
-    @GetMapping("/remove/{id}")
+    @PostMapping( "/remove")
     @ResponseBody
-    public AjaxResult remove(@PathVariable("id") Long id)
+    public AjaxResult remove(String ids)
     {
-        return toAjax(bsBomDetailService.deleteBsBomDetailById(id));
+        return toAjax(bsBomDetailService.deleteBsBomDetailByIds(ids));
     }
 
     /**
-     * 选择bom物料清单明细树
-     */
-    @GetMapping(value = { "/selectBomdetailTree/{id}", "/selectBomdetailTree/" })
-    public String selectBomdetailTree(@PathVariable(value = "id", required = false) Long id, ModelMap mmap)
-    {
-        if (StringUtils.isNotNull(id))
-        {
-            mmap.put("bsBomDetail", bsBomDetailService.selectBsBomDetailById(id));
-        }
-        return prefix + "/tree";
-    }
-
-    /**
-     * 加载bom物料清单明细树列表
-     */
-    @GetMapping("/treeData")
+     * 下载模板
+    */
+    @GetMapping("/importTemplate")
     @ResponseBody
-    public List<Ztree> treeData()
+    public AjaxResult importTemplate()
     {
-        List<Ztree> ztrees = bsBomDetailService.selectBsBomDetailTree();
-        return ztrees;
+        ExcelUtil<BsBomDetail> util = new ExcelUtil<BsBomDetail>(BsBomDetail.class);
+        return util.importTemplateExcel("BOM明细列表");
+    }
+    
+    /**
+     * 导入数据
+     */
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<BsBomDetail> util = new ExcelUtil<BsBomDetail>(BsBomDetail.class);
+        List<BsBomDetail> list = util.importExcel(file.getInputStream());
+        return AjaxResult.success(list);
     }
 }

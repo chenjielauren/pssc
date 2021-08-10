@@ -2,13 +2,12 @@ package com.saas.pssc.service;
 
 import java.util.List;
 import com.saas.pssc.domain.BsBomDetail;
-import com.saas.common.core.domain.Ztree;
 
 /**
  * bom物料清单明细Service接口
  * 
  * @author admin
- * @date 2021-07-31
+ * @date 2021-08-09
  */
 public interface IBsBomDetailService 
 {
@@ -18,7 +17,7 @@ public interface IBsBomDetailService
      * @param id bom物料清单明细ID
      * @return bom物料清单明细
      */
-    public BsBomDetail selectBsBomDetailById(Long id);
+    public BsBomDetail selectBsBomDetailById(String id);
 
     /**
      * 查询bom物料清单明细列表
@@ -58,12 +57,5 @@ public interface IBsBomDetailService
      * @param id bom物料清单明细ID
      * @return 结果
      */
-    public int deleteBsBomDetailById(Long id);
-
-    /**
-     * 查询bom物料清单明细树列表
-     * 
-     * @return 所有bom物料清单明细信息
-     */
-    public List<Ztree> selectBsBomDetailTree();
+    public int deleteBsBomDetailById(String id);
 }

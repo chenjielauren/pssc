@@ -7,7 +7,7 @@ import com.saas.pssc.domain.BsBomMain;
  * bom物料清单Service接口
  * 
  * @author admin
- * @date 2021-07-31
+ * @date 2021-08-09
  */
 public interface IBsBomMainService 
 {
@@ -17,7 +17,7 @@ public interface IBsBomMainService
      * @param id bom物料清单ID
      * @return bom物料清单
      */
-    public BsBomMain selectBsBomMainById(Long id);
+    public BsBomMain selectBsBomMainById(String id);
 
     /**
      * 查询bom物料清单列表
@@ -57,5 +57,5 @@ public interface IBsBomMainService
      * @param id bom物料清单ID
      * @return 结果
      */
-    public int deleteBsBomMainById(Long id);
+    public int deleteBsBomMainById(String id);
 }

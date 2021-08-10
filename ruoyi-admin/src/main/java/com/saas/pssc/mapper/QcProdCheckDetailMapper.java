@@ -17,7 +17,7 @@ public interface QcProdCheckDetailMapper
      * @param id 成品检验明细ID
      * @return 成品检验明细
      */
-    public QcProdCheckDetail selectQcProdCheckDetailById(Long id);
+    public QcProdCheckDetail selectQcProdCheckDetailById(String id);
 
     /**
      * 查询成品检验明细列表
@@ -49,7 +49,7 @@ public interface QcProdCheckDetailMapper
      * @param id 成品检验明细ID
      * @return 结果
      */
-    public int deleteQcProdCheckDetailById(Long id);
+    public int deleteQcProdCheckDetailById(String id);
 
     /**
      * 批量删除成品检验明细

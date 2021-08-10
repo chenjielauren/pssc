@@ -2,12 +2,13 @@ package com.saas.pssc.mapper;
 
 import java.util.List;
 import com.saas.pssc.domain.BsBomMain;
+import com.saas.pssc.domain.BsBomDetail;
 
 /**
  * bom物料清单Mapper接口
  * 
  * @author admin
- * @date 2021-07-31
+ * @date 2021-08-09
  */
 public interface BsBomMainMapper 
 {
@@ -17,7 +18,7 @@ public interface BsBomMainMapper
      * @param id bom物料清单ID
      * @return bom物料清单
      */
-    public BsBomMain selectBsBomMainById(Long id);
+    public BsBomMain selectBsBomMainById(String id);
 
     /**
      * 查询bom物料清单列表
@@ -44,28 +45,12 @@ public interface BsBomMainMapper
     public int updateBsBomMain(BsBomMain bsBomMain);
 
     /**
-     * 失效bom物料清单
-     * 
-     * @param id bom物料清单ID
-     * @return 结果
-     */
-    public int updateBsBomMainById(Long id);
-
-    /**
-     * 批量失效bom物料清单
-     * 
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    public int updateBsBomMainByIds(String[] ids);
-
-    /**
      * 删除bom物料清单
      * 
      * @param id bom物料清单ID
      * @return 结果
      */
-    public int deleteBsBomMainById(Long id);
+    public int deleteBsBomMainById(String id);
 
     /**
      * 批量删除bom物料清单
@@ -74,4 +59,33 @@ public interface BsBomMainMapper
      * @return 结果
      */
     public int deleteBsBomMainByIds(String[] ids);
+
+    /**
+     * 批量删除bom物料清单明细
+     * 
+     * @param customerIds 需要删除的数据ID
+     * @return 结果
+     */
+    public int deleteBsBomDetailByMainIds(String[] ids);
+    
+    /**
+     * 批量新增bom物料清单明细
+     * 
+     * @param bsBomDetailList bom物料清单明细列表
+     * @return 结果
+     */
+    public int batchBsBomDetail(List<BsBomDetail> bsBomDetailList);
+    
+
+    /**
+     * 通过bom物料清单ID删除bom物料清单明细信息
+     * 
+     * @param id bom物料清单ID
+     * @return 结果
+     */
+    public int deleteBsBomDetailByMainId(String id);
+
+	public int updateBsBomMainByIds(String[] strArray);
+
+	public int updateBsBomMainById(String id);
 }

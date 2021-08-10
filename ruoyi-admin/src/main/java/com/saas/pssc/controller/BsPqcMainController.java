@@ -99,7 +99,7 @@ public class BsPqcMainController extends BaseController
      * 修改产品检验标准
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         BsPqcMain bsPqcMain = bsPqcMainService.selectBsPqcMainById(id);
         mmap.put("bsPqcMain", bsPqcMain);

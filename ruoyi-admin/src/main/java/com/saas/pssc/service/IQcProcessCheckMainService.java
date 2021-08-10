@@ -17,7 +17,7 @@ public interface IQcProcessCheckMainService
      * @param id 过程检验记录ID
      * @return 过程检验记录
      */
-    public QcProcessCheckMain selectQcProcessCheckMainById(Long id);
+    public QcProcessCheckMain selectQcProcessCheckMainById(String id);
 
     /**
      * 查询过程检验记录列表
@@ -57,5 +57,5 @@ public interface IQcProcessCheckMainService
      * @param id 过程检验记录ID
      * @return 结果
      */
-    public int deleteQcProcessCheckMainById(Long id);
+    public int deleteQcProcessCheckMainById(String id);
 }

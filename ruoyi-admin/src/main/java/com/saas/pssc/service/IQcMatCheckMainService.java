@@ -17,7 +17,7 @@ public interface IQcMatCheckMainService
      * @param id 原材料检验记录ID
      * @return 原材料检验记录
      */
-    public QcMatCheckMain selectQcMatCheckMainById(Long id);
+    public QcMatCheckMain selectQcMatCheckMainById(String id);
 
     /**
      * 查询原材料检验记录列表
@@ -57,5 +57,5 @@ public interface IQcMatCheckMainService
      * @param id 原材料检验记录ID
      * @return 结果
      */
-    public int deleteQcMatCheckMainById(Long id);
+    public int deleteQcMatCheckMainById(String id);
 }

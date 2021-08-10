@@ -95,7 +95,7 @@ public class QcProcessCheckDetailController extends BaseController
      * 修改过程检验明细
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         QcProcessCheckDetail qcProcessCheckDetail = qcProcessCheckDetailService.selectQcProcessCheckDetailById(id);
         mmap.put("qcProcessCheckDetail", qcProcessCheckDetail);

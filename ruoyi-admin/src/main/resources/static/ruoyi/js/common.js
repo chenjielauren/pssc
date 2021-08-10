@@ -403,25 +403,38 @@ var storage = {
 // 主子表操作封装处理
 var sub = {
     editColumn: function() {
-    	var dataColumns = [];
+        debugger;
+        var dataColumns = [];
+        console.log(table.options.columns);
 		for (var columnIndex = 0; columnIndex < table.options.columns.length; columnIndex++) {
+            //保存文件路径
+            console.log(table.options.columns[columnIndex].field);
     		if (table.options.columns[columnIndex].visible != false) {
     			dataColumns.push(table.options.columns[columnIndex]);
-    		}
-    	}
+            }
+        }      
+        debugger; 
 		var params = new Array();
 		var data = $("#" + table.options.id).bootstrapTable('getData');
     	var count = data.length;
     	for (var dataIndex = 0; dataIndex < count; dataIndex++) {
     	    var columns = $('#' + table.options.id + ' tr[data-index="' + dataIndex + '"] td');
-    	    var obj = new Object();
+            var obj = new Object();
     	    for (var i = 0; i < columns.length; i++) {
+                debugger;
     	        var inputValue = $(columns[i]).find('input');
     	        var selectValue = $(columns[i]).find('select');
     	        var textareaValue = $(columns[i]).find('textarea');
-    	        var key = dataColumns[i].field;
+                var key = dataColumns[i].field;
+                console.log(key);
     	        if ($.common.isNotEmpty(inputValue.val())) {
-    	            obj[key] = inputValue.val();
+                    debugger;
+                    obj[key] = inputValue.val();
+                    //保存隐藏的文件路径
+                    if(key == "fileName" || key == "attachment"){
+                        obj["fileUrl"] = $(columns[i]).find('input[name$="fileUrl"]').val();
+                        $("#a"+i+"").text(inputValue.val());//设置超链接的值
+                    }
     	        } else if ($.common.isNotEmpty(selectValue.val())) {
     	            obj[key] = selectValue.val();
     	        } else if ($.common.isNotEmpty(textareaValue.val())) {
@@ -433,7 +446,9 @@ var sub = {
     	    var item = data[dataIndex];
     	    var extendObj = $.extend({}, item, obj);
     	    params.push({ index: dataIndex, row: extendObj });
-    	}
+        }
+        console.log(params);
+        console.log(table.options.id);
     	$("#" + table.options.id).bootstrapTable("updateRow", params);
     },
     delColumn: function(column) {

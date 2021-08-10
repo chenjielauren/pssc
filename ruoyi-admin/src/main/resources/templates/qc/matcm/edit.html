@@ -40,7 +40,11 @@
                     <input name="pname" th:field="*{pname}" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
+            <div class="form-group">   
+                <label class="col-sm-2 control-label">材料规格：</label>
+                <div class="col-sm-4">
+                    <input name="pspec" th:field="*{pspec}" class="form-control" type="text">
+                </div> 
                 <label class="col-sm-2 control-label is-required">批次号：</label>
                 <div class="col-sm-4">
                     <input name="lot" th:field="*{lot}" class="form-control" type="text" required>
@@ -60,9 +64,15 @@
                         <label th:for="${'qcResult_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
                     </div>
                 </div>
+                <label class="col-sm-2 control-label is-required">处理结果</label>
+                <div class="col-sm-4">
+                    <select name="handleResult" class="form-control m-b" th:with="type=${@dict.getType('qc_handle_result')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{handleResult}"></option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group" style="display: none;">
-                <label class="col-sm-2 control-label is-required">备注：</label>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注：</label>
                 <div class="col-sm-8">
                     <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
                 </div>
@@ -85,6 +95,7 @@
     <script th:inline="javascript">
         var prefix = ctx + "qc/matcm";
         var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
+        var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
         $("#form-matcm-edit").validate({
             focusCleanup: true
@@ -129,7 +140,7 @@
                 {
                     field: 'cproject',
                     align: 'center',
-                    title: '检验项目',
+                    title: '检验项目编号',
                     formatter: function(value, row, index) {
                         var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].cproject' value='%s'>", index, value);
                         return html;

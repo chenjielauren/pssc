@@ -16,10 +16,10 @@ public class QcMatCheckDetail extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    private Long id;
+    private String id;
 
     /** 主表ID */
-    private Long mainId;
+    private String mainId;
 
     /** 检验项目 */
     @Excel(name = "检验项目")
@@ -49,21 +49,21 @@ public class QcMatCheckDetail extends BaseEntity
     /**  */
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
-    public void setMainId(Long mainId) 
+    public void setMainId(String mainId) 
     {
         this.mainId = mainId;
     }
 
-    public Long getMainId() 
+    public String getMainId() 
     {
         return mainId;
     }

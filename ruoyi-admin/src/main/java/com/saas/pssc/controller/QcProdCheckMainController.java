@@ -98,7 +98,7 @@ public class QcProdCheckMainController extends BaseController
      * 修改成品检验记录
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         QcProdCheckMain qcProdCheckMain = qcProdCheckMainService.selectQcProdCheckMainById(id);
         mmap.put("qcProdCheckMain", qcProdCheckMain);

@@ -18,10 +18,10 @@ public class BsMcnDetail extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 工序ID */
-    private Long id;
+    private String id;
 
     /** 主表ID */
-    private Long mainId;
+    private String mainId;
 
     /** 变更单号 */
     @Excel(name = "变更单号")
@@ -39,6 +39,10 @@ public class BsMcnDetail extends BaseEntity
     /** 附件名称 */
     @Excel(name = "附件名称")
     private String attachment;
+    
+    /** 文件路径 */
+    @Excel(name = "文件路径")
+    private String fileUrl;
 
     /** 上传人 */
     @Excel(name = "上传人")
@@ -61,21 +65,21 @@ public class BsMcnDetail extends BaseEntity
     /**  */
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
-    public void setMainId(Long mainId) 
+    public void setMainId(String mainId) 
     {
         this.mainId = mainId;
     }
 
-    public Long getMainId() 
+    public String getMainId() 
     {
         return mainId;
     }
@@ -115,6 +119,14 @@ public class BsMcnDetail extends BaseEntity
     {
         return attachment;
     }
+    
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
     public void setUploadUser(String uploadUser) 
     {
         this.uploadUser = uploadUser;
@@ -142,6 +154,7 @@ public class BsMcnDetail extends BaseEntity
     {
         return isValid;
     }
+    
     public void setAttribute1(String attribute1) 
     {
         this.attribute1 = attribute1;

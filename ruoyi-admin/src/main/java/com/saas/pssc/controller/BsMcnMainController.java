@@ -99,7 +99,7 @@ public class BsMcnMainController extends BaseController
      * 修改4M变更单
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         BsMcnMain bsMcnMain = bsMcnMainService.selectBsMcnMainById(id);
         mmap.put("bsMcnMain", bsMcnMain);

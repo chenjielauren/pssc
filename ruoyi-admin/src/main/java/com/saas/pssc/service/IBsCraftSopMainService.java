@@ -1,6 +1,8 @@
 package com.saas.pssc.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.BsCraftSopMain;
 
 /**
@@ -17,7 +19,7 @@ public interface IBsCraftSopMainService
      * @param id 工艺标准与CCPID
      * @return 工艺标准与CCP
      */
-    public BsCraftSopMain selectBsCraftSopMainById(Long id);
+    public BsCraftSopMain selectBsCraftSopMainById(String id);
 
     /**
      * 查询工艺标准与CCP列表
@@ -57,5 +59,7 @@ public interface IBsCraftSopMainService
      * @param id 工艺标准与CCPID
      * @return 结果
      */
-    public int deleteBsCraftSopMainById(Long id);
+    public int deleteBsCraftSopMainById(String id);
+
+	public BsCraftSopMain selectBsCraftSopMainByMap(Map<String, Object> paramMap);
 }

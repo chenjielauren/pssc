@@ -28,7 +28,7 @@ public class QcProdCheckDetailServiceImpl implements IQcProdCheckDetailService
      * @return 成品检验明细
      */
     @Override
-    public QcProdCheckDetail selectQcProdCheckDetailById(Long id)
+    public QcProdCheckDetail selectQcProdCheckDetailById(String id)
     {
         return qcProdCheckDetailMapper.selectQcProdCheckDetailById(id);
     }
@@ -90,7 +90,7 @@ public class QcProdCheckDetailServiceImpl implements IQcProdCheckDetailService
      * @return 结果
      */
     @Override
-    public int deleteQcProdCheckDetailById(Long id)
+    public int deleteQcProdCheckDetailById(String id)
     {
         return qcProdCheckDetailMapper.deleteQcProdCheckDetailById(id);
     }

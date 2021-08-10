@@ -17,7 +17,7 @@ public interface BsMcnDetailMapper
      * @param id 4M变更单明细ID
      * @return 4M变更单明细
      */
-    public BsMcnDetail selectBsMcnDetailById(Long id);
+    public BsMcnDetail selectBsMcnDetailById(String id);
 
     /**
      * 查询4M变更单明细列表
@@ -49,7 +49,7 @@ public interface BsMcnDetailMapper
      * @param id 4M变更单明细ID
      * @return 结果
      */
-    public int deleteBsMcnDetailById(Long id);
+    public int deleteBsMcnDetailById(String id);
 
     /**
      * 批量删除4M变更单明细

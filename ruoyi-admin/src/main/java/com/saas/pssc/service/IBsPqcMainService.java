@@ -17,7 +17,7 @@ public interface IBsPqcMainService
      * @param Id 产品检验标准ID
      * @return 产品检验标准
      */
-    public BsPqcMain selectBsPqcMainById(Long Id);
+    public BsPqcMain selectBsPqcMainById(String Id);
 
     /**
      * 查询产品检验标准列表
@@ -57,5 +57,5 @@ public interface IBsPqcMainService
      * @param Id 产品检验标准ID
      * @return 结果
      */
-    public int deleteBsPqcMainById(Long Id);
+    public int deleteBsPqcMainById(String Id);
 }

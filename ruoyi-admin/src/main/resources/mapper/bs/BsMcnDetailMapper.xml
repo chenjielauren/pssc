@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="mdate"    column="mdate"    />
         <result property="mcontent"    column="mcontent"    />
         <result property="attachment"    column="attachment"    />
+        <result property="fileUrl"    column="file_url"    />
         <result property="uploadUser"    column="upload_user"    />
         <result property="uploadTime"    column="upload_time"    />
         <result property="isValid"    column="is_valid"    />
@@ -24,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsMcnDetailVo">
-        select id, main_id, mcode, mdate, mcontent, attachment, upload_user, upload_time, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_mcn_detail
+        select id, main_id, mcode, mdate, mcontent, attachment,file_url, upload_user, upload_time, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_mcn_detail
     </sql>
 
     <select id="selectBsMcnDetailList" parameterType="BsMcnDetail" resultMap="BsMcnDetailResult">
@@ -44,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBsMcnDetailById" parameterType="Long" resultMap="BsMcnDetailResult">
+    <select id="selectBsMcnDetailById" parameterType="String" resultMap="BsMcnDetailResult">
         <include refid="selectBsMcnDetailVo"/>
         where id = #{id}
     </select>
@@ -57,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mdate != null">mdate,</if>
             <if test="mcontent != null">mcontent,</if>
             <if test="attachment != null">attachment,</if>
+            <if test="fileUrl != null">file_url,</if>
             <if test="uploadUser != null">upload_user,</if>
             <if test="uploadTime != null">upload_time,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
@@ -73,6 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mdate != null">#{mdate},</if>
             <if test="mcontent != null">#{mcontent},</if>
             <if test="attachment != null">#{attachment},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
             <if test="uploadUser != null">#{uploadUser},</if>
             <if test="uploadTime != null">#{uploadTime},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
@@ -93,6 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mdate != null">mdate = #{mdate},</if>
             <if test="mcontent != null">mcontent = #{mcontent},</if>
             <if test="attachment != null">attachment = #{attachment},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
             <if test="uploadUser != null">upload_user = #{uploadUser},</if>
             <if test="uploadTime != null">upload_time = #{uploadTime},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
@@ -107,7 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteBsMcnDetailById" parameterType="Long">
+    <delete id="deleteBsMcnDetailById" parameterType="String">
         delete from bs_mcn_detail where id = #{id}
     </delete>
 

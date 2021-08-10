@@ -1,8 +1,6 @@
 package com.saas.pssc.service.impl;
 
 import java.util.List;
-import java.util.ArrayList;
-import com.saas.common.core.domain.Ztree;
 import com.saas.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,7 @@ import com.saas.common.core.text.Convert;
  * bom物料清单明细Service业务层处理
  * 
  * @author admin
- * @date 2021-07-31
+ * @date 2021-08-09
  */
 @Service
 public class BsBomDetailServiceImpl implements IBsBomDetailService 
@@ -30,7 +28,7 @@ public class BsBomDetailServiceImpl implements IBsBomDetailService
      * @return bom物料清单明细
      */
     @Override
-    public BsBomDetail selectBsBomDetailById(Long id)
+    public BsBomDetail selectBsBomDetailById(String id)
     {
         return bsBomDetailMapper.selectBsBomDetailById(id);
     }
@@ -92,30 +90,8 @@ public class BsBomDetailServiceImpl implements IBsBomDetailService
      * @return 结果
      */
     @Override
-    public int deleteBsBomDetailById(Long id)
+    public int deleteBsBomDetailById(String id)
     {
         return bsBomDetailMapper.deleteBsBomDetailById(id);
-    }
-
-    /**
-     * 查询bom物料清单明细树列表
-     * 
-     * @return 所有bom物料清单明细信息
-     */
-    @Override
-    public List<Ztree> selectBsBomDetailTree()
-    {
-        List<BsBomDetail> bsBomDetailList = bsBomDetailMapper.selectBsBomDetailList(new BsBomDetail());
-        List<Ztree> ztrees = new ArrayList<Ztree>();
-        for (BsBomDetail bsBomDetail : bsBomDetailList)
-        {
-            Ztree ztree = new Ztree();
-            ztree.setId(bsBomDetail.getId());
-            ztree.setpId(bsBomDetail.getMainId());
-            ztree.setName(bsBomDetail.getMname());
-            ztree.setTitle(bsBomDetail.getMname());
-            ztrees.add(ztree);
-        }
-        return ztrees;
     }
 }

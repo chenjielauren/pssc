@@ -11,17 +11,9 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>发货批次号：</label>
+                                <label style="width: 100px;">发货批次号：</label>
                                 <input type="text" name="dlot"/>
                             </li>
-                            <!-- <li>
-                                <label>订单号：</label>
-                                <input type="text" name="dcode"/>
-                            </li>
-                            <li>
-                                <label>产品编号：</label>
-                                <input type="text" name="pcode"/>
-                            </li> -->
                             <li>
                                 <label>产品名称：</label>
                                 <input type="text" name="pname"/>
@@ -31,12 +23,8 @@
                                 <input type="text" name="pspec"/>
                             </li>
                             <li>
-                                <label>成品批次号：</label>
+                                <label style="width: 100px;">产品批次号：</label>
                                 <input type="text" name="flot"/>
-                            </li>
-                            <li>
-                                <label>发货数量：</label>
-                                <input type="text" name="qty"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -98,6 +86,10 @@
                     title: '发货批次号'
                 },
                 {
+                    field: 'dtime',
+                    title: '发货时间'
+                },
+                {
                     field: 'dcode',
                     title: '订单号'
                 },
@@ -115,7 +107,7 @@
                 },
                 {
                     field: 'flot',
-                    title: '成品批次号'
+                    title: '产品批次号'
                 },
                 {
                     field: 'qty',
@@ -123,8 +115,7 @@
                 },
                 {
                     field: 'remark',
-                    title: '备注',
-                    visible: false
+                    title: '备注'
                 },
                 {
                     field: 'isValid',

@@ -71,6 +71,7 @@
         var editFlag = [[${@permission.hasPermi('qc:matcm:edit')}]];
         var removeFlag = [[${@permission.hasPermi('qc:matcm:remove')}]];
         var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
+        var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
         var prefix = ctx + "qc/matcm";
 
@@ -105,8 +106,16 @@
                     title: '材料名称'
                 },
                 {
+                    field: 'pspec',
+                    title: '材料规格'
+                },
+                {
                     field: 'lot',
                     title: '批次号'
+                },
+                {
+                    field: 'vendor',
+                    title: '供应商'
                 },
                 {
                     field: 'quser',
@@ -126,6 +135,13 @@
                     title: '检验结果',
                     formatter: function(value, row, index) {
                        return $.table.selectDictLabel(qcResultDatas, value);
+                    }
+                },
+                {
+                    field: 'handleResult',
+                    title: '处理结果',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(handleResultDatas, value);
                     }
                 },
                 {

@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectQcProdCheckDetailById" parameterType="Long" resultMap="QcProdCheckDetailResult">
+    <select id="selectQcProdCheckDetailById" parameterType="String" resultMap="QcProdCheckDetailResult">
         <include refid="selectQcProdCheckDetailVo"/>
         where id = #{id}
     </select>
@@ -47,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertQcProdCheckDetail" parameterType="QcProdCheckDetail" useGeneratedKeys="true" keyProperty="id">
         insert into qc_prod_check_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="mainId != null">main_id,</if>
             <if test="projectCode != null">project_code,</if>
             <if test="cproject != null">cproject,</if>
@@ -62,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="mainId != null">#{mainId},</if>
             <if test="projectCode != null">#{projectCode},</if>
             <if test="cproject != null">#{cproject},</if>
@@ -99,7 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteQcProdCheckDetailById" parameterType="Long">
+    <delete id="deleteQcProdCheckDetailById" parameterType="String">
         delete from qc_prod_check_detail where id = #{id}
     </delete>
 

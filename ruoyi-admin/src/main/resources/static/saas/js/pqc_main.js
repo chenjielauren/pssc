@@ -1,4 +1,4 @@
-//增加首检标准行、自检标准行、巡检标准行
+//增加首检标准行、自检标准行、专检标准行
 function addColumn(ptype,obj) {
     if(ptype == 0){//首检标准
         var count = $("#bootstrap-table1").bootstrapTable('getData').length;
@@ -40,7 +40,7 @@ function addColumn(ptype,obj) {
             }
         });
     }
-    if(ptype == 2){//巡检标准
+    if(ptype == 2){//专检标准
         var count = $("#bootstrap-table3").bootstrapTable('getData').length;
         sub.editColumn();
         
@@ -62,7 +62,7 @@ function addColumn(ptype,obj) {
     }
     
 }
-//删除首检标准行、自检标准行、巡检标准行
+//删除首检标准行、自检标准行、专检标准行
 function delColumn(ptype) {
     if(ptype == 0){
         debugger;

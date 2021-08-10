@@ -96,7 +96,7 @@ public class BsPqcDetailController extends BaseController
      * 修改产品检验标准明细
      */
     @GetMapping("/edit/{Id}")
-    public String edit(@PathVariable("Id") Long Id, ModelMap mmap)
+    public String edit(@PathVariable("Id") String Id, ModelMap mmap)
     {
         BsPqcDetail bsPqcDetail = bsPqcDetailService.selectBsPqcDetailById(Id);
         mmap.put("bsPqcDetail", bsPqcDetail);

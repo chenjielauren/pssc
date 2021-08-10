@@ -64,6 +64,10 @@ public class QcBadProjectMain extends BaseEntity
     /**  */
     private String attribute3;
 
+    private String name;
+
+    private Long value;
+
     /** 不良项目记录明细信息 */
     private List<QcBadProjectDetail> qcBadProjectDetailList;
 
@@ -185,6 +189,23 @@ public class QcBadProjectMain extends BaseEntity
         return attribute3;
     }
 
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getValue() {
+        return value;
+    }
+
+    public void setValue(Long value) {
+        this.value = value;
+    }
+    
     public List<QcBadProjectDetail> getQcBadProjectDetailList()
     {
         return qcBadProjectDetailList;

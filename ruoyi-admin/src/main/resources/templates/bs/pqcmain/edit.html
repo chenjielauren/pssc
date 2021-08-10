@@ -21,9 +21,15 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">检验工序：</label>
+                <label class="col-sm-2 control-label">产品规格：</label>
                 <div class="col-sm-4">
-                    <input name="procName" th:field="*{procName}" class="form-control" type="text" required>
+                    <input name="spec" th:field="*{spec}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
                 </div>
             </div>
             <h4 class="form-header h4">首检标准</h4>
@@ -48,7 +54,7 @@
                     </div>
                 </div>
             </div>
-            <h4 class="form-header h4">巡检标准</h4>
+            <h4 class="form-header h4">专检标准</h4>
             <div class="row">
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn('2','')"><i class="fa fa-plus"> 增加</i></button>
@@ -96,7 +102,6 @@
                     field: 'index',
                     align: 'center',
                     title: "序号",
-                    visible:false,
                     formatter: function (value, row, index) {
                     	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
@@ -162,7 +167,6 @@
                     field: 'index',
                     align: 'center',
                     title: "序号",
-                    visible:false,
                     formatter: function (value, row, index) {
                     	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
@@ -228,7 +232,6 @@
                     field: 'index',
                     align: 'center',
                     title: "序号",
-                    visible:false,
                     formatter: function (value, row, index) {
                     	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);

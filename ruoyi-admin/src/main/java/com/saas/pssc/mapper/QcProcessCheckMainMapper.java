@@ -18,7 +18,7 @@ public interface QcProcessCheckMainMapper
      * @param id 过程检验记录ID
      * @return 过程检验记录
      */
-    public QcProcessCheckMain selectQcProcessCheckMainById(Long id);
+    public QcProcessCheckMain selectQcProcessCheckMainById(String id);
 
     /**
      * 查询过程检验记录列表
@@ -50,7 +50,7 @@ public interface QcProcessCheckMainMapper
      * @param id 过程检验记录ID
      * @return 结果
      */
-    public int deleteQcProcessCheckMainById(Long id);
+    public int deleteQcProcessCheckMainById(String id);
 
     /**
      * 批量删除过程检验记录
@@ -83,5 +83,5 @@ public interface QcProcessCheckMainMapper
      * @param id 过程检验记录ID
      * @return 结果
      */
-    public int deleteQcProcessCheckDetailByMainId(Long id);
+    public int deleteQcProcessCheckDetailByMainId(String id);
 }

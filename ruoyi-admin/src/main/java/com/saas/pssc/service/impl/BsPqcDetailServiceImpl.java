@@ -28,7 +28,7 @@ public class BsPqcDetailServiceImpl implements IBsPqcDetailService
      * @return 产品检验标准明细
      */
     @Override
-    public BsPqcDetail selectBsPqcDetailById(Long Id)
+    public BsPqcDetail selectBsPqcDetailById(String Id)
     {
         return bsPqcDetailMapper.selectBsPqcDetailById(Id);
     }
@@ -90,7 +90,7 @@ public class BsPqcDetailServiceImpl implements IBsPqcDetailService
      * @return 结果
      */
     @Override
-    public int deleteBsPqcDetailById(Long Id)
+    public int deleteBsPqcDetailById(String Id)
     {
         return bsPqcDetailMapper.deleteBsPqcDetailById(Id);
     }

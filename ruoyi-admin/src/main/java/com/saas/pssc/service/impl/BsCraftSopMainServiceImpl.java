@@ -2,12 +2,14 @@ package com.saas.pssc.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.BsCraftSopDetail;
 import com.saas.pssc.domain.BsCraftSopMain;
 import com.saas.pssc.mapper.BsCraftSopMainMapper;
@@ -24,8 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2021-07-19
  */
 @Service
-public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService 
-{
+public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService {
     @Autowired
     private BsCraftSopMainMapper bsCraftSopMainMapper;
 
@@ -36,17 +37,16 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
      * @return 工艺标准与CCP
      */
     @Override
-    public BsCraftSopMain selectBsCraftSopMainById(Long id)
-    {
+    public BsCraftSopMain selectBsCraftSopMainById(String id) {
         BsCraftSopMain bsSopMain = bsCraftSopMainMapper.selectBsCraftSopMainById(id);
-        List<BsCraftSopDetail> techList = new ArrayList<BsCraftSopDetail>();//技术标准
-        List<BsCraftSopDetail> prodList = new ArrayList<BsCraftSopDetail>();//工艺标准
-        if(null!=bsSopMain && !StringUtils.isEmpty(bsSopMain.getBsCraftSopDetailList())){
-            for(BsCraftSopDetail detail : bsSopMain.getBsCraftSopDetailList()){
-                if(Long.valueOf(detail.getPtype()) == 0){
+        List<BsCraftSopDetail> techList = new ArrayList<BsCraftSopDetail>();// 技术标准
+        List<BsCraftSopDetail> prodList = new ArrayList<BsCraftSopDetail>();// 工艺标准
+        if (null != bsSopMain && !StringUtils.isEmpty(bsSopMain.getBsCraftSopDetailList())) {
+            for (BsCraftSopDetail detail : bsSopMain.getBsCraftSopDetailList()) {
+                if (Long.valueOf(detail.getPtype()) == 0) {
                     techList.add(detail);
                 }
-                if(Long.valueOf(detail.getPtype()) == 1){
+                if (Long.valueOf(detail.getPtype()) == 1) {
                     prodList.add(detail);
                 }
             }
@@ -64,8 +64,7 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
      */
     @Override
     @DataScope(userAlias = "su")
-    public List<BsCraftSopMain> selectBsCraftSopMainList(BsCraftSopMain bsCraftSopMain)
-    {
+    public List<BsCraftSopMain> selectBsCraftSopMainList(BsCraftSopMain bsCraftSopMain) {
         return bsCraftSopMainMapper.selectBsCraftSopMainList(bsCraftSopMain);
     }
 
@@ -77,8 +76,8 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
      */
     @Transactional
     @Override
-    public int insertBsCraftSopMain(BsCraftSopMain bsCraftSopMain)
-    {
+    public int insertBsCraftSopMain(BsCraftSopMain bsCraftSopMain) {
+        bsCraftSopMain.setId(IdUtils.fastSimpleUUID());
         bsCraftSopMain.setCreateTime(DateUtils.getNowDate());
         bsCraftSopMain.setUpdateTime(DateUtils.getNowDate());
         int rows = bsCraftSopMainMapper.insertBsCraftSopMain(bsCraftSopMain);
@@ -94,8 +93,7 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
      */
     @Transactional
     @Override
-    public int updateBsCraftSopMain(BsCraftSopMain bsCraftSopMain)
-    {
+    public int updateBsCraftSopMain(BsCraftSopMain bsCraftSopMain) {
         bsCraftSopMain.setUpdateTime(DateUtils.getNowDate());
         bsCraftSopMainMapper.deleteBsCraftSopDetailByMainId(bsCraftSopMain.getId());
         insertBsCraftSopDetail(bsCraftSopMain);
@@ -110,8 +108,7 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
      */
     @Transactional
     @Override
-    public int deleteBsCraftSopMainByIds(String ids)
-    {
+    public int deleteBsCraftSopMainByIds(String ids) {
         bsCraftSopMainMapper.deleteBsCraftSopDetailByMainIds(Convert.toStrArray(ids));
         return bsCraftSopMainMapper.updateBsCraftSopMainByIds(Convert.toStrArray(ids));
     }
@@ -123,8 +120,7 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
      * @return 结果
      */
     @Override
-    public int deleteBsCraftSopMainById(Long id)
-    {
+    public int deleteBsCraftSopMainById(String id) {
         bsCraftSopMainMapper.deleteBsCraftSopDetailByMainId(id);
         return bsCraftSopMainMapper.updateBsCraftSopMainById(id);
     }
@@ -134,40 +130,42 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService
      * 
      * @param bsCraftSopMain 工艺标准与CCP对象
      */
-    public void insertBsCraftSopDetail(BsCraftSopMain bsCraftSopMain)
-    {
+    public void insertBsCraftSopDetail(BsCraftSopMain bsCraftSopMain) {
         List<BsCraftSopDetail> bsCraftSopDetailList = new ArrayList<>();
-        //技术标准
-        if(!StringUtils.isEmpty(bsCraftSopMain.getBsSopTechDetailList())){
-            for(BsCraftSopDetail detail: bsCraftSopMain.getBsSopTechDetailList()){
+        // 技术标准
+        if (!StringUtils.isEmpty(bsCraftSopMain.getBsSopTechDetailList())) {
+            for (BsCraftSopDetail detail : bsCraftSopMain.getBsSopTechDetailList()) {
                 detail.setPtype("0");
                 detail.setCreateBy(ShiroUtils.getLoginName());
                 detail.setUpdateBy(ShiroUtils.getLoginName());
             }
             bsCraftSopDetailList.addAll(bsCraftSopMain.getBsSopTechDetailList());
         }
-        //工艺标准
-        if(!StringUtils.isEmpty(bsCraftSopMain.getBsSopProdDetailList())){
-            for(BsCraftSopDetail detail: bsCraftSopMain.getBsSopProdDetailList()){
+        // 工艺标准
+        if (!StringUtils.isEmpty(bsCraftSopMain.getBsSopProdDetailList())) {
+            for (BsCraftSopDetail detail : bsCraftSopMain.getBsSopProdDetailList()) {
                 detail.setPtype("1");
                 detail.setCreateBy(ShiroUtils.getLoginName());
                 detail.setUpdateBy(ShiroUtils.getLoginName());
             }
             bsCraftSopDetailList.addAll(bsCraftSopMain.getBsSopProdDetailList());
         }
-        Long id = bsCraftSopMain.getId();
-        if (StringUtils.isNotNull(bsCraftSopDetailList))
-        {
+        String id = bsCraftSopMain.getId();
+        if (StringUtils.isNotNull(bsCraftSopDetailList)) {
             List<BsCraftSopDetail> list = new ArrayList<BsCraftSopDetail>();
-            for (BsCraftSopDetail bsCraftSopDetail : bsCraftSopDetailList)
-            {
+            for (BsCraftSopDetail bsCraftSopDetail : bsCraftSopDetailList) {
+                bsCraftSopDetail.setId(IdUtils.fastSimpleUUID());
                 bsCraftSopDetail.setMainId(id);
                 list.add(bsCraftSopDetail);
             }
-            if (list.size() > 0)
-            {
+            if (list.size() > 0) {
                 bsCraftSopMainMapper.batchBsCraftSopDetail(list);
             }
         }
+    }
+
+    @Override
+    public BsCraftSopMain selectBsCraftSopMainByMap(Map<String, Object> paramMap) {
+        return bsCraftSopMainMapper.selectBsCraftSopMainByMap(paramMap);
     }
 }

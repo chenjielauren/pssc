@@ -222,4 +222,18 @@ public class QcBadProjectMainController extends BaseController
         }
         return successMsg.toString();
     }
+    
+    //加载饼图
+    @PostMapping("/loadPieChart")
+	@ResponseBody
+	public AjaxResult loadPieChart(QcBadProjectMain qcBadProjectMain) {
+        AjaxResult ajaxResult = AjaxResult.success();
+        //查询不良项目饼图数据
+        List<QcBadProjectMain> projectList= qcBadProjectMainService.loadPieChartByProject(qcBadProjectMain);        
+        ajaxResult.put("projectList", projectList);
+        //查询不良项目饼图数据
+        List<QcBadProjectMain> pnameList= qcBadProjectMainService.loadPieChartByPname(qcBadProjectMain);
+        ajaxResult.put("pnameList", pnameList);
+        return ajaxResult;
+	}
 }

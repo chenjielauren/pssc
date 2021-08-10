@@ -51,9 +51,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBsMatSopMainList" parameterType="BsMatSopMain" resultMap="BsMatSopMainResult">
         <include refid="selectBsMatSopMainVo"/>
         <where>  
-            <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
+            <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="spec != null  and spec != ''"> and spec = #{spec}</if>
+            <if test="spec != null  and spec != ''"> and spec like concat('%', #{spec}, '%') </if>
             and is_valid = '1' 
             <!-- 数据范围过滤 -->
             ${params.dataScope}

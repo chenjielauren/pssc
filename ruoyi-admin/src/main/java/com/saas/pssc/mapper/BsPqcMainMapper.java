@@ -18,7 +18,7 @@ public interface BsPqcMainMapper
      * @param Id 产品检验标准ID
      * @return 产品检验标准
      */
-    public BsPqcMain selectBsPqcMainById(Long Id);
+    public BsPqcMain selectBsPqcMainById(String Id);
 
     /**
      * 查询产品检验标准列表
@@ -50,7 +50,7 @@ public interface BsPqcMainMapper
      * @param Id 产品检验标准ID
      * @return 结果
      */
-    public int deleteBsPqcMainById(Long Id);
+    public int deleteBsPqcMainById(String Id);
 
     /**
      * 批量删除产品检验标准
@@ -66,7 +66,7 @@ public interface BsPqcMainMapper
      * @param Id 产品检验标准ID
      * @return 结果
      */
-    public int updateBsPqcMainById(Long Id);
+    public int updateBsPqcMainById(String Id);
 
     /**
      * 批量失效产品检验标准
@@ -96,8 +96,8 @@ public interface BsPqcMainMapper
     /**
      * 通过产品检验标准ID删除产品检验标准明细信息
      * 
-     * @param Id 产品检验标准ID
+     * @param string 产品检验标准ID
      * @return 结果
      */
-    public int deleteBsPqcDetailByMainId(Long Id);
+    public int deleteBsPqcDetailByMainId(String string);
 }

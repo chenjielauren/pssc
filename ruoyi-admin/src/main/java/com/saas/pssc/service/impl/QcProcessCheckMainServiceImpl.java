@@ -8,6 +8,7 @@ import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.QcProcessCheckDetail;
 import com.saas.pssc.domain.QcProcessCheckMain;
 import com.saas.pssc.mapper.QcProcessCheckMainMapper;
@@ -36,7 +37,7 @@ public class QcProcessCheckMainServiceImpl implements IQcProcessCheckMainService
      * @return 过程检验记录
      */
     @Override
-    public QcProcessCheckMain selectQcProcessCheckMainById(Long id)
+    public QcProcessCheckMain selectQcProcessCheckMainById(String id)
     {
         return qcProcessCheckMainMapper.selectQcProcessCheckMainById(id);
     }
@@ -64,6 +65,7 @@ public class QcProcessCheckMainServiceImpl implements IQcProcessCheckMainService
     @Override
     public int insertQcProcessCheckMain(QcProcessCheckMain qcProcessCheckMain)
     {
+        qcProcessCheckMain.setId(IdUtils.fastSimpleUUID());
         qcProcessCheckMain.setCreateTime(DateUtils.getNowDate());
         int rows = qcProcessCheckMainMapper.insertQcProcessCheckMain(qcProcessCheckMain);
         insertQcProcessCheckDetail(qcProcessCheckMain);
@@ -107,7 +109,7 @@ public class QcProcessCheckMainServiceImpl implements IQcProcessCheckMainService
      * @return 结果
      */
     @Override
-    public int deleteQcProcessCheckMainById(Long id)
+    public int deleteQcProcessCheckMainById(String id)
     {
         qcProcessCheckMainMapper.deleteQcProcessCheckDetailByMainId(id);
         return qcProcessCheckMainMapper.deleteQcProcessCheckMainById(id);
@@ -121,12 +123,13 @@ public class QcProcessCheckMainServiceImpl implements IQcProcessCheckMainService
     public void insertQcProcessCheckDetail(QcProcessCheckMain qcProcessCheckMain)
     {
         List<QcProcessCheckDetail> qcProcessCheckDetailList = qcProcessCheckMain.getQcProcessCheckDetailList();
-        Long id = qcProcessCheckMain.getId();
+        String id = qcProcessCheckMain.getId();
         if (StringUtils.isNotNull(qcProcessCheckDetailList))
         {
             List<QcProcessCheckDetail> list = new ArrayList<QcProcessCheckDetail>();
             for (QcProcessCheckDetail qcProcessCheckDetail : qcProcessCheckDetailList)
             {
+                qcProcessCheckDetail.setId(IdUtils.fastSimpleUUID());
                 qcProcessCheckDetail.setCreateBy(ShiroUtils.getLoginName());
                 qcProcessCheckDetail.setUpdateBy(ShiroUtils.getLoginName());
                 qcProcessCheckDetail.setMainId(id);

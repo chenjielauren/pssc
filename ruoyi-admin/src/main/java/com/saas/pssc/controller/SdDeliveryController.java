@@ -98,7 +98,7 @@ public class SdDeliveryController extends BaseController
      * 修改发货信息
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         SdDelivery sdDelivery = sdDeliveryService.selectSdDeliveryById(id);
         mmap.put("sdDelivery", sdDelivery);

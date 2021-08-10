@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="Id"    />
         <result property="pcode"    column="pcode"    />
         <result property="name"    column="name"    />
-        <result property="procName"    column="proc_name"    />
+        <result property="spec"    column="spec"    />
         <result property="remark"    column="remark"    />
         <result property="isValid"    column="is_valid"    />
         <result property="createBy"    column="create_by"    />
@@ -47,12 +47,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsPqcMainVo">
-        select Id, pcode, name, proc_name, t.remark, is_valid,su.user_name update_by, t.update_time
+        select Id, pcode, name, spec, t.remark, is_valid,su.user_name update_by, t.update_time
         from bs_pqc_main t left join sys_user su on t.update_by = su.login_name
     </sql>
 
     <sql id="selectBsPqcMainAndDetailVo">
-        select Id, pcode, name, proc_name, t.remark, is_valid,su.user_name update_by, t.update_time,
+        select Id, pcode, name, spec, t.remark, is_valid,su.user_name update_by, t.update_time,
         (select count(1) from bs_pqc_detail bpd  where bpd.main_id = t.Id and bpd.ptype='0') as sjcount,
         (select count(1) from bs_pqc_detail bpd  where bpd.main_id = t.Id and bpd.ptype='1') as zjcount,
         (select count(1) from bs_pqc_detail bpd  where bpd.main_id = t.Id and bpd.ptype='2') as xjcount
@@ -62,9 +62,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBsPqcMainList" parameterType="BsPqcMain" resultMap="BsPqcMainResult">
         <include refid="selectBsPqcMainAndDetailVo"/>
         <where>  
-            <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
+            <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="procName != null  and procName != ''"> and proc_name like concat('%', #{procName}, '%')</if>
+            <if test="spec != null  and spec != ''"> and spec like concat('%', #{spec}, '%')</if>
             and is_valid = 1
             <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
             <if test="attribute2 != null  and attribute2 != ''"> and attribute2 = #{attribute2}</if>
@@ -75,8 +75,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by t.create_time desc
     </select>
     
-    <select id="selectBsPqcMainById" parameterType="Long" resultMap="BsPqcMainBsPqcDetailResult">
-        select a.Id, a.pcode, a.name, a.proc_name, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
+    <select id="selectBsPqcMainById" parameterType="String" resultMap="BsPqcMainBsPqcDetailResult">
+        select a.Id, a.pcode, a.name, a.spec, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
             b.Id as sub_Id, b.main_id as sub_main_id, b.ptype as sub_ptype, b.pcode as sub_pcode, b.name as sub_name, b.standard as sub_standard, b.method as sub_method, b.remark as sub_remark, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
         from bs_pqc_main a
         left join bs_pqc_detail b on b.main_id = a.Id
@@ -86,9 +86,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertBsPqcMain" parameterType="BsPqcMain" useGeneratedKeys="true" keyProperty="id">
         insert into bs_pqc_main
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="name != null">name,</if>
-            <if test="procName != null">proc_name,</if>
+            <if test="spec != null">spec,</if>
             <if test="remark != null">remark,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
@@ -99,9 +100,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="pcode != null and pcode != ''">#{pcode},</if>
             <if test="name != null">#{name},</if>
-            <if test="procName != null">#{procName},</if>
+            <if test="spec != null">#{spec},</if>
             <if test="remark != null">#{remark},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
@@ -118,7 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="pcode != null and pcode != ''">pcode = #{pcode},</if>
             <if test="name != null">name = #{name},</if>
-            <if test="procName != null">proc_name = #{procName},</if>
+            <if test="spec != null">spec = #{spec},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
             <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
@@ -132,7 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <update id="updateBsPqcMainById" parameterType="Long">
+    <update id="updateBsPqcMainById" parameterType="String">
         update bs_pqc_main set is_valid = 0 where id = #{id}
     </update>
 
@@ -143,7 +145,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </update>
 
-    <delete id="deleteBsPqcMainById" parameterType="Long">
+    <delete id="deleteBsPqcMainById" parameterType="String">
         delete from bs_pqc_main where id = #{id}
     </delete>
 
@@ -161,7 +163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <delete id="deleteBsPqcDetailByMainId" parameterType="Long">
+    <delete id="deleteBsPqcDetailByMainId" parameterType="String">
         delete from bs_pqc_detail where main_id = #{mainId}
     </delete>
 

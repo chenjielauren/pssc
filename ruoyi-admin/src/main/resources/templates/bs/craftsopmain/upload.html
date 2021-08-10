@@ -9,6 +9,7 @@
         <form class="form-horizontal m" id="form-mcn-add">
           <input name="rowIndex" id="rowIndex" th:value="${rowIndex}" class="form-control" type="hidden">
           <input name="fileName" id="fileName"  class="form-control" type="hidden">
+          <input name="fileUrl" id="fileUrl"  class="form-control" type="hidden">
           <input name="fileTitle" id="fileTitle"  class="form-control" type="hidden">
             <div class="form-group">    
                 <label class="col-sm-3 control-label">上传附件：</label>
@@ -31,16 +32,15 @@
             maxFileCount: 1,
             showUpload: false, //是否显示上传按钮
             showCaption: true,//是否显示标题
-            autoReplace: true,
-            allowedFileExtensions:[ 'jpg', 'png', 'gif' ]
+            autoReplace: true
         }).on('filebatchselected', function (event, data, id, index) {
             $("#fileinput").fileinput("upload");
         }).on('fileuploaded', function (event, data, previewId, index) {
-            $("input[name='fileName']").val(data.response.url);
-            $("input[name='fileTitle']").val(data.response.originFileName);           
+            $("input[name='fileName']").val(data.response.originFileName);           
+            $("input[name='fileUrl']").val(data.response.url);
         }).on('fileremoved', function (event, id, index) {
-            $("input[name='fileName']").val('');
-            $("input[name='fileTitle']").val('');  
+            $("input[name='fileName']").val('');           
+            $("input[name='fileUrl']").val(''); 
         });
     </script>
 </body>

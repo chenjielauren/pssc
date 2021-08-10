@@ -18,10 +18,10 @@ public class BsCraftSopDetail extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 工序ID */
-    private Long id;
+    private String id;
 
     /** 主表ID */
-    private Long mainId;
+    private String mainId;
 
     /** 检验类型 0技术标准 1工艺标准 2未知 */
     @Excel(name = "检验类型 0技术标准 1工艺标准 2未知")
@@ -34,6 +34,10 @@ public class BsCraftSopDetail extends BaseEntity
     /** 文件名称 */
     @Excel(name = "文件名称")
     private String fileName;
+
+    /** 文件路径 */
+    @Excel(name = "文件路径")
+    private String fileUrl;
 
     /** 上传人 */
     @Excel(name = "上传人")
@@ -56,21 +60,21 @@ public class BsCraftSopDetail extends BaseEntity
     /**  */
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
-    public void setMainId(Long mainId) 
+    public void setMainId(String mainId) 
     {
         this.mainId = mainId;
     }
 
-    public Long getMainId() 
+    public String getMainId() 
     {
         return mainId;
     }
@@ -101,6 +105,15 @@ public class BsCraftSopDetail extends BaseEntity
     {
         return fileName;
     }
+    
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
     public void setUploadUser(String uploadUser) 
     {
         this.uploadUser = uploadUser;
@@ -176,4 +189,5 @@ public class BsCraftSopDetail extends BaseEntity
             .append("attribute3", getAttribute3())
             .toString();
     }
+
 }

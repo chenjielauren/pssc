@@ -8,6 +8,7 @@ import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.QcMatCheckDetail;
 import com.saas.pssc.domain.QcMatCheckMain;
 import com.saas.pssc.mapper.QcMatCheckMainMapper;
@@ -36,7 +37,7 @@ public class QcMatCheckMainServiceImpl implements IQcMatCheckMainService
      * @return 原材料检验记录
      */
     @Override
-    public QcMatCheckMain selectQcMatCheckMainById(Long id)
+    public QcMatCheckMain selectQcMatCheckMainById(String id)
     {
         return qcMatCheckMainMapper.selectQcMatCheckMainById(id);
     }
@@ -64,6 +65,7 @@ public class QcMatCheckMainServiceImpl implements IQcMatCheckMainService
     @Override
     public int insertQcMatCheckMain(QcMatCheckMain qcMatCheckMain)
     {
+        qcMatCheckMain.setId(IdUtils.fastSimpleUUID());
         qcMatCheckMain.setCreateTime(DateUtils.getNowDate());
         int rows = qcMatCheckMainMapper.insertQcMatCheckMain(qcMatCheckMain);
         insertQcMatCheckDetail(qcMatCheckMain);
@@ -97,7 +99,7 @@ public class QcMatCheckMainServiceImpl implements IQcMatCheckMainService
     public int deleteQcMatCheckMainByIds(String ids)
     {
         qcMatCheckMainMapper.deleteQcMatCheckDetailByMainIds(Convert.toStrArray(ids));
-        return qcMatCheckMainMapper.deleteQcMatCheckMainByIds(Convert.toStrArray(ids));
+        return qcMatCheckMainMapper.updateQcMatCheckMainByIds(Convert.toStrArray(ids));
     }
 
     /**
@@ -107,10 +109,10 @@ public class QcMatCheckMainServiceImpl implements IQcMatCheckMainService
      * @return 结果
      */
     @Override
-    public int deleteQcMatCheckMainById(Long id)
+    public int deleteQcMatCheckMainById(String id)
     {
         qcMatCheckMainMapper.deleteQcMatCheckDetailByMainId(id);
-        return qcMatCheckMainMapper.deleteQcMatCheckMainById(id);
+        return qcMatCheckMainMapper.updateQcMatCheckMainById(id);
     }
 
     /**
@@ -121,12 +123,13 @@ public class QcMatCheckMainServiceImpl implements IQcMatCheckMainService
     public void insertQcMatCheckDetail(QcMatCheckMain qcMatCheckMain)
     {
         List<QcMatCheckDetail> qcMatCheckDetailList = qcMatCheckMain.getQcMatCheckDetailList();
-        Long id = qcMatCheckMain.getId();
+        String id = qcMatCheckMain.getId();
         if (StringUtils.isNotNull(qcMatCheckDetailList))
         {
             List<QcMatCheckDetail> list = new ArrayList<QcMatCheckDetail>();
             for (QcMatCheckDetail qcMatCheckDetail : qcMatCheckDetailList)
             {
+                qcMatCheckDetail.setId(IdUtils.fastSimpleUUID());
                 qcMatCheckDetail.setCreateBy(ShiroUtils.getLoginName());
                 qcMatCheckDetail.setUpdateBy(ShiroUtils.getLoginName());
                 qcMatCheckDetail.setMainId(id);

@@ -31,7 +31,7 @@ public class SdDeliveryServiceImpl implements ISdDeliveryService
      * @return 发货信息
      */
     @Override
-    public SdDelivery selectSdDeliveryById(Long id)
+    public SdDelivery selectSdDeliveryById(String id)
     {
         return sdDeliveryMapper.selectSdDeliveryById(id);
     }
@@ -94,7 +94,7 @@ public class SdDeliveryServiceImpl implements ISdDeliveryService
      * @return 结果
      */
     @Override
-    public int deleteSdDeliveryById(Long id)
+    public int deleteSdDeliveryById(String id)
     {
         return sdDeliveryMapper.updateSdDeliveryById(id);
     }

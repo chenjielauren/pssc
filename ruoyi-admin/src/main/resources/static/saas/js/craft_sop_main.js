@@ -18,6 +18,7 @@ function addColumn1() {
             ptype: "0",
             fileTitle: "",
             fileName: "",
+            fileUrl: "",
             uploadUser: $("input[name='createByName']").val(),
             uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
             // isValid: "1",
@@ -60,6 +61,7 @@ function addColumn2() {
             ptype: "1",
             fileTitle: "",
             fileName: "",
+            fileUrl: "",
             uploadUser: $("input[name='createByName']").val(),
             uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
             isValid: "1",
@@ -98,15 +100,16 @@ function doSubmit1(index, layero) {
     var body = layer.getChildFrame('body', index);
     //当前行
     var rowIndex = body.find('#rowIndex').val();
-    //上传的url
-    var fileName = body.find('#fileName').val();
     //文件名称
-    var fileTitle = body.find('#fileTitle').val();
+    var fileName = body.find('#fileName').val();
+    //上传的url
+    var fileUrl = body.find('#fileUrl').val();
     console.log(rowIndex);
     console.log(fileName);
-    $("#bootstrap-table1").find("input[name='bsSopTechDetailList["+(rowIndex)+"].fileTitle']").val(fileTitle.substr(0,fileTitle.lastIndexOf(".")));//设置上传文件标题
     $("#bootstrap-table1").find("input[name='bsSopTechDetailList["+(rowIndex)+"].fileName']").val(fileName);//设置上传文件名称    
-    $("#bootstrap-table1").find("#img"+rowIndex+"").attr("src",fileName); //设置展示img       
+    $("#bootstrap-table1").find("input[name='bsSopTechDetailList["+(rowIndex)+"].fileUrl']").val(fileUrl);//设置上传文件路径       
+    $("#bootstrap-table1").find("#a"+rowIndex+"").attr("href",fileUrl); //设置文档超链接  
+    $("#bootstrap-table1").find("#a"+rowIndex+"").text(fileName); //设置超链接名称
     layer.close(index);
 }
 
@@ -128,12 +131,14 @@ function doSubmit2(index, layero) {
     var rowIndex = body.find('#rowIndex').val();
     //上传的url
     var fileName = body.find('#fileName').val();
+    var fileUrl = body.find('#fileUrl').val();
     //文件名称
     var fileTitle = body.find('#fileTitle').val();
     console.log(rowIndex);
     console.log(fileName);
-    $("#bootstrap-table2").find("input[name='bsSopProdDetailList["+(rowIndex)+"].fileTitle']").val(fileTitle.substr(0,fileTitle.lastIndexOf(".")));//设置上传文件标题
     $("#bootstrap-table2").find("input[name='bsSopProdDetailList["+(rowIndex)+"].fileName']").val(fileName);//设置上传文件名称    
-    $("#bootstrap-table2").find("#img"+rowIndex+"").attr("src",fileName); //设置展示img       
+    $("#bootstrap-table2").find("input[name='bsSopProdDetailList["+(rowIndex)+"].fileUrl']").val(fileUrl);//设置上传文件路径       
+    $("#bootstrap-table2").find("#a"+rowIndex+"").attr("href",fileUrl); //设置文档超链接  
+    $("#bootstrap-table2").find("#a"+rowIndex+"").text(fileName); //设置超链接名称
     layer.close(index);
 }

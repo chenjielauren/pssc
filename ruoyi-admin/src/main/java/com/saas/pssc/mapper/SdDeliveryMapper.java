@@ -17,7 +17,7 @@ public interface SdDeliveryMapper
      * @param id 发货信息ID
      * @return 发货信息
      */
-    public SdDelivery selectSdDeliveryById(Long id);
+    public SdDelivery selectSdDeliveryById(String id);
 
     /**
      * 查询发货信息列表
@@ -49,7 +49,7 @@ public interface SdDeliveryMapper
      * @param id 发货信息ID
      * @return 结果
      */
-    public int deleteSdDeliveryById(Long id);
+    public int deleteSdDeliveryById(String id);
 
     /**
      * 批量删除发货信息
@@ -73,5 +73,5 @@ public interface SdDeliveryMapper
      * @param id 发货信息ID
      * @return 结果
      */
-	public int updateSdDeliveryById(Long id);
+	public int updateSdDeliveryById(String id);
 }

@@ -28,7 +28,7 @@ public class BsMcnDetailServiceImpl implements IBsMcnDetailService
      * @return 4M变更单明细
      */
     @Override
-    public BsMcnDetail selectBsMcnDetailById(Long id)
+    public BsMcnDetail selectBsMcnDetailById(String id)
     {
         return bsMcnDetailMapper.selectBsMcnDetailById(id);
     }
@@ -90,7 +90,7 @@ public class BsMcnDetailServiceImpl implements IBsMcnDetailService
      * @return 结果
      */
     @Override
-    public int deleteBsMcnDetailById(Long id)
+    public int deleteBsMcnDetailById(String id)
     {
         return bsMcnDetailMapper.deleteBsMcnDetailById(id);
     }

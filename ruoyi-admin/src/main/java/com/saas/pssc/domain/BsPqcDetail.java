@@ -16,10 +16,10 @@ public class BsPqcDetail extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 工序ID */
-    private Long id;
+    private String id;
 
     /** 主表ID */
-    private Long mainId;
+    private String mainId;
 
     /** 检验类型 0首检 1自检 2巡检 3未知 */
     // @Excel(name = "检验类型", readConverterExp = "0=首检,1=自检,2=巡检,3=未知")
@@ -50,21 +50,21 @@ public class BsPqcDetail extends BaseEntity
 
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
-    public void setMainId(Long mainId) 
+    public void setMainId(String mainId) 
     {
         this.mainId = mainId;
     }
 
-    public Long getMainId() 
+    public String getMainId() 
     {
         return mainId;
     }

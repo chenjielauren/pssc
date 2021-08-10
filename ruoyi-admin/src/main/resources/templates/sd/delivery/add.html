@@ -13,8 +13,17 @@
                 <div class="col-sm-4">
                     <input name="dlot" class="form-control" type="text" required>
                 </div>
-                <label class="col-sm-2 control-label is-required">订单号：</label>
+                <label class="col-sm-2 control-label is-required">发货时间：</label>
                 <div class="col-sm-4">
+                    <div class="input-group date">
+                        <input name="dtime" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">订单号：</label>
+                <div class="col-sm-10">
                     <input name="dcode" class="form-control" type="text" required>
                 </div>
             </div>
@@ -29,11 +38,11 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">产品规格：</label>
+                <label class="col-sm-2 control-label">产品规格：</label>
                 <div class="col-sm-4">
-                    <input name="pspec" class="form-control" type="text" required>
+                    <input name="pspec" class="form-control" type="text">
                 </div>
-                <label class="col-sm-2 control-label is-required is-required">成品批次号：</label>
+                <label class="col-sm-2 control-label is-required is-required">产品批次号：</label>
                 <div class="col-sm-4">
                     <input name="flot" class="form-control" type="text" required>
                 </div>
@@ -45,14 +54,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label is-required">备注：</label>
+                <label class="col-sm-2 control-label">备注：</label>
                 <div class="col-sm-10">
-                    <textarea name="remark" class="form-control" required></textarea>
+                    <textarea name="remark" class="form-control"></textarea>
                 </div>
             </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
     <script th:inline="javascript">
         var prefix = ctx + "sd/delivery"
         $("#form-delivery-add").validate({
@@ -70,6 +80,12 @@
                 $.operate.save(prefix + "/add", $('#form-delivery-add').serialize());
             }
         }
+
+        $("input[name='dtime']").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            minView: "month",
+            autoclose: true
+        });
     </script>
 </body>
 </html>

@@ -17,7 +17,7 @@ public interface ISdOrderService
      * @param id 订单信息ID
      * @return 订单信息
      */
-    public SdOrder selectSdOrderById(Long id);
+    public SdOrder selectSdOrderById(String id);
 
     /**
      * 查询订单信息列表
@@ -57,5 +57,5 @@ public interface ISdOrderService
      * @param id 订单信息ID
      * @return 结果
      */
-    public int deleteSdOrderById(Long id);
+    public int deleteSdOrderById(String id);
 }

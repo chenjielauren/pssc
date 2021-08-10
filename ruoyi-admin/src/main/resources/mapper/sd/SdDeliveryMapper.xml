@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="SdDelivery" id="SdDeliveryResult">
         <result property="id"    column="id"    />
         <result property="dlot"    column="dlot"    />
+        <result property="dtime"    column="dtime"    />
         <result property="dcode"    column="dcode"    />
         <result property="pcode"    column="pcode"    />
         <result property="pname"    column="pname"    />
@@ -25,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSdDeliveryVo">
-        select id, dlot, dcode, pcode, pname, pspec, flot, qty, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        select id, dlot,dtime, dcode, pcode, pname, pspec, flot, qty, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
         from sd_delivery t left join sys_user su on t.create_by = su.login_name  
     </sql>
 
@@ -46,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by t.create_time desc
     </select>
     
-    <select id="selectSdDeliveryById" parameterType="Long" resultMap="SdDeliveryResult">
+    <select id="selectSdDeliveryById" parameterType="String" resultMap="SdDeliveryResult">
         <include refid="selectSdDeliveryVo"/>
         where id = #{id}
     </select>
@@ -54,7 +55,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertSdDelivery" parameterType="SdDelivery" useGeneratedKeys="true" keyProperty="id">
         insert into sd_delivery
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="dlot != null and dlot != ''">dlot,</if>
+            <if test="dtime != null">dtime,</if>
             <if test="dcode != null">dcode,</if>
             <if test="pcode != null">pcode,</if>
             <if test="pname != null">pname,</if>
@@ -71,7 +74,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="dlot != null and dlot != ''">#{dlot},</if>
+            <if test="dtime != null">#{dtime},</if>
             <if test="dcode != null">#{dcode},</if>
             <if test="pcode != null">#{pcode},</if>
             <if test="pname != null">#{pname},</if>
@@ -93,6 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update sd_delivery
         <trim prefix="SET" suffixOverrides=",">
             <if test="dlot != null and dlot != ''">dlot = #{dlot},</if>
+            <if test="dtime != null">dtime = #{dtime},</if>
             <if test="dcode != null">dcode = #{dcode},</if>
             <if test="pcode != null">pcode = #{pcode},</if>
             <if test="pname != null">pname = #{pname},</if>
@@ -110,7 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <update id="updateSdDeliveryById" parameterType="Long">
+    <update id="updateSdDeliveryById" parameterType="String">
         update sd_delivery set is_valid = '0' where id = #{id}
     </update>
 
@@ -121,7 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </update>
 
-    <delete id="deleteSdDeliveryById" parameterType="Long">
+    <delete id="deleteSdDeliveryById" parameterType="String">
         delete from sd_delivery where id = #{id}
     </delete>
 

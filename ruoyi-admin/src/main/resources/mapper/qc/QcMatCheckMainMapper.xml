@@ -11,9 +11,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="quser"    column="quser"    />
         <result property="pcode"    column="pcode"    />
         <result property="pname"    column="pname"    />
+        <result property="pspec"    column="pspec"    />
         <result property="lot"    column="lot"    />
         <result property="vendor"    column="vendor"    />
         <result property="qcResult"    column="qc_result"    />
+        <result property="handleResult"    column="handle_result"    />
         <result property="remark"    column="remark"    />
         <result property="isValid"    column="is_valid"    />
         <result property="createBy"    column="create_by"    />
@@ -47,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectQcMatCheckMainVo">
-        select id, qcode, qtime, quser, pcode, pname, lot, vendor, qc_result, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        select id, qcode, qtime, quser, pcode, pname,pspec, lot, vendor, qc_result,handle_result, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
         from qc_mat_check_main t left join sys_user su on t.create_by = su.login_name
     </sql>
 
@@ -65,8 +67,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by t.create_time desc
     </select>
     
-    <select id="selectQcMatCheckMainById" parameterType="Long" resultMap="QcMatCheckMainQcMatCheckDetailResult">
-        select a.id, a.qcode, a.qtime, a.quser, a.pcode, a.pname, a.lot, a.vendor, a.qc_result, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
+    <select id="selectQcMatCheckMainById" parameterType="String" resultMap="QcMatCheckMainQcMatCheckDetailResult">
+        select a.id, a.qcode, a.qtime, a.quser, a.pcode, a.pname,a.pspec, a.lot, a.vendor, a.qc_result,a.handle_result, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
             b.id as sub_id, b.main_id as sub_main_id, b.cproject as sub_cproject, b.csop as sub_csop, b.cmethod as sub_cmethod, b.qc_result as sub_qc_result, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
         from qc_mat_check_main a
         left join qc_mat_check_detail b on b.main_id = a.id
@@ -76,14 +78,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertQcMatCheckMain" parameterType="QcMatCheckMain" useGeneratedKeys="true" keyProperty="id">
         insert into qc_mat_check_main
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="qcode != null and qcode != ''">qcode,</if>
             <if test="qtime != null">qtime,</if>
             <if test="quser != null">quser,</if>
             <if test="pcode != null">pcode,</if>
             <if test="pname != null">pname,</if>
+            <if test="pspec != null">pspec,</if>
             <if test="lot != null">lot,</if>
             <if test="vendor != null">vendor,</if>
             <if test="qcResult != null">qc_result,</if>
+            <if test="handleResult != null">handle_result,</if>
             <if test="remark != null">remark,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
@@ -94,14 +99,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="qcode != null and qcode != ''">#{qcode},</if>
             <if test="qtime != null">#{qtime},</if>
             <if test="quser != null">#{quser},</if>
             <if test="pcode != null">#{pcode},</if>
             <if test="pname != null">#{pname},</if>
+            <if test="pspec != null">#{pspec},</if>
             <if test="lot != null">#{lot},</if>
             <if test="vendor != null">#{vendor},</if>
             <if test="qcResult != null">#{qcResult},</if>
+            <if test="handleResult != null">#{handleResult},</if>
             <if test="remark != null">#{remark},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
@@ -121,9 +129,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="quser != null">quser = #{quser},</if>
             <if test="pcode != null">pcode = #{pcode},</if>
             <if test="pname != null">pname = #{pname},</if>
+            <if test="pspec != null">pspec = #{pspec},</if>
             <if test="lot != null">lot = #{lot},</if>
             <if test="vendor != null">vendor = #{vendor},</if>
             <if test="qcResult != null">qc_result = #{qcResult},</if>
+            <if test="handleResult != null">handle_result = #{handleResult},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
             <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
@@ -137,7 +147,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteQcMatCheckMainById" parameterType="Long">
+    <update id="updateQcMatCheckMainById" parameterType="String">
+        update qc_mat_check_main set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updateQcMatCheckMainByIds" parameterType="String">
+        update qc_mat_check_main set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteQcMatCheckMainById" parameterType="String">
         delete from qc_mat_check_main where id = #{id}
     </delete>
 
@@ -155,7 +176,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <delete id="deleteQcMatCheckDetailByMainId" parameterType="Long">
+    <delete id="deleteQcMatCheckDetailByMainId" parameterType="String">
         delete from qc_mat_check_detail where main_id = #{mainId}
     </delete>
 

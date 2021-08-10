@@ -14,18 +14,17 @@ function doSubmit(index, layero) {
     var body = layer.getChildFrame('body', index);
     //当前行
     var rowIndex = body.find('#rowIndex').val();
-    //上传的url
-    var attachment = body.find('#attachment').val();
     //文件名称
-    var fileName = body.find('#fileName').val();
-    var mcontent = fileName.substr(0,fileName.lastIndexOf("."));
+    var attachment = body.find('#attachment').val();
+    //文件url
+    var fileUrl = body.find('#fileUrl').val();
     console.log(rowIndex);
     console.log(attachment);
-    $("input[name='bsMcnDetailList["+(rowIndex)+"].mcontent']").val(mcontent);//设置变更单号
-    $("input[name='bsMcnDetailList["+(rowIndex)+"].fileName']").val(fileName);//设置上传文件名称
-    $("input[name='bsMcnDetailList["+(rowIndex)+"].attachment']").val(attachment);//设置图片保存路径       
-    $("#img"+rowIndex+"").attr("src",attachment); //设置展示img       
-       layer.close(index);
+    $("input[name='bsMcnDetailList["+(rowIndex)+"].attachment']").val(attachment);//设置上传文件名称    
+    $("input[name='bsMcnDetailList["+(rowIndex)+"].fileUrl']").val(fileUrl);//设置上传文件路径       
+    $("#a"+rowIndex+"").attr("href",fileUrl); //设置文档超链接  
+    $("#a"+rowIndex+"").text(attachment); //设置超链接名称
+    layer.close(index);
 }
 $("#bootstrap-table").on("post-body.bs.table", function (e, args) {
     //变更日期

@@ -8,6 +8,7 @@ import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.QcProdCheckDetail;
 import com.saas.pssc.domain.QcProdCheckMain;
 import com.saas.pssc.mapper.QcProdCheckMainMapper;
@@ -36,7 +37,7 @@ public class QcProdCheckMainServiceImpl implements IQcProdCheckMainService
      * @return 成品检验记录
      */
     @Override
-    public QcProdCheckMain selectQcProdCheckMainById(Long id)
+    public QcProdCheckMain selectQcProdCheckMainById(String id)
     {
         return qcProdCheckMainMapper.selectQcProdCheckMainById(id);
     }
@@ -64,6 +65,7 @@ public class QcProdCheckMainServiceImpl implements IQcProdCheckMainService
     @Override
     public int insertQcProdCheckMain(QcProdCheckMain qcProdCheckMain)
     {
+        qcProdCheckMain.setId(IdUtils.fastSimpleUUID());
         qcProdCheckMain.setCreateTime(DateUtils.getNowDate());
         int rows = qcProdCheckMainMapper.insertQcProdCheckMain(qcProdCheckMain);
         insertQcProdCheckDetail(qcProdCheckMain);
@@ -107,7 +109,7 @@ public class QcProdCheckMainServiceImpl implements IQcProdCheckMainService
      * @return 结果
      */
     @Override
-    public int deleteQcProdCheckMainById(Long id)
+    public int deleteQcProdCheckMainById(String id)
     {
         qcProdCheckMainMapper.deleteQcProdCheckDetailByMainId(id);
         return qcProdCheckMainMapper.deleteQcProdCheckMainById(id);
@@ -121,12 +123,13 @@ public class QcProdCheckMainServiceImpl implements IQcProdCheckMainService
     public void insertQcProdCheckDetail(QcProdCheckMain qcProdCheckMain)
     {
         List<QcProdCheckDetail> qcProdCheckDetailList = qcProdCheckMain.getQcProdCheckDetailList();
-        Long id = qcProdCheckMain.getId();
+        String id = qcProdCheckMain.getId();
         if (StringUtils.isNotNull(qcProdCheckDetailList))
         {
             List<QcProdCheckDetail> list = new ArrayList<QcProdCheckDetail>();
             for (QcProdCheckDetail qcProdCheckDetail : qcProdCheckDetailList)
             {
+                qcProdCheckDetail.setId(IdUtils.fastSimpleUUID());
                 qcProdCheckDetail.setCreateBy(ShiroUtils.getLoginName());
                 qcProdCheckDetail.setUpdateBy(ShiroUtils.getLoginName());
                 qcProdCheckDetail.setMainId(id);

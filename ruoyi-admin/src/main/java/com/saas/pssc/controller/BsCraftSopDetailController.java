@@ -95,7 +95,7 @@ public class BsCraftSopDetailController extends BaseController
      * 修改工艺标准与CCP明细
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         BsCraftSopDetail bsCraftSopDetail = bsCraftSopDetailService.selectBsCraftSopDetailById(id);
         mmap.put("bsCraftSopDetail", bsCraftSopDetail);

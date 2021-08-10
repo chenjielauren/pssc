@@ -168,6 +168,14 @@ public class PpWoBookMain extends BaseEntity
     {
         return isValid;
     }
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    
     public void setAttribute1(String attribute1) 
     {
         this.attribute1 = attribute1;

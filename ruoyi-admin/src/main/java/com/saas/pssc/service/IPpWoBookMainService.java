@@ -1,6 +1,8 @@
 package com.saas.pssc.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.PpWoBookMain;
 
 /**
@@ -58,4 +60,6 @@ public interface IPpWoBookMainService
      * @return 结果
      */
     public int deletePpWoBookMainById(String id);
+
+	public PpWoBookMain selectPpWoBookMainByMap(Map<String, Object> paramMap);
 }

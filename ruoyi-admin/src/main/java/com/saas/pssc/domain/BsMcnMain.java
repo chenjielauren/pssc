@@ -19,7 +19,7 @@ public class BsMcnMain extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 工艺ID */
-    private Long id;
+    private String id;
 
     /** 产品编号 */
     @Excel(name = "产品编号")
@@ -29,9 +29,17 @@ public class BsMcnMain extends BaseEntity
     @Excel(name = "产品名称")
     private String name;
 
+    /** 产品规格 */
+    @Excel(name = "产品规格")
+    private String spec;
+
     /** 有效否 */
     private String isValid;
 
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+    
     /**  */
     private String attribute1;
 
@@ -44,12 +52,12 @@ public class BsMcnMain extends BaseEntity
     /** 4M变更单明细信息 */
     private List<BsMcnDetail> bsMcnDetailList;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -80,6 +88,22 @@ public class BsMcnMain extends BaseEntity
     {
         return isValid;
     }
+    public String getSpec() {
+        return spec;
+    }
+
+    public void setSpec(String spec) {
+        this.spec = spec;
+    }
+    
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     public void setAttribute1(String attribute1) 
     {
         this.attribute1 = attribute1;

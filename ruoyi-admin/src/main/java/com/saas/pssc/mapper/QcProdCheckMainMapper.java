@@ -18,7 +18,7 @@ public interface QcProdCheckMainMapper
      * @param id 成品检验记录ID
      * @return 成品检验记录
      */
-    public QcProdCheckMain selectQcProdCheckMainById(Long id);
+    public QcProdCheckMain selectQcProdCheckMainById(String id);
 
     /**
      * 查询成品检验记录列表
@@ -50,7 +50,7 @@ public interface QcProdCheckMainMapper
      * @param id 成品检验记录ID
      * @return 结果
      */
-    public int deleteQcProdCheckMainById(Long id);
+    public int deleteQcProdCheckMainById(String id);
 
     /**
      * 批量删除成品检验记录
@@ -83,5 +83,5 @@ public interface QcProdCheckMainMapper
      * @param id 成品检验记录ID
      * @return 结果
      */
-    public int deleteQcProdCheckDetailByMainId(Long id);
+    public int deleteQcProdCheckDetailByMainId(String id);
 }

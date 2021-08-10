@@ -1,9 +1,13 @@
 package com.saas.pssc.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.saas.common.annotation.Excel;
 import com.saas.common.core.domain.BaseEntity;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 发货信息对象 sd_delivery
@@ -16,11 +20,16 @@ public class SdDelivery extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 发货ID */
-    private Long id;
+    private String id;
 
     /** 发货批次号 */
     @Excel(name = "发货批次号")
     private String dlot;
+
+    /** 发货时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @Excel(name = "发货时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date dtime;
 
     /** 订单号 */
     @Excel(name = "订单号")
@@ -39,16 +48,20 @@ public class SdDelivery extends BaseEntity
     private String pspec;
 
     /** 成品批次号 */
-    @Excel(name = "成品批次号")
+    @Excel(name = "产品批次号")
     private String flot;
 
     /** 发货数量 */
     @Excel(name = "发货数量")
-    private Long qty;
+    private Double qty;
 
     /** 有效否 0失效1有效 */
     private String isValid;
 
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+    
     /**  */
     private String attribute1;
 
@@ -58,12 +71,12 @@ public class SdDelivery extends BaseEntity
     /**  */
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -76,6 +89,15 @@ public class SdDelivery extends BaseEntity
     {
         return dlot;
     }
+    
+    public Date getDtime() {
+        return dtime;
+    }
+
+    public void setDtime(Date dtime) {
+        this.dtime = dtime;
+    }
+
     public void setDcode(String dcode) 
     {
         this.dcode = dcode;
@@ -121,12 +143,12 @@ public class SdDelivery extends BaseEntity
     {
         return flot;
     }
-    public void setQty(Long qty) 
+    public void setQty(Double qty) 
     {
         this.qty = qty;
     }
 
-    public Long getQty() 
+    public Double getQty() 
     {
         return qty;
     }
@@ -138,6 +160,13 @@ public class SdDelivery extends BaseEntity
     public String getIsValid() 
     {
         return isValid;
+    }
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
     public void setAttribute1(String attribute1) 
     {
@@ -189,4 +218,6 @@ public class SdDelivery extends BaseEntity
             .append("attribute3", getAttribute3())
             .toString();
     }
+
+    
 }

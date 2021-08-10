@@ -19,7 +19,7 @@ public class QcProdCheckMain extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 计划工单号ID */
-    private Long id;
+    private String id;
 
     /** 检验单号 */
     @Excel(name = "检验单号")
@@ -32,6 +32,10 @@ public class QcProdCheckMain extends BaseEntity
     /** 成品名称 */
     @Excel(name = "成品名称")
     private String pname;
+
+    /** 成品名称 */
+    @Excel(name = "成品名称")
+    private String pspec;
 
     /** 批次号 */
     @Excel(name = "批次号")
@@ -50,6 +54,9 @@ public class QcProdCheckMain extends BaseEntity
     @Excel(name = "检验结果",readConverterExp = "0=异常,1=合格,2=未知")
     private String qcResult;
 
+    @Excel(name = "处理结果",readConverterExp = "0=合格入库,1=让步接受,2=退货,3=未知")
+    private String handleResult;
+
     /** 有效否 0失效1有效 */
     private String isValid;
 
@@ -66,15 +73,17 @@ public class QcProdCheckMain extends BaseEntity
 
     private Date qEndtime;//检验结束时间
 
+    private String[] pcodes;//成品检验记录列表
+
     /** 检验信息 */
     private List<QcProdCheckDetail> qcProdCheckDetailList;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -202,6 +211,31 @@ public class QcProdCheckMain extends BaseEntity
 
     public void setqEndtime(Date qEndtime) {
         this.qEndtime = qEndtime;
+    }
+
+    public String[] getPcodes() {
+        return pcodes;
+    }
+
+    public void setPcodes(String[] pcodes) {
+        this.pcodes = pcodes;
+    }
+
+    
+    public String getPspec() {
+        return pspec;
+    }
+
+    public void setPspec(String pspec) {
+        this.pspec = pspec;
+    }
+
+    public String getHandleResult() {
+        return handleResult;
+    }
+
+    public void setHandleResult(String handleResult) {
+        this.handleResult = handleResult;
     }
 
     @Override

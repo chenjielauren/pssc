@@ -18,11 +18,11 @@ public class QcProcessCheckMain extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 计划工单号ID */
-    private Long id;
+    /** 工单号ID */
+    private String id;
 
-    /** 计划工单号 */
-    @Excel(name = "计划工单号")
+    /** 工单号 */
+    @Excel(name = "工单号")
     private String qcode;
 
     /** 产品编号 */
@@ -33,9 +33,17 @@ public class QcProcessCheckMain extends BaseEntity
     @Excel(name = "产品名称")
     private String pname;
 
+    /** 产品规格 */
+    @Excel(name = "产品规格")
+    private String pspec;
+
     /** 检验工序 */
     @Excel(name = "检验工序")
     private String cwork;
+
+    /** 检验机台 */
+    @Excel(name = "检验机台")
+    private String cmachine;
 
     /** 检验时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -73,12 +81,12 @@ public class QcProcessCheckMain extends BaseEntity
     /** 检验标准信息 */
     private List<QcProcessCheckDetail> qcProcessCheckDetailList;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -191,6 +199,23 @@ public class QcProcessCheckMain extends BaseEntity
         return attribute3;
     }
 
+    
+    public String getPspec() {
+        return pspec;
+    }
+
+    public void setPspec(String pspec) {
+        this.pspec = pspec;
+    }
+
+    public String getCmachine() {
+        return cmachine;
+    }
+
+    public void setCmachine(String cmachine) {
+        this.cmachine = cmachine;
+    }
+
     public List<QcProcessCheckDetail> getQcProcessCheckDetailList()
     {
         return qcProcessCheckDetailList;
@@ -242,7 +267,5 @@ public class QcProcessCheckMain extends BaseEntity
             .append("qcProcessCheckDetailList", getQcProcessCheckDetailList())
             .toString();
     }
-
-
     
 }

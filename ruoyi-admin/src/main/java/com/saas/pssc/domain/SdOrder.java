@@ -18,7 +18,7 @@ public class SdOrder extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 订单ID */
-    private Long id;
+    private String id;
 
     /** 订单号 */
     @Excel(name = "订单号")
@@ -31,7 +31,7 @@ public class SdOrder extends BaseEntity
 
     /** 订单数量 */
     @Excel(name = "订单数量")
-    private Long qty;
+    private Double qty;
 
     /** 产品编号 */
     @Excel(name = "产品编号")
@@ -52,6 +52,10 @@ public class SdOrder extends BaseEntity
     /** 有效否 */
     private String isValid;
 
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+    
     /**  */
     private String attribute1;
 
@@ -65,12 +69,12 @@ public class SdOrder extends BaseEntity
 
     private Date oEndtime;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -92,12 +96,12 @@ public class SdOrder extends BaseEntity
     {
         return otime;
     }
-    public void setQty(Long qty) 
+    public void setQty(Double qty) 
     {
         this.qty = qty;
     }
 
-    public Long getQty() 
+    public Double getQty() 
     {
         return qty;
     }
@@ -145,6 +149,13 @@ public class SdOrder extends BaseEntity
     public String getIsValid() 
     {
         return isValid;
+    }
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
     public void setAttribute1(String attribute1) 
     {

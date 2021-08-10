@@ -17,7 +17,7 @@ public interface BsCraftSopDetailMapper
      * @param id 工艺标准与CCP明细ID
      * @return 工艺标准与CCP明细
      */
-    public BsCraftSopDetail selectBsCraftSopDetailById(Long id);
+    public BsCraftSopDetail selectBsCraftSopDetailById(String id);
 
     /**
      * 查询工艺标准与CCP明细列表
@@ -49,7 +49,7 @@ public interface BsCraftSopDetailMapper
      * @param id 工艺标准与CCP明细ID
      * @return 结果
      */
-    public int deleteBsCraftSopDetailById(Long id);
+    public int deleteBsCraftSopDetailById(String id);
 
     /**
      * 批量删除工艺标准与CCP明细

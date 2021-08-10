@@ -28,7 +28,7 @@ public class QcProcessCheckDetailServiceImpl implements IQcProcessCheckDetailSer
      * @return 过程检验明细
      */
     @Override
-    public QcProcessCheckDetail selectQcProcessCheckDetailById(Long id)
+    public QcProcessCheckDetail selectQcProcessCheckDetailById(String id)
     {
         return qcProcessCheckDetailMapper.selectQcProcessCheckDetailById(id);
     }
@@ -90,7 +90,7 @@ public class QcProcessCheckDetailServiceImpl implements IQcProcessCheckDetailSer
      * @return 结果
      */
     @Override
-    public int deleteQcProcessCheckDetailById(Long id)
+    public int deleteQcProcessCheckDetailById(String id)
     {
         return qcProcessCheckDetailMapper.deleteQcProcessCheckDetailById(id);
     }

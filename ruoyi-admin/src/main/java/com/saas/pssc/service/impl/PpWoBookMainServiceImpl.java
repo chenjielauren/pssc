@@ -2,6 +2,7 @@ package com.saas.pssc.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
@@ -26,8 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2021-08-03
  */
 @Service
-public class PpWoBookMainServiceImpl implements IPpWoBookMainService 
-{
+public class PpWoBookMainServiceImpl implements IPpWoBookMainService {
     @Autowired
     private PpWoBookMainMapper ppWoBookMainMapper;
 
@@ -38,8 +38,7 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
      * @return 工单记录
      */
     @Override
-    public PpWoBookMain selectPpWoBookMainById(String id)
-    {
+    public PpWoBookMain selectPpWoBookMainById(String id) {
         return ppWoBookMainMapper.selectPpWoBookMainById(id);
     }
 
@@ -51,8 +50,7 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
      */
     @Override
     @DataScope(userAlias = "su")
-    public List<PpWoBookMain> selectPpWoBookMainList(PpWoBookMain ppWoBookMain)
-    {
+    public List<PpWoBookMain> selectPpWoBookMainList(PpWoBookMain ppWoBookMain) {
         return ppWoBookMainMapper.selectPpWoBookMainList(ppWoBookMain);
     }
 
@@ -64,8 +62,7 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
      */
     @Transactional
     @Override
-    public int insertPpWoBookMain(PpWoBookMain ppWoBookMain)
-    {
+    public int insertPpWoBookMain(PpWoBookMain ppWoBookMain) {
         ppWoBookMain.setId(IdUtils.fastSimpleUUID());
         ppWoBookMain.setCreateTime(DateUtils.getNowDate());
         int rows = ppWoBookMainMapper.insertPpWoBookMain(ppWoBookMain);
@@ -81,8 +78,7 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
      */
     @Transactional
     @Override
-    public int updatePpWoBookMain(PpWoBookMain ppWoBookMain)
-    {
+    public int updatePpWoBookMain(PpWoBookMain ppWoBookMain) {
         ppWoBookMain.setUpdateTime(DateUtils.getNowDate());
         ppWoBookMainMapper.deletePpWoBookDetailByMainId(ppWoBookMain.getId());
         ppWoBookMainMapper.deletePpWoBookBomByMainId(ppWoBookMain.getId());
@@ -98,8 +94,7 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
      */
     @Transactional
     @Override
-    public int deletePpWoBookMainByIds(String ids)
-    {
+    public int deletePpWoBookMainByIds(String ids) {
         ppWoBookMainMapper.deletePpWoBookDetailByMainIds(Convert.toStrArray(ids));
         ppWoBookMainMapper.deletePpWoBookBomByMainIds(Convert.toStrArray(ids));
         return ppWoBookMainMapper.updatePpWoBookMainByIds(Convert.toStrArray(ids));
@@ -112,8 +107,7 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
      * @return 结果
      */
     @Override
-    public int deletePpWoBookMainById(String id)
-    {
+    public int deletePpWoBookMainById(String id) {
         ppWoBookMainMapper.deletePpWoBookDetailByMainId(id);
         return ppWoBookMainMapper.updatePpWoBookMainById(id);
     }
@@ -123,44 +117,42 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService
      * 
      * @param ppWoBookMain 工单记录对象
      */
-    public void insertPpWoBookDetailAndBom(PpWoBookMain ppWoBookMain)
-    {
-        //工单制造信息
+    public void insertPpWoBookDetailAndBom(PpWoBookMain ppWoBookMain) {
+        // 工单制造信息
         List<PpWoBookDetail> ppWoBookDetailList = ppWoBookMain.getPpWoBookDetailList();
         String id = ppWoBookMain.getId();
-        if (StringUtils.isNotNull(ppWoBookDetailList))
-        {
+        if (StringUtils.isNotNull(ppWoBookDetailList)) {
             List<PpWoBookDetail> list = new ArrayList<PpWoBookDetail>();
-            for (PpWoBookDetail ppWoBookDetail : ppWoBookDetailList)
-            {
+            for (PpWoBookDetail ppWoBookDetail : ppWoBookDetailList) {
                 ppWoBookDetail.setId(IdUtils.fastSimpleUUID());
                 ppWoBookDetail.setMainId(id);
                 ppWoBookDetail.setCreateBy(ShiroUtils.getLoginName());
                 ppWoBookDetail.setUpdateBy(ShiroUtils.getLoginName());
                 list.add(ppWoBookDetail);
             }
-            if (list.size() > 0)
-            {
+            if (list.size() > 0) {
                 ppWoBookMainMapper.batchPpWoBookDetail(list);
             }
         }
-        //工单BOM信息
+        // 工单BOM信息
         List<PpWoBookBom> ppWoBookBomList = ppWoBookMain.getPpWoBookBomList();
-        if (StringUtils.isNotNull(ppWoBookBomList))
-        {
+        if (StringUtils.isNotNull(ppWoBookBomList)) {
             List<PpWoBookBom> list = new ArrayList<PpWoBookBom>();
-            for (PpWoBookBom ppWoBookBom : ppWoBookBomList)
-            {
+            for (PpWoBookBom ppWoBookBom : ppWoBookBomList) {
                 ppWoBookBom.setId(IdUtils.fastSimpleUUID());
                 ppWoBookBom.setMainId(id);
                 ppWoBookBom.setCreateBy(ShiroUtils.getLoginName());
                 ppWoBookBom.setUpdateBy(ShiroUtils.getLoginName());
                 list.add(ppWoBookBom);
             }
-            if (list.size() > 0)
-            {
+            if (list.size() > 0) {
                 ppWoBookMainMapper.batchPpWoBookBom(list);
             }
         }
+    }
+
+    @Override
+    public PpWoBookMain selectPpWoBookMainByMap(Map<String, Object> paramMap) {
+        return ppWoBookMainMapper.selectPpWoBookMainByMap(paramMap);
     }
 }

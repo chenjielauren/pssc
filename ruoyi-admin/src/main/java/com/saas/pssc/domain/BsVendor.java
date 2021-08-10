@@ -49,6 +49,10 @@ public class BsVendor extends BaseEntity
     /** 有效否 */
     private String isValid;
     
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+    
     private String attribute1;
  
     private String attribute2;
@@ -135,6 +139,13 @@ public class BsVendor extends BaseEntity
     public String getIsValid() 
     {
         return isValid;
+    }
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
     public void setAttribute1(String attribute1) 
     {

@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by t.create_time desc
     </select>
     
-    <select id="selectSdOrderById" parameterType="Long" resultMap="SdOrderResult">
+    <select id="selectSdOrderById" parameterType="String" resultMap="SdOrderResult">
         <include refid="selectSdOrderVo"/>
         where id = #{id}
     </select>
@@ -56,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertSdOrder" parameterType="SdOrder" useGeneratedKeys="true" keyProperty="id">
         insert into sd_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="ocode != null and ocode != ''">ocode,</if>
             <if test="otime != null">otime,</if>
             <if test="qty != null">qty,</if>
@@ -73,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="ocode != null and ocode != ''">#{ocode},</if>
             <if test="otime != null">#{otime},</if>
             <if test="qty != null">#{qty},</if>
@@ -113,7 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <update id="updateSdOrderById" parameterType="Long">
+    <update id="updateSdOrderById" parameterType="String">
         update sd_order set is_valid = '0' where id = #{id}
     </update>
 
@@ -124,7 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </update>
 
-    <delete id="deleteSdOrderById" parameterType="Long">
+    <delete id="deleteSdOrderById" parameterType="String">
         delete from sd_order where id = #{id}
     </delete>
 

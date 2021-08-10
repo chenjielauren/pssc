@@ -8,6 +8,7 @@ import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.BsPqcDetail;
 import com.saas.pssc.domain.BsPqcMain;
 import com.saas.pssc.mapper.BsPqcMainMapper;
@@ -36,12 +37,12 @@ public class BsPqcMainServiceImpl implements IBsPqcMainService
      * @return 产品检验标准
      */
     @Override
-    public BsPqcMain selectBsPqcMainById(Long Id)
+    public BsPqcMain selectBsPqcMainById(String Id)
     {
         BsPqcMain bsPqcMain = bsPqcMainMapper.selectBsPqcMainById(Id);
         List<BsPqcDetail> sjDetailList = new ArrayList<BsPqcDetail>();//首检标准列表
         List<BsPqcDetail> zjDetailList = new ArrayList<BsPqcDetail>();//自检标准列表
-        List<BsPqcDetail> xjDetailList = new ArrayList<BsPqcDetail>();//巡检标准列表
+        List<BsPqcDetail> xjDetailList = new ArrayList<BsPqcDetail>();//专检标准列表
         if(null!=bsPqcMain && !StringUtils.isEmpty(bsPqcMain.getBsPqcDetailList())){           
             for(BsPqcDetail bqd : bsPqcMain.getBsPqcDetailList()){
                 if(Long.valueOf(bqd.getPtype()) == 0){
@@ -84,6 +85,7 @@ public class BsPqcMainServiceImpl implements IBsPqcMainService
     @Override
     public int insertBsPqcMain(BsPqcMain bsPqcMain)
     {
+        bsPqcMain.setId(IdUtils.fastSimpleUUID());
         bsPqcMain.setCreateBy(ShiroUtils.getLoginName());
         bsPqcMain.setCreateTime(DateUtils.getNowDate());
         int rows = bsPqcMainMapper.insertBsPqcMain(bsPqcMain);
@@ -129,7 +131,7 @@ public class BsPqcMainServiceImpl implements IBsPqcMainService
      * @return 结果
      */
     @Override
-    public int deleteBsPqcMainById(Long Id)
+    public int deleteBsPqcMainById(String Id)
     {
         bsPqcMainMapper.deleteBsPqcDetailByMainId(Id);
         return bsPqcMainMapper.updateBsPqcMainById(Id);
@@ -167,12 +169,13 @@ public class BsPqcMainServiceImpl implements IBsPqcMainService
             }
             bsPqcDetailList.addAll(bsPqcMain.getXjDetailList());
         }
-        Long Id = bsPqcMain.getId();
+        String Id = bsPqcMain.getId();
         if (StringUtils.isNotNull(bsPqcDetailList))
         {
             List<BsPqcDetail> list = new ArrayList<BsPqcDetail>();
             for (BsPqcDetail bsPqcDetail : bsPqcDetailList)
             {
+                bsPqcDetail.setId(IdUtils.fastSimpleUUID());
                 bsPqcDetail.setMainId(Id);
                 list.add(bsPqcDetail);
             }

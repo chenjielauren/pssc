@@ -28,3 +28,72 @@ INSERT INTO sys_dict_type (dict_name,dict_type,status,create_by,create_time,upda
 INSERT INTO sys_dict_data (dict_sort,dict_label,dict_value,dict_type,css_class,list_class,is_default,status,create_by,create_time,update_by,update_time,remark) VALUES
 	 (1,'生产','0','bs_bom_attr','','primary','Y','0','admin','2021-08-01 11:02:46','admin','2021-08-01 11:03:18',''),
 	 (2,'采购','1','bs_bom_attr','','info','Y','0','admin','2021-08-01 11:03:05','admin','2021-08-01 11:03:23','');
+
+ALTER TABLE pssc.bs_craft_sop_main MODIFY COLUMN id varchar(50) NOT NULL COMMENT '工艺ID';
+ALTER TABLE pssc.bs_craft_sop_detail MODIFY COLUMN id varchar(50) NOT NULL COMMENT '明细ID';
+ALTER TABLE pssc.bs_craft_sop_detail MODIFY COLUMN main_id varchar(50) NOT NULL COMMENT '主表ID';
+
+ALTER TABLE pssc.bs_mcn_main MODIFY COLUMN id varchar(50) NOT NULL COMMENT 'ID';
+ALTER TABLE pssc.bs_mcn_detail MODIFY COLUMN id varchar(50) NOT NULL COMMENT '明细ID';
+ALTER TABLE pssc.bs_mcn_detail MODIFY COLUMN main_id varchar(50) NOT NULL COMMENT '主表ID';
+
+ALTER TABLE pssc.bs_pqc_detail DROP FOREIGN KEY FK_bs_pqc_detail_main_id;
+ALTER TABLE pssc.bs_pqc_main MODIFY COLUMN id varchar(50) NOT NULL COMMENT 'ID';
+ALTER TABLE pssc.bs_pqc_detail MODIFY COLUMN id varchar(50) NOT NULL COMMENT '明细ID';
+ALTER TABLE pssc.bs_pqc_detail MODIFY COLUMN main_id varchar(50) NOT NULL COMMENT '主表ID';
+
+
+ALTER TABLE pssc.bs_craft_sop_detail ADD file_url varchar(300) NULL;
+ALTER TABLE pssc.bs_craft_sop_detail CHANGE file_url file_url varchar(300) NULL AFTER file_name
+alter table bs_craft_sop_detail add foreign key(main_id) references bs_craft_sop_main(id);
+
+ALTER TABLE pssc.bs_mcn_main ADD spec varchar(255) NULL COMMENT '产品规格';
+ALTER TABLE pssc.bs_mcn_main CHANGE spec spec varchar(255) NULL COMMENT '产品规格' AFTER name;
+ALTER TABLE pssc.bs_mcn_detail ADD file_url varchar(300) NULL COMMENT '文件路径';
+ALTER TABLE pssc.bs_mcn_detail CHANGE file_url file_url varchar(300) NULL COMMENT '文件路径' AFTER attachment;
+alter table bs_mcn_detail add foreign key(main_id) references bs_mcn_main(id);
+
+ALTER TABLE pssc.bs_pqc_main ADD spec varchar(255) NULL COMMENT '产品规格';
+ALTER TABLE pssc.bs_pqc_main CHANGE spec spec varchar(255) NULL COMMENT '产品规格' AFTER name;
+alter table bs_pqc_detail add foreign key(main_id) references bs_pqc_main(id);
+
+ALTER TABLE pssc.qc_mat_check_detail DROP FOREIGN KEY FK_qc_mat_ail_main_idB52F;
+ALTER TABLE pssc.qc_mat_check_main MODIFY COLUMN id varchar(50) NOT NULL COMMENT 'ID';
+ALTER TABLE pssc.qc_mat_check_detail MODIFY COLUMN id varchar(50) NOT NULL COMMENT '明细ID';
+ALTER TABLE pssc.qc_mat_check_detail MODIFY COLUMN main_id varchar(50) NOT NULL COMMENT '主表ID';
+alter table qc_mat_check_detail add foreign key(main_id) references qc_mat_check_main(id);
+
+
+ALTER TABLE pssc.qc_process_check_detail DROP FOREIGN KEY FK_qc_procail_main_idE3C0;
+ALTER TABLE pssc.qc_process_check_main MODIFY COLUMN id varchar(50) NOT NULL COMMENT 'ID';
+ALTER TABLE pssc.qc_process_check_detail MODIFY COLUMN id varchar(50) NOT NULL COMMENT '明细ID';
+ALTER TABLE pssc.qc_process_check_detail MODIFY COLUMN main_id varchar(50) NOT NULL COMMENT '主表ID';
+alter table qc_process_check_detail add foreign key(main_id) references qc_process_check_main(id);
+
+ALTER TABLE pssc.qc_prod_check_detail DROP FOREIGN KEY FK_qc_prodail_main_idED3C;
+ALTER TABLE pssc.qc_prod_check_main MODIFY COLUMN id varchar(50) NOT NULL COMMENT 'ID';
+ALTER TABLE pssc.qc_prod_check_detail MODIFY COLUMN id varchar(50) NOT NULL COMMENT '明细ID';
+ALTER TABLE pssc.qc_prod_check_detail MODIFY COLUMN main_id varchar(50) NOT NULL COMMENT '主表ID';
+alter table qc_prod_check_detail add foreign key(main_id) references qc_prod_check_main(id);
+
+ALTER TABLE pssc.sd_delivery MODIFY COLUMN id varchar(50) NOT NULL COMMENT '发货ID';
+
+ALTER TABLE pssc.sd_order MODIFY COLUMN id varchar(50) NOT NULL COMMENT '订单ID';
+
+ALTER TABLE pssc.qc_mat_check_main ADD handle_result varchar(50) NULL COMMENT '处理结果0合格入库,1让步接受,2退货';
+ALTER TABLE pssc.qc_mat_check_main CHANGE handle_result handle_result varchar(50) NULL COMMENT '处理结果0合格入库,1让步接受,2退货' AFTER qc_result;
+
+ALTER TABLE pssc.qc_mat_check_main ADD pspec varchar(100) NULL COMMENT '材料规格';
+ALTER TABLE pssc.qc_mat_check_main CHANGE pspec pspec varchar(100) NULL COMMENT '材料规格' AFTER pname;
+
+ALTER TABLE pssc.qc_process_check_main ADD pspec varchar(100) NULL COMMENT '产品规格';
+ALTER TABLE pssc.qc_process_check_main CHANGE pspec pspec varchar(100) NULL COMMENT '产品规格' AFTER pname;
+ALTER TABLE pssc.qc_process_check_main ADD cmachine varchar(100) NULL COMMENT '检验机台';
+ALTER TABLE pssc.qc_process_check_main CHANGE cmachine cmachine varchar(100) NULL COMMENT '检验机台' AFTER ctype;
+
+ALTER TABLE pssc.qc_prod_check_main ADD handle_result varchar(50) NULL COMMENT '处理结果0合格入库,1让步接受,2退货';
+ALTER TABLE pssc.qc_prod_check_main CHANGE handle_result handle_result varchar(50) NULL COMMENT '处理结果0合格入库,1让步接受,2退货' AFTER qc_result;
+
+ALTER TABLE pssc.qc_prod_check_main ADD pspec varchar(100) NULL COMMENT '成品规格';
+ALTER TABLE pssc.qc_prod_check_main CHANGE pspec pspec varchar(100) NULL COMMENT '成品规格' AFTER pname;
+

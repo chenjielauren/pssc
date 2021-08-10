@@ -31,7 +31,7 @@ public class SdOrderServiceImpl implements ISdOrderService
      * @return 订单信息
      */
     @Override
-    public SdOrder selectSdOrderById(Long id)
+    public SdOrder selectSdOrderById(String id)
     {
         return sdOrderMapper.selectSdOrderById(id);
     }
@@ -94,7 +94,7 @@ public class SdOrderServiceImpl implements ISdOrderService
      * @return 结果
      */
     @Override
-    public int deleteSdOrderById(Long id)
+    public int deleteSdOrderById(String id)
     {
         return sdOrderMapper.updateSdOrderById(id);
     }

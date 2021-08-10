@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增bom物料清单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-bommain-add">
+            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <h4 class="form-header h4">bom物料清单信息</h4>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">产品编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">产品名称：</label>
+                <div class="col-sm-4">
+                    <input name="name" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">产品规格：</label>
+                <div class="col-sm-4">
+                    <input name="pspec" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+            <h4 class="form-header h4">bom物料清单明细信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn('')"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <button type="button" class="btn btn-info btn-sm" onclick="$.table.custImportExcel()"><i class="fa fa-upload"></i> 导入</button>
+                    <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                        <table id="bootstrap-table" style="min-width:2000px;"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "bs/bommain"
+        var attrDatas = [[${@dict.getType('bs_bom_attr')}]];
+        $("#form-bommain-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-bommain-add').serialize());
+            }
+        }
+
+        $(function() {
+            var options = {
+                modalName: "BOM明细",
+                importUrl: ctx + "bs/bomdetail/importData",
+                importTemplateUrl: ctx + "bs/bomdetail/importTemplate",
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                rowStyle: setRowStyle,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'mcode',
+                    align: 'center',
+                    title: '部件编号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].mcode' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'mname',
+                    align: 'center',
+                    title: '部件名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].mname' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'spec',
+                    align: 'center',
+                    title: '部件规格',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].spec' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'attribute',
+                    align: 'center',
+                    title: '部件属性',
+                    formatter: function(value, row, index) {
+                        var name = $.common.sprintf("bsBomDetailList[%s].attribute", index);
+                        return $.common.dictToSelect(attrDatas, value, name);
+                    }
+                },
+                {
+                    field: 'msize',
+                    align: 'center',
+                    title: '上机尺寸',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].msize' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'dnumber',
+                    align: 'center',
+                    title: '模切拼数',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].dnumber' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'pnumber',
+                    align: 'center',
+                    title: '切纸拼数',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].pnumber' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'qty',
+                    align: 'center',
+                    title: '用量',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].qty' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'remark',
+                    align: 'center',
+                    title: '备注',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].remark' value='%s'>", index, value);
+                        return html;
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function addColumn(obj) {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+        	
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    mcode: $.common.isNotEmpty(obj)?obj.mcode:"",
+                    mname: $.common.isNotEmpty(obj)?obj.mname:"",
+                    spec: $.common.isNotEmpty(obj)?obj.spec:"",
+                    attribute: $.common.isNotEmpty(obj)?obj.attribute:"",
+                    msize: $.common.isNotEmpty(obj)?obj.msize:"",
+                    dnumber: $.common.isNotEmpty(obj)?obj.dnumber:"",
+                    pnumber: $.common.isNotEmpty(obj)?obj.pnumber:"",
+                    qty: $.common.isNotEmpty(obj)?obj.qty:"",
+                    remark: $.common.isNotEmpty(obj)?obj.remark:""
+                }
+            });
+        }
+
+        //设置BOM信息行变色
+        function setRowStyle(row,index){
+            if($.common.isNotEmpty(row.attribute) && row.attribute == '0'){
+                return {
+                    css: {
+                        background: '#66cc99'
+                    }
+                } 
+            }else{
+                return {
+                    css: {
+                        
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+<script id="importTpl" type="text/template">
+<form enctype="multipart/form-data" class="mt20 mb10">
+	<div class="col-xs-offset-1">
+		<input type="file" id="file" name="file"/>
+		<div class="mt10 pt5">
+			下载模板:  &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+		</div>
+		<font color="red" class="pull-left mt10">
+			提示：仅允许导入“xls”或“xlsx”格式文件！
+		</font>
+	</div>
+</form>
+</script>
+</html>

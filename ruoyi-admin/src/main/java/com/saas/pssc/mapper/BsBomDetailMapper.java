@@ -7,7 +7,7 @@ import com.saas.pssc.domain.BsBomDetail;
  * bom物料清单明细Mapper接口
  * 
  * @author admin
- * @date 2021-07-31
+ * @date 2021-08-09
  */
 public interface BsBomDetailMapper 
 {
@@ -17,7 +17,7 @@ public interface BsBomDetailMapper
      * @param id bom物料清单明细ID
      * @return bom物料清单明细
      */
-    public BsBomDetail selectBsBomDetailById(Long id);
+    public BsBomDetail selectBsBomDetailById(String id);
 
     /**
      * 查询bom物料清单明细列表
@@ -49,7 +49,7 @@ public interface BsBomDetailMapper
      * @param id bom物料清单明细ID
      * @return 结果
      */
-    public int deleteBsBomDetailById(Long id);
+    public int deleteBsBomDetailById(String id);
 
     /**
      * 批量删除bom物料清单明细

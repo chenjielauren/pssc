@@ -18,7 +18,7 @@ public interface QcMatCheckMainMapper
      * @param id 原材料检验记录ID
      * @return 原材料检验记录
      */
-    public QcMatCheckMain selectQcMatCheckMainById(Long id);
+    public QcMatCheckMain selectQcMatCheckMainById(String id);
 
     /**
      * 查询原材料检验记录列表
@@ -50,7 +50,7 @@ public interface QcMatCheckMainMapper
      * @param id 原材料检验记录ID
      * @return 结果
      */
-    public int deleteQcMatCheckMainById(Long id);
+    public int deleteQcMatCheckMainById(String id);
 
     /**
      * 批量删除原材料检验记录
@@ -83,5 +83,9 @@ public interface QcMatCheckMainMapper
      * @param id 原材料检验记录ID
      * @return 结果
      */
-    public int deleteQcMatCheckDetailByMainId(Long id);
+    public int deleteQcMatCheckDetailByMainId(String id);
+
+	public int updateQcMatCheckMainByIds(String[] strArray);
+
+	public int updateQcMatCheckMainById(String id);
 }

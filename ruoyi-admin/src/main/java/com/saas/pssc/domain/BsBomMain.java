@@ -1,5 +1,6 @@
 package com.saas.pssc.domain;
 
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.saas.common.annotation.Excel;
@@ -9,14 +10,14 @@ import com.saas.common.core.domain.BaseEntity;
  * bom物料清单对象 bs_bom_main
  * 
  * @author admin
- * @date 2021-07-31
+ * @date 2021-08-09
  */
 public class BsBomMain extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** bomID */
-    private Long id;
+    /** guid */
+    private String id;
 
     /** 产品编号 */
     @Excel(name = "产品编号")
@@ -30,8 +31,7 @@ public class BsBomMain extends BaseEntity
     @Excel(name = "产品规格")
     private String pspec;
 
-    /** 是否有效 */
-    @Excel(name = "是否有效")
+    /** 有效否 0失效1有效 */
     private String isValid;
 
     /**  */
@@ -43,12 +43,15 @@ public class BsBomMain extends BaseEntity
     /**  */
     private String attribute3;
 
-    public void setId(Long id) 
+    /** bom物料清单明细信息 */
+    private List<BsBomDetail> bsBomDetailList;
+
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -116,6 +119,16 @@ public class BsBomMain extends BaseEntity
         return attribute3;
     }
 
+    public List<BsBomDetail> getBsBomDetailList()
+    {
+        return bsBomDetailList;
+    }
+
+    public void setBsBomDetailList(List<BsBomDetail> bsBomDetailList)
+    {
+        this.bsBomDetailList = bsBomDetailList;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -132,6 +145,7 @@ public class BsBomMain extends BaseEntity
             .append("attribute1", getAttribute1())
             .append("attribute2", getAttribute2())
             .append("attribute3", getAttribute3())
+            .append("bsBomDetailList", getBsBomDetailList())
             .toString();
     }
 }

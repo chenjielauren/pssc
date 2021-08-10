@@ -3,48 +3,39 @@ package com.saas.pssc.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.saas.common.annotation.Excel;
-import com.saas.common.core.domain.TreeEntity;
+import com.saas.common.core.domain.BaseEntity;
 
 /**
  * bom物料清单明细对象 bs_bom_detail
  * 
  * @author admin
- * @date 2021-07-31
+ * @date 2021-08-09
  */
-public class BsBomDetail extends TreeEntity
+public class BsBomDetail extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 工序ID */
-    private Long id;
+    private String id;
 
     /** 主表ID */
-    
-    private Long mainId;
+    private String mainId;
 
-    /** 上级物料类型 */
-    @Excel(name = "上级物料类型")
-    private Long idParent;
-
-    /** 材料编号 */
-    @Excel(name = "材料编号")
+    /** 部件编号 */
+    @Excel(name = "部件编号")
     private String mcode;
 
     /** 部件名称 */
     @Excel(name = "部件名称")
     private String mname;
 
-    /** 属性 */
-    @Excel(name = "属性")
-    private String attribute;
-
-    /** 用量 */
-    @Excel(name = "用量")
-    private Long qty;
-
-    /** 材料规格 */
-    @Excel(name = "材料规格")
+    /** 部件规格 */
+    @Excel(name = "部件规格")
     private String spec;
+
+    /** 部件属性 */
+    @Excel(name = "部件属性",readConverterExp = "0=生产,1=采购,2=未知")
+    private String attribute;
 
     /** 上机尺寸 */
     @Excel(name = "上机尺寸")
@@ -54,13 +45,20 @@ public class BsBomDetail extends TreeEntity
     @Excel(name = "模切拼数")
     private Long dnumber;
 
-    /** 是否有效 */
-    @Excel(name = "是否有效")
-    private String isValid;
-
     /** 切纸拼数 */
     @Excel(name = "切纸拼数")
     private Long pnumber;
+
+    /** 用量 */
+    @Excel(name = "用量")
+    private Long qty;
+
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+
+    /** 有效否 0失效1有效 */
+    private String isValid;
 
     /**  */
     private String attribute1;
@@ -71,32 +69,23 @@ public class BsBomDetail extends TreeEntity
     /**  */
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
-    public void setMainId(Long mainId) 
+    public void setMainId(String mainId) 
     {
         this.mainId = mainId;
     }
 
-    public Long getMainId() 
+    public String getMainId() 
     {
         return mainId;
-    }
-    public void setIdParent(Long idParent) 
-    {
-        this.idParent = idParent;
-    }
-
-    public Long getIdParent() 
-    {
-        return idParent;
     }
     public void setMcode(String mcode) 
     {
@@ -116,24 +105,6 @@ public class BsBomDetail extends TreeEntity
     {
         return mname;
     }
-    public void setAttribute(String attribute) 
-    {
-        this.attribute = attribute;
-    }
-
-    public String getAttribute() 
-    {
-        return attribute;
-    }
-    public void setQty(Long qty) 
-    {
-        this.qty = qty;
-    }
-
-    public Long getQty() 
-    {
-        return qty;
-    }
     public void setSpec(String spec) 
     {
         this.spec = spec;
@@ -142,6 +113,15 @@ public class BsBomDetail extends TreeEntity
     public String getSpec() 
     {
         return spec;
+    }
+    public void setAttribute(String attribute) 
+    {
+        this.attribute = attribute;
+    }
+
+    public String getAttribute() 
+    {
+        return attribute;
     }
     public void setMsize(String msize) 
     {
@@ -161,15 +141,6 @@ public class BsBomDetail extends TreeEntity
     {
         return dnumber;
     }
-    public void setIsValid(String isValid) 
-    {
-        this.isValid = isValid;
-    }
-
-    public String getIsValid() 
-    {
-        return isValid;
-    }
     public void setPnumber(Long pnumber) 
     {
         this.pnumber = pnumber;
@@ -178,6 +149,31 @@ public class BsBomDetail extends TreeEntity
     public Long getPnumber() 
     {
         return pnumber;
+    }
+    public void setQty(Long qty) 
+    {
+        this.qty = qty;
+    }
+
+    public Long getQty() 
+    {
+        return qty;
+    }
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    public void setIsValid(String isValid) 
+    {
+        this.isValid = isValid;
+    }
+
+    public String getIsValid() 
+    {
+        return isValid;
     }
     public void setAttribute1(String attribute1) 
     {
@@ -212,17 +208,16 @@ public class BsBomDetail extends TreeEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("mainId", getMainId())
-            .append("idParent", getIdParent())
             .append("mcode", getMcode())
             .append("mname", getMname())
-            .append("attribute", getAttribute())
-            .append("qty", getQty())
             .append("spec", getSpec())
+            .append("attribute", getAttribute())
             .append("msize", getMsize())
-            .append("remark", getRemark())
             .append("dnumber", getDnumber())
-            .append("isValid", getIsValid())
             .append("pnumber", getPnumber())
+            .append("qty", getQty())
+            .append("remark", getRemark())
+            .append("isValid", getIsValid())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

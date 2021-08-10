@@ -11,7 +11,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="quser"    column="quser"    />
         <result property="pcode"    column="pcode"    />
         <result property="pname"    column="pname"    />
+        <result property="pspec"    column="pspec"    />
         <result property="cwork"    column="cwork"    />
+        <result property="cmachine"    column="cmachine"    />
         <result property="ctype"    column="ctype"    />
         <result property="qcResult"    column="qc_result"    />
         <result property="remark"    column="remark"    />
@@ -48,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectQcProcessCheckMainVo">
-        select id, qcode, qtime, quser, pcode, pname, cwork, ctype, qc_result, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by,t.update_time, attribute1, attribute2, attribute3 
+        select id, qcode, qtime, quser, pcode, pname,pspec, cwork, cmachine,ctype, qc_result, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by,t.update_time, attribute1, attribute2, attribute3 
         from qc_process_check_main t left join sys_user su on t.create_by = su.login_name
     </sql>
 
@@ -63,13 +65,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
             <if test="cwork != null  and cwork != ''"> and cwork = #{cwork}</if>
             <if test="ctype != null  and ctype != ''"> and ctype = #{ctype}</if>
-            and is_valid = '1'  ${params.dataScope}
+            and is_valid = '1'  
+            <!-- 数据范围过滤 --> 
+            ${params.dataScope}
         </where>
         order by t.create_time desc
     </select>
     
-    <select id="selectQcProcessCheckMainById" parameterType="Long" resultMap="QcProcessCheckMainQcProcessCheckDetailResult">
-        select a.id, a.qcode, a.qtime, a.quser, a.pcode, a.pname, a.cwork, a.ctype, a.qc_result, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
+    <select id="selectQcProcessCheckMainById" parameterType="String" resultMap="QcProcessCheckMainQcProcessCheckDetailResult">
+        select a.id, a.qcode, a.qtime, a.quser, a.pcode, a.pname,a.pspec, a.cwork, a.ctype,a.cmachine, a.qc_result, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
             b.id as sub_id, b.main_id as sub_main_id, b.project_code as sub_project_code, b.cproject as sub_cproject, b.csop as sub_csop, b.cmethod as sub_cmethod, b.qc_result as sub_qc_result, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
         from qc_process_check_main a
         left join qc_process_check_detail b on b.main_id = a.id
@@ -79,12 +83,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertQcProcessCheckMain" parameterType="QcProcessCheckMain" useGeneratedKeys="true" keyProperty="id">
         insert into qc_process_check_main
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="qcode != null and qcode != ''">qcode,</if>
             <if test="qtime != null">qtime,</if>
             <if test="quser != null">quser,</if>
             <if test="pcode != null">pcode,</if>
             <if test="pname != null">pname,</if>
+            <if test="pspec != null">pspec,</if>
             <if test="cwork != null">cwork,</if>
+            <if test="cmachine != null">cmachine,</if>
             <if test="ctype != null">ctype,</if>
             <if test="qcResult != null">qc_result,</if>
             <if test="remark != null">remark,</if>
@@ -97,12 +104,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="qcode != null and qcode != ''">#{qcode},</if>
             <if test="qtime != null">#{qtime},</if>
             <if test="quser != null">#{quser},</if>
             <if test="pcode != null">#{pcode},</if>
             <if test="pname != null">#{pname},</if>
+            <if test="pspec != null">#{pspec},</if>
             <if test="cwork != null">#{cwork},</if>
+            <if test="cmachine != null">#{cmachine},</if>
             <if test="ctype != null">#{ctype},</if>
             <if test="qcResult != null">#{qcResult},</if>
             <if test="remark != null">#{remark},</if>
@@ -124,7 +134,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="quser != null">quser = #{quser},</if>
             <if test="pcode != null">pcode = #{pcode},</if>
             <if test="pname != null">pname = #{pname},</if>
+            <if test="pspec != null">pspec = #{pspec},</if>
             <if test="cwork != null">cwork = #{cwork},</if>
+            <if test="cmachine != null">cmachine = #{cmachine},</if>
             <if test="ctype != null">ctype = #{ctype},</if>
             <if test="qcResult != null">qc_result = #{qcResult},</if>
             <if test="remark != null">remark = #{remark},</if>
@@ -140,7 +152,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteQcProcessCheckMainById" parameterType="Long">
+    <update id="updateQcProcessCheckMainById" parameterType="String">
+        update qc_process_check_main set is_valid = '0' where id = #{id}
+    </update>
+
+    <update id="updateQcProcessCheckMainByIds" parameterType="String">
+        update qc_process_check_main set is_valid = '0' where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteQcProcessCheckMainById" parameterType="String">
         delete from qc_process_check_main where id = #{id}
     </delete>
 
@@ -158,7 +181,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <delete id="deleteQcProcessCheckDetailByMainId" parameterType="Long">
+    <delete id="deleteQcProcessCheckDetailByMainId" parameterType="String">
         delete from qc_process_check_detail where main_id = #{mainId}
     </delete>
 

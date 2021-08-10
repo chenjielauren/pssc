@@ -29,6 +29,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <collection property="ppWoBookDetailList" notNullColumn="sub_id" javaType="java.util.List" resultMap="PpWoBookDetailResult" />
         <collection property="ppWoBookBomList" notNullColumn="sub_bom_id" javaType="java.util.List" resultMap="PpWoBookBomResult" />
     </resultMap>
+    <resultMap id="PpWoBookMainPpWoBookBomResult" type="PpWoBookMain" extends="PpWoBookMainResult">
+        <collection property="ppWoBookBomList" notNullColumn="sub_bom_id" javaType="java.util.List" resultMap="PpWoBookBomResult" />
+    </resultMap>
 
     <resultMap type="PpWoBookDetail" id="PpWoBookDetailResult">
         <result property="id"    column="sub_id"    />
@@ -239,5 +242,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ( #{item.id}, #{item.mainId}, #{item.orderno}, #{item.mcode}, #{item.mname}, #{item.mspec}, #{item.attribute}, #{item.onsize}, #{item.moqieqty}, #{item.qiezhiqty}, #{item.qty}, #{item.unit}, #{item.unratio}, #{item.ruter}, #{item.remark},  #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
         </foreach>
     </insert>
+
+    <select id="selectPpWoBookMainByMap" parameterType="Map" resultMap="PpWoBookMainPpWoBookBomResult">
+        select a.id, a.wcode, a.orderno, a.pcode, a.pname, a.pspec, a.qty, a.pstar_time, a.pend_time, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
+            c.id as sub_bom_id, c.main_id as sub_bom_main_id, c.orderno as sub_bom_orderno, c.mcode as sub_bom_mcode, c.mname as sub_bom_mname, c.mspec as sub_bom_mspec, c.attribute as sub_bom_attribute, c.onsize as sub_bom_onsize, c.moqieqty as sub_bom_moqieqty, c.qiezhiqty as sub_bom_qiezhiqty, c.qty as sub_bom_qty, c.unit as sub_bom_unit, c.unratio as sub_bom_unratio, c.ruter as sub_bom_ruter, c.remark as sub_bom_remark, c.is_valid as sub_bom_is_valid, c.create_by as sub_bom_create_by, c.create_time as sub_bom_create_time, c.update_by as sub_bom_update_by, c.update_time as sub_bom_update_time, c.attribute1 as sub_bom_attribute1, c.attribute2 as sub_bom_attribute2, c.attribute3 as sub_bom_attribute3
+        from pp_wo_book_main a
+        left join pp_wo_book_bom c on c.main_id = a.id
+        left join sys_user su on a.create_by = su.login_name
+        where a.pcode = #{pcode} and a.create_by = #{vendor} and a.is_valid = '1'
+        order by c.orderno
+    </select>
 
 </mapper>

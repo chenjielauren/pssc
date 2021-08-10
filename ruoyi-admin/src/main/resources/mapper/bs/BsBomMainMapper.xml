@@ -20,33 +20,63 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="attribute3"    column="attribute3"    />
     </resultMap>
 
+    <resultMap id="BsBomMainBsBomDetailResult" type="BsBomMain" extends="BsBomMainResult">
+        <collection property="bsBomDetailList" notNullColumn="sub_id" javaType="java.util.List" resultMap="BsBomDetailResult" />
+    </resultMap>
+
+    <resultMap type="BsBomDetail" id="BsBomDetailResult">
+        <result property="id"    column="sub_id"    />
+        <result property="mainId"    column="sub_main_id"    />
+        <result property="mcode"    column="sub_mcode"    />
+        <result property="mname"    column="sub_mname"    />
+        <result property="spec"    column="sub_spec"    />
+        <result property="attribute"    column="sub_attribute"    />
+        <result property="msize"    column="sub_msize"    />
+        <result property="dnumber"    column="sub_dnumber"    />
+        <result property="pnumber"    column="sub_pnumber"    />
+        <result property="qty"    column="sub_qty"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="isValid"    column="sub_is_valid"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="attribute1"    column="sub_attribute1"    />
+        <result property="attribute2"    column="sub_attribute2"    />
+        <result property="attribute3"    column="sub_attribute3"    />
+    </resultMap>
+
     <sql id="selectBsBomMainVo">
-        select id, pcode, name, pspec, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
-        from bs_bom_main t left join sys_user su on t.create_by = su.login_name 
+        select id, pcode, name, pspec, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_bom_main
     </sql>
 
     <select id="selectBsBomMainList" parameterType="BsBomMain" resultMap="BsBomMainResult">
         <include refid="selectBsBomMainVo"/>
         <where>  
-            <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
+            <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="pspec != null  and pspec != ''"> and pspec like concat('%', #{pspec}, '%')</if>
-            and is_valid = '1'  ${params.dataScope} 
+            <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
         </where>
     </select>
     
-    <select id="selectBsBomMainById" parameterType="Long" resultMap="BsBomMainResult">
-        <include refid="selectBsBomMainVo"/>
-        where id = #{id}
+    <select id="selectBsBomMainById" parameterType="String" resultMap="BsBomMainBsBomDetailResult">
+        select a.id, a.pcode, a.name, a.pspec, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
+            b.id as sub_id, b.main_id as sub_main_id, b.mcode as sub_mcode, b.mname as sub_mname, b.spec as sub_spec, b.attribute as sub_attribute, b.msize as sub_msize, b.dnumber as sub_dnumber, b.pnumber as sub_pnumber, b.qty as sub_qty, b.remark as sub_remark, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
+        from bs_bom_main a
+        left join bs_bom_detail b on b.main_id = a.id
+        where a.id = #{id}
     </select>
         
-    <insert id="insertBsBomMain" parameterType="BsBomMain" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertBsBomMain" parameterType="BsBomMain">
         insert into bs_bom_main
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="name != null">name,</if>
             <if test="pspec != null">pspec,</if>
             <if test="remark != null">remark,</if>
+            <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
             <if test="updateBy != null">update_by,</if>
@@ -56,10 +86,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="pcode != null and pcode != ''">#{pcode},</if>
             <if test="name != null">#{name},</if>
             <if test="pspec != null">#{pspec},</if>
             <if test="remark != null">#{remark},</if>
+            <if test="isValid != null">#{isValid},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
             <if test="updateBy != null">#{updateBy},</if>
@@ -89,7 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <update id="updateBsBomMainById" parameterType="Long">
+    <update id="updateBsBomMainById" parameterType="String">
         update bs_bom_main set is_valid = '0' where id = #{id}
     </update>
 
@@ -100,7 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </update>
 
-    <delete id="deleteBsBomMainById" parameterType="Long">
+    <delete id="deleteBsBomMainById" parameterType="String">
         delete from bs_bom_main where id = #{id}
     </delete>
 
@@ -110,5 +142,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    
+    <delete id="deleteBsBomDetailByMainIds" parameterType="String">
+        delete from bs_bom_detail where main_id in 
+        <foreach item="mainId" collection="array" open="(" separator="," close=")">
+            #{mainId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBsBomDetailByMainId" parameterType="String">
+        delete from bs_bom_detail where main_id = #{mainId}
+    </delete>
+
+    <insert id="batchBsBomDetail">
+        insert into bs_bom_detail( id, main_id, mcode, mname, spec, attribute, msize, dnumber, pnumber, qty, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.mainId}, #{item.mcode}, #{item.mname}, #{item.spec}, #{item.attribute}, #{item.msize}, #{item.dnumber}, #{item.pnumber}, #{item.qty}, #{item.remark}, #{item.isValid}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
+        </foreach>
+    </insert>
 
 </mapper>

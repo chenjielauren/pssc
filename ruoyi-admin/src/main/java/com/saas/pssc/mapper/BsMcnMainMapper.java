@@ -1,6 +1,8 @@
 package com.saas.pssc.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.BsMcnMain;
 import com.saas.pssc.domain.BsMcnDetail;
 
@@ -18,7 +20,7 @@ public interface BsMcnMainMapper
      * @param id 4M变更单ID
      * @return 4M变更单
      */
-    public BsMcnMain selectBsMcnMainById(Long id);
+    public BsMcnMain selectBsMcnMainById(String id);
 
     /**
      * 查询4M变更单列表
@@ -50,7 +52,7 @@ public interface BsMcnMainMapper
      * @param id 4M变更单ID
      * @return 结果
     */
-    public int updateBsMcnMainById(Long id);
+    public int updateBsMcnMainById(String id);
 
     /**
      * 批量失效4M变更单
@@ -66,7 +68,7 @@ public interface BsMcnMainMapper
      * @param id 4M变更单ID
      * @return 结果
      */
-    public int deleteBsMcnMainById(Long id);
+    public int deleteBsMcnMainById(String id);
 
     /**
      * 批量删除4M变更单
@@ -96,8 +98,10 @@ public interface BsMcnMainMapper
     /**
      * 通过4M变更单ID删除4M变更单明细信息
      * 
-     * @param id 4M变更单ID
+     * @param string 4M变更单ID
      * @return 结果
      */
-    public int deleteBsMcnDetailByMainId(Long id);
+    public int deleteBsMcnDetailByMainId(String string);
+
+	public BsMcnMain selectBsMcnMainByMap(Map<String, Object> paramMap);
 }

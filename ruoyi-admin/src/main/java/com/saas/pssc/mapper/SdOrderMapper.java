@@ -17,7 +17,7 @@ public interface SdOrderMapper
      * @param id 订单信息ID
      * @return 订单信息
      */
-    public SdOrder selectSdOrderById(Long id);
+    public SdOrder selectSdOrderById(String id);
 
     /**
      * 查询订单信息列表
@@ -49,7 +49,7 @@ public interface SdOrderMapper
      * @param id 订单信息ID
      * @return 结果
      */
-    public int updateSdOrderById(Long id);
+    public int updateSdOrderById(String id);
 
     /**
      * 批量失效订单信息
@@ -65,7 +65,7 @@ public interface SdOrderMapper
      * @param id 订单信息ID
      * @return 结果
      */
-    public int deleteSdOrderById(Long id);
+    public int deleteSdOrderById(String id);
 
     /**
      * 批量删除订单信息

@@ -1,6 +1,8 @@
 package com.saas.pssc.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.BsMcnMain;
 
 /**
@@ -17,7 +19,7 @@ public interface IBsMcnMainService
      * @param id 4M变更单ID
      * @return 4M变更单
      */
-    public BsMcnMain selectBsMcnMainById(Long id);
+    public BsMcnMain selectBsMcnMainById(String id);
 
     /**
      * 查询4M变更单列表
@@ -57,5 +59,7 @@ public interface IBsMcnMainService
      * @param id 4M变更单ID
      * @return 结果
      */
-    public int deleteBsMcnMainById(Long id);
+    public int deleteBsMcnMainById(String id);
+
+	public BsMcnMain selectBsMcnMainByMap(Map<String, Object> paramMap);
 }

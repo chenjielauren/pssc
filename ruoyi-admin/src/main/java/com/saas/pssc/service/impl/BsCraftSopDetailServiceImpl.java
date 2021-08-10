@@ -28,7 +28,7 @@ public class BsCraftSopDetailServiceImpl implements IBsCraftSopDetailService
      * @return 工艺标准与CCP明细
      */
     @Override
-    public BsCraftSopDetail selectBsCraftSopDetailById(Long id)
+    public BsCraftSopDetail selectBsCraftSopDetailById(String id)
     {
         return bsCraftSopDetailMapper.selectBsCraftSopDetailById(id);
     }
@@ -90,7 +90,7 @@ public class BsCraftSopDetailServiceImpl implements IBsCraftSopDetailService
      * @return 结果
      */
     @Override
-    public int deleteBsCraftSopDetailById(Long id)
+    public int deleteBsCraftSopDetailById(String id)
     {
         return bsCraftSopDetailMapper.deleteBsCraftSopDetailById(id);
     }

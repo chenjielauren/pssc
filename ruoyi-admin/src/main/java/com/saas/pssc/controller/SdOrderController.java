@@ -98,7 +98,7 @@ public class SdOrderController extends BaseController
      * 修改订单信息
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         SdOrder sdOrder = sdOrderService.selectSdOrderById(id);
         mmap.put("sdOrder", sdOrder);

@@ -1,6 +1,8 @@
 package com.saas.pssc.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.PpWoBookMain;
 import com.saas.pssc.domain.PpWoBookBom;
 import com.saas.pssc.domain.PpWoBookDetail;
@@ -101,4 +103,6 @@ public interface PpWoBookMainMapper
 	public int updatePpWoBookMainById(String id);
 
 	public int updatePpWoBookMainByIds(String[] strArray);
+
+	public PpWoBookMain selectPpWoBookMainByMap(Map<String, Object> paramMap);
 }

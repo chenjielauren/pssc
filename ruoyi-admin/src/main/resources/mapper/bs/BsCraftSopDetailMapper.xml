@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ptype"    column="ptype"    />
         <result property="fileTitle"    column="file_title"    />
         <result property="fileName"    column="file_name"    />
+        <result property="fileUrl"    column="file_url"    />
         <result property="uploadUser"    column="upload_user"    />
         <result property="uploadTime"    column="upload_time"    />
         <result property="isValid"    column="is_valid"    />
@@ -23,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsCraftSopDetailVo">
-        select id, main_id, ptype, file_title, file_name, upload_user, upload_time, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_craft_sop_detail
+        select id, main_id, ptype, file_title, file_name,file_url, upload_user, upload_time, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_craft_sop_detail
     </sql>
 
     <select id="selectBsCraftSopDetailList" parameterType="BsCraftSopDetail" resultMap="BsCraftSopDetailResult">
@@ -42,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectBsCraftSopDetailById" parameterType="Long" resultMap="BsCraftSopDetailResult">
+    <select id="selectBsCraftSopDetailById" parameterType="String" resultMap="BsCraftSopDetailResult">
         <include refid="selectBsCraftSopDetailVo"/>
         where id = #{id}
     </select>
@@ -54,6 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ptype != null">ptype,</if>
             <if test="fileTitle != null and fileTitle != ''">file_title,</if>
             <if test="fileName != null">file_name,</if>
+            <if test="fileUrl != null">file_url,</if>
             <if test="uploadUser != null and uploadUser != ''">upload_user,</if>
             <if test="uploadTime != null">upload_time,</if>
             <if test="createBy != null">create_by,</if>
@@ -69,6 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ptype != null">#{ptype},</if>
             <if test="fileTitle != null and fileTitle != ''">#{fileTitle},</if>
             <if test="fileName != null">#{fileName},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
             <if test="uploadUser != null and uploadUser != ''">#{uploadUser},</if>
             <if test="uploadTime != null">#{uploadTime},</if>            
             <if test="createBy != null">#{createBy},</if>
@@ -88,6 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ptype != null">ptype = #{ptype},</if>
             <if test="fileTitle != null and fileTitle != ''">file_title = #{fileTitle},</if>
             <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
             <if test="uploadUser != null and uploadUser != ''">upload_user = #{uploadUser},</if>
             <if test="uploadTime != null">upload_time = #{uploadTime},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
@@ -102,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteBsCraftSopDetailById" parameterType="Long">
+    <delete id="deleteBsCraftSopDetailById" parameterType="String">
         delete from bs_craft_sop_detail where id = #{id}
     </delete>
 

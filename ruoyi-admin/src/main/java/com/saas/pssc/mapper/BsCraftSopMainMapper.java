@@ -1,6 +1,8 @@
 package com.saas.pssc.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.BsCraftSopMain;
 import com.saas.pssc.domain.BsCraftSopDetail;
 
@@ -18,7 +20,7 @@ public interface BsCraftSopMainMapper
      * @param id 工艺标准与CCPID
      * @return 工艺标准与CCP
      */
-    public BsCraftSopMain selectBsCraftSopMainById(Long id);
+    public BsCraftSopMain selectBsCraftSopMainById(String id);
 
     /**
      * 查询工艺标准与CCP列表
@@ -50,7 +52,7 @@ public interface BsCraftSopMainMapper
      * @param id 工艺标准与CCPID
      * @return 结果
      */
-    public int updateBsCraftSopMainById(Long id);
+    public int updateBsCraftSopMainById(String id);
 
     /**
      * 批量失效工艺标准与CCP
@@ -100,5 +102,7 @@ public interface BsCraftSopMainMapper
      * @param id 工艺标准与CCPID
      * @return 结果
      */
-    public int deleteBsCraftSopDetailByMainId(Long id);
+    public int deleteBsCraftSopDetailByMainId(String id);
+
+	public BsCraftSopMain selectBsCraftSopMainByMap(Map<String, Object> paramMap);
 }

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('查看库存和标准信息')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <h4 class="form-header h4">库存信息</h4>
+        <form class="form-horizontal m" id="form-delivery-edit" th:object="${sdDelivery}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">发货批次号：</label>
+                <div class="col-sm-4">
+                    <input name="dlot" th:field="*{dlot}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label  is-required">发货时间：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <input name="dtime" th:value="${#dates.format(sdDelivery.dtime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">  
+                <label class="col-sm-2 control-label is-required">订单号：</label>
+                <div class="col-sm-10">
+                    <input name="dcode" th:field="*{dcode}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">产品编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" th:field="*{pcode}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">产品名称：</label>
+                <div class="col-sm-4">
+                    <input name="pname" th:field="*{pname}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">产品规格：</label>
+                <div class="col-sm-4">
+                    <input name="pspec" th:field="*{pspec}" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">产品批次号：</label>
+                <div class="col-sm-4">
+                    <input name="flot" th:field="*{flot}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">发货数量：</label>
+                <div class="col-sm-4">
+                    <input name="qty" th:field="*{qty}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label is-required">备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="remark" class="form-control" required>[[*{remark}]]</textarea>
+                </div>
+            </div>
+        </form>
+        <h4 class="form-header h4">检验标准</h4>
+        <div class="col-sm-12">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="false">材料检验标准</a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="true">成品检验标准</a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="true">过程首检标准</a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="true">过程自检标准</a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="true">过程专检标准</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="panel-body">
+                            <div class="col-sm-12 select-table table-striped">
+                                <table id="bootstrap-table1"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+                            <div class="col-sm-12 select-table table-striped">
+                                <table id="bootstrap-table2"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-3" class="tab-pane">
+                        <div class="panel-body">
+                            <div class="col-sm-12 select-table table-striped">
+                                <table id="bootstrap-table3"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-4" class="tab-pane">
+                        <div class="panel-body">
+                            <div class="col-sm-12 select-table table-striped">
+                                <table id="bootstrap-table4"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-5" class="tab-pane">
+                        <div class="panel-body">
+                            <div class="col-sm-12 select-table table-striped">
+                                <table id="bootstrap-table5"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
+        //材料检验标准
+        $(function() {
+            var options1 = {
+                id: "bootstrap-table1",
+                modalName: "材料信息",
+                data: [[${bsMatSopMain.bsMatSopDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'orderno',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='bsMatSopDetailList[%s].orderno' value='%s'>", index,$.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'pcode',
+                    align: 'center',
+                    title: '检验项目编号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].pcode' value='%s'>",index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'name',
+                    align: 'center',
+                    title: '检验项目名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].name' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'standard',
+                    align: 'center',
+                    title: '检验标准',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].standard' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'pmethod',
+                    align: 'center',
+                    title: '检验方法',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].pmethod' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'remark',
+                    align: 'center',
+                    title: '备注',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].remark' value='%s'>", index, value);
+                        return html;
+                    }
+				}]
+            };
+            $.table.init(options1);
+        });
+        //成品检验标准
+        $(function() {
+            var options2 = {
+                id: "bootstrap-table2",
+                data: [[${bsProSopMain.bsProSopDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'orderno',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='bsProSopDetailList[%s].orderno' value='%s'>", index,$.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'pcode',
+                    align: 'center',
+                    title: '检验项目编号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsProSopDetailList[%s].pcode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'name',
+                    align: 'center',
+                    title: '检验项目名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsProSopDetailList[%s].name' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'standard',
+                    align: 'center',
+                    title: '检验标准',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsProSopDetailList[%s].standard' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'pmethod',
+                    align: 'center',
+                    title: '检验方法',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsProSopDetailList[%s].pmethod' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'remark',
+                    align: 'center',
+                    title: '备注',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsProSopDetailList[%s].remark' value='%s'>", index, value);
+                        return html;
+                    }
+				}]
+            };
+            $.table.init(options2);
+        });
+        //过程首检标准
+        $(function() {
+            var options3 = {
+                id: "bootstrap-table3",
+                data: [[${bsPqcMain.sjDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'pcode',
+                    align: 'center',
+                    title: '项目编号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].pcode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'name',
+                    align: 'center',
+                    title: '检验项目名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].name' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'standard',
+                    align: 'center',
+                    title: '检验标准',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].standard' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'method',
+                    align: 'center',
+                    title: '检验方法',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].method' value='%s'>", index, value);
+                        return html;
+                    }
+				}]
+            };
+            $.table.init(options3);
+        });
+        //过程自检标准
+        $(function() {
+            var options4 = {
+                id: "bootstrap-table4",
+                data: [[${bsPqcMain.zjDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'pcode',
+                    align: 'center',
+                    title: '项目编号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].pcode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'name',
+                    align: 'center',
+                    title: '检验项目名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].name' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'standard',
+                    align: 'center',
+                    title: '检验标准',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].standard' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'method',
+                    align: 'center',
+                    title: '检验方法',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].method' value='%s'>", index, value);
+                        return html;
+                    }
+				}]
+            };
+            $.table.init(options4);
+        });
+        //过程专检标准
+        $(function() {
+            var options5 = {
+                id: "bootstrap-table5",
+                data: [[${bsPqcMain.xjDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'pcode',
+                    align: 'center',
+                    title: '项目编号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].pcode' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'name',
+                    align: 'center',
+                    title: '检验项目名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].name' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'standard',
+                    align: 'center',
+                    title: '检验标准',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].standard' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'method',
+                    align: 'center',
+                    title: '检验方法',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sjDetailList[%s].method' value='%s'>", index, value);
+                        return html;
+                    }
+				}]
+            };
+            $.table.init(options5);
+        });
+    </script>
+</body>
+</html>
