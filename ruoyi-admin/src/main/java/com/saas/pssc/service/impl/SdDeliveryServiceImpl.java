@@ -5,6 +5,7 @@ import java.util.List;
 import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.SdDelivery;
 import com.saas.pssc.mapper.SdDeliveryMapper;
 import com.saas.pssc.service.ISdDeliveryService;
@@ -58,6 +59,7 @@ public class SdDeliveryServiceImpl implements ISdDeliveryService
     @Override
     public int insertSdDelivery(SdDelivery sdDelivery)
     {
+        sdDelivery.setId(IdUtils.fastSimpleUUID());
         sdDelivery.setCreateTime(DateUtils.getNowDate());
         return sdDeliveryMapper.insertSdDelivery(sdDelivery);
     }

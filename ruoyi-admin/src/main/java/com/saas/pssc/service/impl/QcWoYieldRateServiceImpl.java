@@ -5,6 +5,7 @@ import java.util.List;
 import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.QcWoYieldRate;
 import com.saas.pssc.mapper.QcWoYieldRateMapper;
 import com.saas.pssc.service.IQcWoYieldRateService;
@@ -31,7 +32,7 @@ public class QcWoYieldRateServiceImpl implements IQcWoYieldRateService
      * @return 工单良品率分析
      */
     @Override
-    public QcWoYieldRate selectQcWoYieldRateById(Long id)
+    public QcWoYieldRate selectQcWoYieldRateById(String id)
     {
         return qcWoYieldRateMapper.selectQcWoYieldRateById(id);
     }
@@ -58,6 +59,7 @@ public class QcWoYieldRateServiceImpl implements IQcWoYieldRateService
     @Override
     public int insertQcWoYieldRate(QcWoYieldRate qcWoYieldRate)
     {
+        qcWoYieldRate.setId(IdUtils.fastSimpleUUID());
         qcWoYieldRate.setCreateTime(DateUtils.getNowDate());
         return qcWoYieldRateMapper.insertQcWoYieldRate(qcWoYieldRate);
     }
@@ -94,7 +96,7 @@ public class QcWoYieldRateServiceImpl implements IQcWoYieldRateService
      * @return 结果
      */
     @Override
-    public int deleteQcWoYieldRateById(Long id)
+    public int deleteQcWoYieldRateById(String id)
     {
         return qcWoYieldRateMapper.updateQcWoYieldRateById(id);
     }

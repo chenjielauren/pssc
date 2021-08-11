@@ -47,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertQcWoYieldRate" parameterType="QcWoYieldRate" useGeneratedKeys="true" keyProperty="id">
         insert into qc_wo_yield_rate
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
             <if test="wo != null">wo,</if>
             <if test="pcode != null">pcode,</if>
             <if test="pname != null">pname,</if>
@@ -63,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
             <if test="wo != null">#{wo},</if>
             <if test="pcode != null">#{pcode},</if>
             <if test="pname != null">#{pname},</if>

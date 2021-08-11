@@ -5,6 +5,7 @@ import java.util.List;
 import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.SdOrder;
 import com.saas.pssc.mapper.SdOrderMapper;
 import com.saas.pssc.service.ISdOrderService;
@@ -58,6 +59,7 @@ public class SdOrderServiceImpl implements ISdOrderService
     @Override
     public int insertSdOrder(SdOrder sdOrder)
     {
+        sdOrder.setId(IdUtils.fastSimpleUUID());
         sdOrder.setCreateTime(DateUtils.getNowDate());
         return sdOrderMapper.insertSdOrder(sdOrder);
     }

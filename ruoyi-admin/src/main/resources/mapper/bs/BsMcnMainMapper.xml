@@ -68,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from bs_mcn_main a
         left join bs_mcn_detail b on b.main_id = a.id
         where a.id = #{id}
+        order by b.upload_time
     </select>
         
     <insert id="insertBsMcnMain" parameterType="BsMcnMain" useGeneratedKeys="true" keyProperty="id">

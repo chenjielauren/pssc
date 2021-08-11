@@ -20,8 +20,10 @@ public class QcBadProjectDetail extends BaseEntity
     private String id;
 
     /** 主表ID */
-    
     private String mainId;
+
+    /** 序号 */
+    private int no;
 
     /** 发生工序 */
     @Excel(name = "发生工序")
@@ -96,6 +98,12 @@ public class QcBadProjectDetail extends BaseEntity
     public String getMainId() 
     {
         return mainId;
+    }
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
     }
     public void setCwork(String cwork) 
     {

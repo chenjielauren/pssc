@@ -9,15 +9,15 @@ ruoyi:
   # 实例演示开关
   demoEnabled: false
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath或C:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  #profile: C:/ruoyi/uploadPath  
-  profile: D:/ruoyi/uploadPath
+  profile: C:/ruoyi/uploadPath  
+  #profile: D:/ruoyi/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 80
+  port: 8088
   servlet:
     # 应用的访问路径
     context-path: /

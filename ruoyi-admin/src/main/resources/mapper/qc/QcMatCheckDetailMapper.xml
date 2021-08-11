@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="QcMatCheckDetail" id="QcMatCheckDetailResult">
         <result property="id"    column="id"    />
         <result property="mainId"    column="main_id"    />
+        <result property="no"    column="no"    />
         <result property="cproject"    column="cproject"    />
         <result property="csop"    column="csop"    />
         <result property="cmethod"    column="cmethod"    />
@@ -22,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectQcMatCheckDetailVo">
-        select id, main_id, cproject, csop, cmethod, qc_result, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from qc_mat_check_detail
+        select id, main_id,no, cproject, csop, cmethod, qc_result, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from qc_mat_check_detail
     </sql>
 
     <select id="selectQcMatCheckDetailList" parameterType="QcMatCheckDetail" resultMap="QcMatCheckDetailResult">
@@ -46,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="mainId != null">main_id,</if>
+            <if test="no != null">no,</if>
             <if test="cproject != null">cproject,</if>
             <if test="csop != null">csop,</if>
             <if test="cmethod != null">cmethod,</if>
@@ -61,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="mainId != null">#{mainId},</if>
+            <if test="no != null">#{no},</if>
             <if test="cproject != null">#{cproject},</if>
             <if test="csop != null">#{csop},</if>
             <if test="cmethod != null">#{cmethod},</if>

@@ -76,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">id,</if>
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="name != null and name != ''">name,</if>
-            <if test="spec != null and spec != ''">spec,</if>
+            <if test="spec != null">spec,</if>
             <if test="remark != null and remark != ''">remark,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
@@ -90,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">#{id},</if>
             <if test="pcode != null and pcode != ''">#{pcode},</if>
             <if test="name != null and name != ''">#{name},</if>
-            <if test="spec != null and spec != ''">#{spec},</if>
+            <if test="spec != null">#{spec},</if>
             <if test="remark != null and remark != ''">#{remark},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
@@ -107,7 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="pcode != null and pcode != ''">pcode = #{pcode},</if>
             <if test="name != null and name != ''">name = #{name},</if>
-            <if test="spec != null and spec != ''">spec = #{spec},</if>
+            <if test="spec != null">spec = #{spec},</if>
             <if test="remark != null and remark != ''">remark = #{remark},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>

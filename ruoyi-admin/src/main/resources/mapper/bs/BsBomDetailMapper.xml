@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BsBomDetail" id="BsBomDetailResult">
         <result property="id"    column="id"    />
         <result property="mainId"    column="main_id"    />
+        <result property="no"    column="no"    />
         <result property="mcode"    column="mcode"    />
         <result property="mname"    column="mname"    />
         <result property="spec"    column="spec"    />
@@ -27,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsBomDetailVo">
-        select id, main_id, mcode, mname, spec, attribute, msize, dnumber, pnumber, qty, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_bom_detail
+        select id, main_id, no, mcode, mname, spec, attribute, msize, dnumber, pnumber, qty, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_bom_detail
     </sql>
 
     <select id="selectBsBomDetailList" parameterType="BsBomDetail" resultMap="BsBomDetailResult">
@@ -54,7 +55,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertBsBomDetail" parameterType="BsBomDetail" useGeneratedKeys="true" keyProperty="id">
         insert into bs_bom_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="mainId != null and mainId != ''">main_id,</if>
+            <if test="id != null">id,</if>
+            <if test="mainId != null">main_id,</if>
+            <if test="no != null">no,</if>
             <if test="mcode != null">mcode,</if>
             <if test="mname != null">mname,</if>
             <if test="spec != null">spec,</if>
@@ -74,7 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="mainId != null and mainId != ''">#{mainId},</if>
+            <if test="id != null">#{id},</if>
+            <if test="mainId != null">#{mainId},</if>
+            <if test="no != null">#{no},</if>
             <if test="mcode != null">#{mcode},</if>
             <if test="mname != null">#{mname},</if>
             <if test="spec != null">#{spec},</if>

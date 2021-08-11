@@ -21,8 +21,10 @@ public class BsPqcDetail extends BaseEntity
     /** 主表ID */
     private String mainId;
 
+    /** 序号 */
+    private int no;
+
     /** 检验类型 0首检 1自检 2巡检 3未知 */
-    // @Excel(name = "检验类型", readConverterExp = "0=首检,1=自检,2=巡检,3=未知")
     private String ptype;
 
     /** 项目编号 */
@@ -67,6 +69,12 @@ public class BsPqcDetail extends BaseEntity
     public String getMainId() 
     {
         return mainId;
+    }
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
     }
     public void setPtype(String ptype) 
     {

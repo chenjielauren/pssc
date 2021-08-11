@@ -100,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderno != null  and orderno != ''"> and orderno like concat('%', #{orderno}, '%')</if>
             <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
-            <if test="pspec != null  and pspec != ''"> and pspec = #{pspec}</if>
+            <if test="pspec != null  and pspec != ''"> and pspec like concat('%', #{pspec}, '%')</if>
             <if test="qty != null "> and qty = #{qty}</if>
             <if test="pstarTime != null "> and pstar_time = #{pstarTime}</if>
             <if test="pendTime != null "> and pend_time = #{pendTime}</if>
@@ -130,7 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderno != null and orderno != ''">orderno,</if>
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="pname != null">pname,</if>
-            <if test="pspec != null and pspec != ''">pspec,</if>
+            <if test="pspec != null">pspec,</if>
             <if test="qty != null">qty,</if>
             <if test="pstarTime != null">pstar_time,</if>
             <if test="pendTime != null">pend_time,</if>
@@ -149,7 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderno != null and orderno != ''">#{orderno},</if>
             <if test="pcode != null and pcode != ''">#{pcode},</if>
             <if test="pname != null">#{pname},</if>
-            <if test="pspec != null and pspec != ''">#{pspec},</if>
+            <if test="pspec != null">#{pspec},</if>
             <if test="qty != null">#{qty},</if>
             <if test="pstarTime != null">#{pstarTime},</if>
             <if test="pendTime != null">#{pendTime},</if>
@@ -171,7 +171,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderno != null and orderno != ''">orderno = #{orderno},</if>
             <if test="pcode != null and pcode != ''">pcode = #{pcode},</if>
             <if test="pname != null">pname = #{pname},</if>
-            <if test="pspec != null and pspec != ''">pspec = #{pspec},</if>
+            <if test="pspec != null">pspec = #{pspec},</if>
             <if test="qty != null">qty = #{qty},</if>
             <if test="pstarTime != null">pstar_time = #{pstarTime},</if>
             <if test="pendTime != null">pend_time = #{pendTime},</if>

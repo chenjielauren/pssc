@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <h4 class="form-header h4">巡检标准</h4>
+            <h4 class="form-header h4">专检标准</h4>
             <div class="row">
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn('2','')"><i class="fa fa-plus"> 增加</i></button>
@@ -102,7 +102,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='sjDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
@@ -166,7 +166,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='zjDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
@@ -230,7 +230,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='xjDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },

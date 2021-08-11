@@ -16,7 +16,7 @@ public class QcWoYieldRate extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 计划工单号ID */
-    private Long id;
+    private String id;
 
     /** 工单号 */
     @Excel(name = "工单号")
@@ -40,7 +40,7 @@ public class QcWoYieldRate extends BaseEntity
 
     /** 良品率 */
     @Excel(name = "良品率")
-    private Long rate;
+    private Double rate;
 
     /** 有效否 */
     private String isValid;
@@ -54,12 +54,12 @@ public class QcWoYieldRate extends BaseEntity
     /**  */
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }
@@ -108,12 +108,12 @@ public class QcWoYieldRate extends BaseEntity
     {
         return oqty;
     }
-    public void setRate(Long rate) 
+    public void setRate(Double rate) 
     {
         this.rate = rate;
     }
 
-    public Long getRate() 
+    public Double getRate() 
     {
         return rate;
     }

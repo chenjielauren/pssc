@@ -8,8 +8,8 @@
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-mcn-add">
           <input name="rowIndex" id="rowIndex" th:value="${rowIndex}" class="form-control" type="hidden">
-          <input name="attachment" id="attachment" th:value="${attachment}"  class="form-control" type="hidden">
-          <input name="fileUrl" id="fileUrl" th:value="${fileUrl}" class="form-control" type="hidden">
+          <input name="attachment" id="attachment"  class="form-control" type="hidden">
+          <input name="fileUrl" id="fileUrl" class="form-control" type="hidden">
             <div class="form-group">    
                 <label class="col-sm-3 control-label">上传附件：</label>
                 <div>
@@ -35,11 +35,11 @@
         }).on('filebatchselected', function (event, data, id, index) {
             $("#fileinput").fileinput("upload");
         }).on('fileuploaded', function (event, data, previewId, index) {
-            $("input[name='attachment']").val(data.response.originFileName);
-            $("input[name='fileUrl']").val(data.response.url);        
+            $("#attachment").val(data.response.originFileName);
+            $("#fileUrl").val(data.response.url);        
         }).on('fileremoved', function (event, id, index) {
-            $("input[name='attachment']").val('');
-            $("input[name='fileUrl']").val('');
+            $("#attachment").val('');
+            $("#fileUrl").val('');
         });
     </script>
 </body>

@@ -27,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BsBomDetail" id="BsBomDetailResult">
         <result property="id"    column="sub_id"    />
         <result property="mainId"    column="sub_main_id"    />
+        <result property="no"    column="sub_no"    />
         <result property="mcode"    column="sub_mcode"    />
         <result property="mname"    column="sub_mname"    />
         <result property="spec"    column="sub_spec"    />
@@ -47,7 +48,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsBomMainVo">
-        select id, pcode, name, pspec, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_bom_main
+        select id, pcode, name, pspec, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        from bs_bom_main t left join sys_user su on t.update_by = su.login_name
     </sql>
 
     <select id="selectBsBomMainList" parameterType="BsBomMain" resultMap="BsBomMainResult">
@@ -56,16 +58,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="pspec != null  and pspec != ''"> and pspec like concat('%', #{pspec}, '%')</if>
-            <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
+            and is_valid = '1'
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
         </where>
+        order by t.create_time desc
     </select>
     
     <select id="selectBsBomMainById" parameterType="String" resultMap="BsBomMainBsBomDetailResult">
         select a.id, a.pcode, a.name, a.pspec, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
-            b.id as sub_id, b.main_id as sub_main_id, b.mcode as sub_mcode, b.mname as sub_mname, b.spec as sub_spec, b.attribute as sub_attribute, b.msize as sub_msize, b.dnumber as sub_dnumber, b.pnumber as sub_pnumber, b.qty as sub_qty, b.remark as sub_remark, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
+            b.id as sub_id, b.main_id as sub_main_id, b.no as sub_no, b.mcode as sub_mcode, b.mname as sub_mname, b.spec as sub_spec, b.attribute as sub_attribute, b.msize as sub_msize, b.dnumber as sub_dnumber, b.pnumber as sub_pnumber, b.qty as sub_qty, b.remark as sub_remark, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
         from bs_bom_main a
         left join bs_bom_detail b on b.main_id = a.id
         where a.id = #{id}
+        order by b.no
     </select>
         
     <insert id="insertBsBomMain" parameterType="BsBomMain">
@@ -155,9 +161,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <insert id="batchBsBomDetail">
-        insert into bs_bom_detail( id, main_id, mcode, mname, spec, attribute, msize, dnumber, pnumber, qty, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
+        insert into bs_bom_detail( id, main_id, no, mcode, mname, spec, attribute, msize, dnumber, pnumber, qty, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
 		<foreach item="item" index="index" collection="list" separator=",">
-            ( #{item.id}, #{item.mainId}, #{item.mcode}, #{item.mname}, #{item.spec}, #{item.attribute}, #{item.msize}, #{item.dnumber}, #{item.pnumber}, #{item.qty}, #{item.remark}, #{item.isValid}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
+            ( #{item.id}, #{item.mainId}, #{item.no}, #{item.mcode}, #{item.mname}, #{item.spec}, #{item.attribute}, #{item.msize}, #{item.dnumber}, #{item.pnumber}, #{item.qty}, #{item.remark}, #{item.isValid}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
         </foreach>
     </insert>
 

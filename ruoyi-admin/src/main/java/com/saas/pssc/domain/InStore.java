@@ -2,14 +2,16 @@ package com.saas.pssc.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.saas.common.annotation.Excel;
 import com.saas.common.core.domain.BaseEntity;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
- * 库存信息对象 in_store_main
+ * 库存信息对象 
  * 
  * @author admin
  * @date 2021-08-03

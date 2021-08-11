@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="QcBadProjectDetail" id="QcBadProjectDetailResult">
         <result property="id"    column="id"    />
         <result property="mainId"    column="main_id"    />
+        <result property="no"    column="no"    />
         <result property="cwork"    column="cwork"    />
         <result property="cstation"    column="cstation"    />
         <result property="lot"    column="lot"    />
@@ -29,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectQcBadProjectDetailVo">
-        select id, main_id, cwork, cstation, lot, project, qty, memo, tempway, cause, causeway, handleway, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute3, attribute2 from qc_bad_project_detail
+        select id, main_id,no, cwork, cstation, lot, project, qty, memo, tempway, cause, causeway, handleway, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute3, attribute2 from qc_bad_project_detail
     </sql>
 
     <select id="selectQcBadProjectDetailList" parameterType="QcBadProjectDetail" resultMap="QcBadProjectDetailResult">
@@ -58,7 +59,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into qc_bad_project_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
-            <if test="mainId != null and mainId != ''">main_id,</if>
+            <if test="mainId != null">main_id,</if>
+            <if test="no != null">no,</if>
             <if test="cwork != null and cwork != ''">cwork,</if>
             <if test="cstation != null and cstation != ''">cstation,</if>
             <if test="lot != null and lot != ''">lot,</if>
@@ -81,7 +83,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
-            <if test="mainId != null and mainId != ''">#{mainId},</if>
+            <if test="mainId != null">#{mainId},</if>
+            <if test="no != null">#{no},</if>
             <if test="cwork != null and cwork != ''">#{cwork},</if>
             <if test="cstation != null and cstation != ''">#{cstation},</if>
             <if test="lot != null and lot != ''">#{lot},</if>

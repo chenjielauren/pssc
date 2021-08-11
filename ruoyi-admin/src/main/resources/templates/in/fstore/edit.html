@@ -8,31 +8,28 @@
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-instore-edit" th:object="${inStore}">
             <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="ptype"  value="2">
             <input name="id" th:field="*{id}" type="hidden">
             <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">库存类型：</label>
-                <div class="col-sm-4">
-                    <select name="ptype" class="form-control m-b" th:with="type=${@dict.getType('in_store_ptype')}" required>
-                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{ptype}"></option>
-                    </select>
-                </div>
-                <label class="col-sm-2 control-label is-required">材料/半成品/成品编号：</label>
-                <div class="col-sm-4">
+                <label class="col-sm-2 control-label is-required">成品编号：</label>
+                <div class="col-sm-10">
                     <input name="mcode" th:field="*{mcode}" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">材料/半成品/成品名称：</label>
-                <div class="col-sm-4">
+            <div class="form-group"> 
+                <label class="col-sm-2 control-label is-required">成品名称：</label>
+                <div class="col-sm-10">
                     <input name="mname" th:field="*{mname}" class="form-control" type="text" required>
-                </div>
-                <label class="col-sm-2 control-label is-required">材料/半成品/成品规格：</label>
-                <div class="col-sm-4">
-                    <input name="mspec" th:field="*{mspec}" class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">材料/半成品/成品批次号：</label>
+                <label class="col-sm-2 control-label">成品规格：</label>
+                <div class="col-sm-10">
+                    <input name="mspec" th:field="*{mspec}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">成品批次号：</label>
                 <div class="col-sm-4">
                     <input name="mlot" th:field="*{mlot}" class="form-control" type="text" required>
                 </div>
@@ -42,10 +39,6 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">供应商：</label>
-                <div class="col-sm-4">
-                    <textarea name="vendor" class="form-control">[[*{vendor}]]</textarea>
-                </div>
                 <label class="col-sm-2 control-label is-required">库存数量：</label>
                 <div class="col-sm-4">
                     <input name="iqty" th:field="*{iqty}" class="form-control" type="text" required>
@@ -61,9 +54,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label is-required">备注：</label>
+                <label class="col-sm-2 control-label">备注：</label>
                 <div class="col-sm-10">
-                    <textarea name="remark" class="form-control" required>[[*{remark}]]</textarea>
+                    <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
                 </div>
             </div>
         </form>
@@ -71,7 +64,7 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <script th:inline="javascript">
-        var prefix = ctx + "in/instore";
+        var prefix = ctx + "in/fstore";
         $("#form-instore-edit").validate({
             onkeyup: false,
 			rules:{

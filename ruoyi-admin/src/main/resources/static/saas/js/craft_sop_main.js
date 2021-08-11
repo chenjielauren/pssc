@@ -132,8 +132,6 @@ function doSubmit2(index, layero) {
     //上传的url
     var fileName = body.find('#fileName').val();
     var fileUrl = body.find('#fileUrl').val();
-    //文件名称
-    var fileTitle = body.find('#fileTitle').val();
     console.log(rowIndex);
     console.log(fileName);
     $("#bootstrap-table2").find("input[name='bsSopProdDetailList["+(rowIndex)+"].fileName']").val(fileName);//设置上传文件名称    

@@ -21,8 +21,11 @@ public class QcMatCheckDetail extends BaseEntity
     /** 主表ID */
     private String mainId;
 
-    /** 检验项目 */
-    @Excel(name = "检验项目")
+    /** 序号 */
+    private int no;
+
+    /** 检验项目编号 */
+    @Excel(name = "检验项目编号")
     private String cproject;
 
     /** 检验标准 */
@@ -66,6 +69,12 @@ public class QcMatCheckDetail extends BaseEntity
     public String getMainId() 
     {
         return mainId;
+    }
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
     }
     public void setCproject(String cproject) 
     {

@@ -40,6 +40,12 @@
                 </div>
             </div>
             <div class="form-group">    
+                <label class="col-sm-2 control-label">成品规格：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
                 <label class="col-sm-2 control-label is-required">批次号：</label>
                 <div class="col-sm-4">
                     <input name="lot" class="form-control" type="text" required>
@@ -52,9 +58,17 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group" style="display: none;" >
-                <label class="col-sm-3 control-label">备注：</label>
-                <div class="col-sm-8">
+            <div class="form-group">
+                <label class="col-sm-2 control-label is-required">处理结果</label>
+                <div class="col-sm-4">
+                    <select name="handleResult" class="form-control m-b" th:with="type=${@dict.getType('qc_handle_result')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注：</label>
+                <div class="col-sm-10">
                     <textarea name="remark" class="form-control"></textarea>
                 </div>
             </div>
@@ -112,7 +126,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='qcProdCheckDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
@@ -223,6 +237,7 @@
                 index: count,
                 row: {
                     index: $.table.serialNumber(count),
+                    no: $.table.serialNumber(count),
                     projectCode: $.common.isNotEmpty(obj)?obj.projectCode:"",
                     cproject: $.common.isNotEmpty(obj)?obj.cproject:"",
                     csop: $.common.isNotEmpty(obj)?obj.csop:"",

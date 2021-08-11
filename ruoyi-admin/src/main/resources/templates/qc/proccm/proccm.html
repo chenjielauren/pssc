@@ -65,8 +65,8 @@
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
-            <div class="col-sm-12 select-table table-striped">
-                <table id="bootstrap-table"></table>
+            <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                <table id="bootstrap-table" style="min-width:1500px;"></table>
             </div>
         </div>
     </div>
@@ -93,12 +93,12 @@
                 },
                 {
                     field: 'id',
-                    title: '计划工单号ID',
+                    title: '工单号ID',
                     visible: false
                 },
                 {
                     field: 'qcode',
-                    title: '计划工单号'
+                    title: '工单号'
                 },
                 {
                     field: 'qtime',
@@ -117,8 +117,16 @@
                     title: '产品名称'
                 },
                 {
+                    field: 'pspec',
+                    title: '产品规格'
+                },
+                {
                     field: 'cwork',
                     title: '检验工序'
+                },
+                {
+                    field: 'cmachine',
+                    title: '检验机台'
                 },
                 {
                     field: 'ctype',
@@ -133,6 +141,10 @@
                     formatter: function(value, row, index) {
                        return $.table.selectDictLabel(qcResultDatas, value);
                     }
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
                 },
                 {
                     title: '操作',

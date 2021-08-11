@@ -62,8 +62,8 @@
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
-            <div class="col-sm-12 select-table table-striped">
-                <table id="bootstrap-table"></table>
+            <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                <table id="bootstrap-table" style="min-width:1500px;"></table>
             </div>
         </div>
     </div>
@@ -72,6 +72,7 @@
         var editFlag = [[${@permission.hasPermi('qc:prodcm:edit')}]];
         var removeFlag = [[${@permission.hasPermi('qc:prodcm:remove')}]];
         var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
+        var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
         var prefix = ctx + "qc/prodcm";
 
@@ -106,6 +107,10 @@
                     title: '成品名称'
                 },
                 {
+                    field: 'pspec',
+                    title: '成品规格'
+                },
+                {
                     field: 'lot',
                     title: '批次号'
                 },
@@ -125,12 +130,15 @@
                     }
                 },
                 {
-                    field: 'isValid',
-                    title: '有效否 0失效1有效',
-                    visible: false,
+                    field: 'handleResult',
+                    title: '处理结果',
                     formatter: function(value, row, index) {
-                       return $.table.selectDictLabel(isValidDatas, value);
+                       return $.table.selectDictLabel(handleResultDatas, value);
                     }
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
                 },
                 {
                     title: '操作',

@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="selectInStoreVo">
         select id, ptype, mcode, mname, mspec, mlot, unit, vendor, iqty, uptime, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
-        from in_store_main t left join sys_user su on t.update_by = su.login_name 
+        from in_store t left join sys_user su on t.update_by = su.login_name 
     </sql>
 
     <select id="selectInStoreList" parameterType="InStore" resultMap="InStoreResult">
@@ -56,13 +56,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertInStore" parameterType="InStore">
-        insert into in_store_main
+        insert into in_store
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="ptype != null">ptype,</if>
             <if test="mcode != null and mcode != ''">mcode,</if>
             <if test="mname != null and mname != ''">mname,</if>
-            <if test="mspec != null and mspec != ''">mspec,</if>
+            <if test="mspec != null">mspec,</if>
             <if test="mlot != null and mlot != ''">mlot,</if>
             <if test="unit != null and unit != ''">unit,</if>
             <if test="vendor != null">vendor,</if>
@@ -82,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ptype != null">#{ptype},</if>
             <if test="mcode != null and mcode != ''">#{mcode},</if>
             <if test="mname != null and mname != ''">#{mname},</if>
-            <if test="mspec != null and mspec != ''">#{mspec},</if>
+            <if test="mspec != null">#{mspec},</if>
             <if test="mlot != null and mlot != ''">#{mlot},</if>
             <if test="unit != null and unit != ''">#{unit},</if>
             <if test="vendor != null">#{vendor},</if>
@@ -100,12 +100,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateInStore" parameterType="InStore">
-        update in_store_main
+        update in_store
         <trim prefix="SET" suffixOverrides=",">
             <if test="ptype != null">ptype = #{ptype},</if>
             <if test="mcode != null and mcode != ''">mcode = #{mcode},</if>
             <if test="mname != null and mname != ''">mname = #{mname},</if>
-            <if test="mspec != null and mspec != ''">mspec = #{mspec},</if>
+            <if test="mspec != null">mspec = #{mspec},</if>
             <if test="mlot != null and mlot != ''">mlot = #{mlot},</if>
             <if test="unit != null and unit != ''">unit = #{unit},</if>
             <if test="vendor != null">vendor = #{vendor},</if>
@@ -122,22 +122,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <update id="updateInStoreById" parameterType="String">
-        update in_store_main set is_valid = '0' where id = #{id}
+        update in_store set is_valid = '0' where id = #{id}
     </update>
 
     <update id="updateInStoreByIds" parameterType="String">
-        update in_store_main set is_valid = '0' where id in 
+        update in_store set is_valid = '0' where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </update>
 
     <delete id="deleteInStoreById" parameterType="String">
-        delete from in_store_main where id = #{id}
+        delete from in_store where id = #{id}
     </delete>
 
     <delete id="deleteInStoreByIds" parameterType="String">
-        delete from in_store_main where id in 
+        delete from in_store where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

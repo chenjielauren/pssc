@@ -23,6 +23,9 @@ public class PpWoBookDetail extends BaseEntity
     /** 主表ID */
     private String mainId;
 
+    /** 序号 */
+    private int no;
+
     /** 子工单号 */
     @Excel(name = "子工单号")
     private String soncode;
@@ -118,6 +121,12 @@ public class PpWoBookDetail extends BaseEntity
     public String getMainId() 
     {
         return mainId;
+    }
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
     }
     public void setSoncode(String soncode) 
     {

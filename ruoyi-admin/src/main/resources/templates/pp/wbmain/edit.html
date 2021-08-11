@@ -31,9 +31,9 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">产品规格：</label>
+                <label class="col-sm-2 control-label">产品规格：</label>
                 <div class="col-sm-4">
-                    <input name="pspec" th:field="*{pspec}" class="form-control" type="text" required>
+                    <input name="pspec" th:field="*{pspec}" class="form-control" type="text">
                 </div>
                 <label class="col-sm-2 control-label is-required">生产数量：</label>
                 <div class="col-sm-4">
@@ -326,7 +326,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='ppWoBookDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index, $.table.serialNumber(index), $.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
@@ -531,12 +531,12 @@
         
     </script>
 </body>
-<script id="importMTpl" type="text/template">
+<script id="importBTpl" type="text/template">
 <form enctype="multipart/form-data" class="mt20 mb10">
 	<div class="col-xs-offset-1">
 		<input type="file" id="file" name="file"/>
 		<div class="mt10 pt5">
-			下载模板:  &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+			下载模板:  &nbsp;	<a onclick="importTemplate('0')" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
 		</div>
 		<font color="red" class="pull-left mt10">
 			提示：仅允许导入“xls”或“xlsx”格式文件！
@@ -544,12 +544,12 @@
 	</div>
 </form>
 </script>
-<script id="importBTpl" type="text/template">
+<script id="importMTpl" type="text/template">
 <form enctype="multipart/form-data" class="mt20 mb10">
 	<div class="col-xs-offset-1">
 		<input type="file" id="file" name="file"/>
 		<div class="mt10 pt5">
-			下载模板:  &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+			下载模板:  &nbsp;	<a onclick="importTemplate('1')" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
 		</div>
 		<font color="red" class="pull-left mt10">
 			提示：仅允许导入“xls”或“xlsx”格式文件！

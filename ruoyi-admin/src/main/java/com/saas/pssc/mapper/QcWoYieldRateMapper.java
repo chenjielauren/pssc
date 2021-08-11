@@ -17,7 +17,7 @@ public interface QcWoYieldRateMapper
      * @param id 工单良品率分析ID
      * @return 工单良品率分析
      */
-    public QcWoYieldRate selectQcWoYieldRateById(Long id);
+    public QcWoYieldRate selectQcWoYieldRateById(String id);
 
     /**
      * 查询工单良品率分析列表
@@ -49,7 +49,7 @@ public interface QcWoYieldRateMapper
      * @param id 工单良品率分析ID
      * @return 结果
      */
-    public int deleteQcWoYieldRateById(Long id);
+    public int deleteQcWoYieldRateById(String id);
 
     /**
      * 批量删除工单良品率分析
@@ -61,5 +61,5 @@ public interface QcWoYieldRateMapper
 
 	public int updateQcWoYieldRateByIds(String[] strArray);
 
-	public int updateQcWoYieldRateById(Long id);
+	public int updateQcWoYieldRateById(String id);
 }

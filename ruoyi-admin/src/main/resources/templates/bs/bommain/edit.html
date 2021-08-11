@@ -79,7 +79,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='bsBomDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },

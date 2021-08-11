@@ -21,6 +21,9 @@ public class BsBomDetail extends BaseEntity
     /** 主表ID */
     private String mainId;
 
+    /** 序号 */
+    private int no;
+
     /** 部件编号 */
     @Excel(name = "部件编号")
     private String mcode;
@@ -86,6 +89,12 @@ public class BsBomDetail extends BaseEntity
     public String getMainId() 
     {
         return mainId;
+    }
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
     }
     public void setMcode(String mcode) 
     {

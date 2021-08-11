@@ -103,7 +103,7 @@ public class QcWoYieldRateController extends BaseController
      * 修改工单良品率分析
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, ModelMap mmap)
+    public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
         QcWoYieldRate qcWoYieldRate = qcWoYieldRateService.selectQcWoYieldRateById(id);
         mmap.put("qcWoYieldRate", qcWoYieldRate);

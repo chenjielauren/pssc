@@ -36,7 +36,7 @@ function addColumn(mtype,obj) {
     if(mtype == 0){//工单BOM信息行
         var count = $("#bootstrap-table1").bootstrapTable('getData').length;
         sub.editColumn();
-        
+        debugger;
         $("#bootstrap-table1").bootstrapTable('insertRow', {
             index: count,
             row: {
@@ -66,6 +66,7 @@ function addColumn(mtype,obj) {
             index: count,
             row: {
                 index: $.table.serialNumber(count),
+                no: $.table.serialNumber(count),
                 soncode: $.common.isNotEmpty(obj)?obj.soncode:"",
                 mcode: $.common.isNotEmpty(obj)?obj.mcode:"",
                 mname: $.common.isNotEmpty(obj)?obj.mname:"",

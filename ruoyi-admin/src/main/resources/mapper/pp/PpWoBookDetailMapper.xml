@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="PpWoBookDetail" id="PpWoBookDetailResult">
         <result property="id"    column="id"    />
         <result property="mainId"    column="main_id"    />
+        <result property="no"    column="no"    />
         <result property="soncode"    column="soncode"    />
         <result property="mcode"    column="mcode"    />
         <result property="mname"    column="mname"    />
@@ -34,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPpWoBookDetailVo">
-        select id, main_id, soncode, mcode, mname, mspec, stime, etime, cwork, cstation, planqty, inputqty, outputqty, stdtime, stdrate, acttime, actrate, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from pp_wo_book_detail
+        select id, main_id, no,soncode, mcode, mname, mspec, stime, etime, cwork, cstation, planqty, inputqty, outputqty, stdtime, stdrate, acttime, actrate, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from pp_wo_book_detail
     </sql>
 
     <select id="selectPpWoBookDetailList" parameterType="PpWoBookDetail" resultMap="PpWoBookDetailResult">
@@ -68,7 +69,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into pp_wo_book_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
-            <if test="mainId != null and mainId != ''">main_id,</if>
+            <if test="mainId != null">main_id,</if>
+            <if test="no != null">no,</if>
             <if test="soncode != null and soncode != ''">soncode,</if>
             <if test="mcode != null and mcode != ''">mcode,</if>
             <if test="mname != null and mname != ''">mname,</if>
@@ -96,7 +98,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
-            <if test="mainId != null and mainId != ''">#{mainId},</if>
+            <if test="mainId != null">#{mainId},</if>
+            <if test="no != null">#{no},</if>
             <if test="soncode != null and soncode != ''">#{soncode},</if>
             <if test="mcode != null and mcode != ''">#{mcode},</if>
             <if test="mname != null and mname != ''">#{mname},</if>

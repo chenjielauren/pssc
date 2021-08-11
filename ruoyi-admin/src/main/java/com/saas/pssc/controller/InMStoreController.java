@@ -1,6 +1,22 @@
 package com.saas.pssc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.saas.common.annotation.Log;
+import com.saas.common.core.controller.BaseController;
+import com.saas.common.core.domain.AjaxResult;
+import com.saas.common.core.page.TableDataInfo;
+import com.saas.common.enums.BusinessType;
+import com.saas.common.exception.BusinessException;
+import com.saas.common.utils.ShiroUtils;
+import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.bean.BeanUtils;
+import com.saas.common.utils.poi.ExcelUtil;
+import com.saas.pssc.domain.InMStore;
+import com.saas.pssc.domain.InStore;
+import com.saas.pssc.service.IInStoreService;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,44 +28,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.saas.common.annotation.Log;
-import com.saas.common.enums.BusinessType;
-import com.saas.common.exception.BusinessException;
-import com.saas.pssc.domain.InStore;
-import com.saas.pssc.service.IInStoreService;
-import com.saas.common.core.controller.BaseController;
-import com.saas.common.core.domain.AjaxResult;
-import com.saas.common.utils.ShiroUtils;
-import com.saas.common.utils.StringUtils;
-import com.saas.common.utils.poi.ExcelUtil;
-import com.saas.common.core.page.TableDataInfo;
-
 /**
- * 库存信息Controller
+ * 材料库存信息Controller
  * 
  * @author admin
  * @date 2021-08-03
  */
 @Controller
-@RequestMapping("/in/instore")
-public class InStoreController extends BaseController
+@RequestMapping("/in/mstore")
+public class InMStoreController extends BaseController
 {
-    private String prefix = "in/instore";
+    private String prefix = "in/mstore";
 
     @Autowired
     private IInStoreService inStoreService;
 
-    @RequiresPermissions("in:instore:view")
+    @RequiresPermissions("in:mstore:view")
     @GetMapping()
-    public String instore()
+    public String mstore()
     {
-        return prefix + "/instore";
+        return prefix + "/mstore";
     }
 
     /**
-     * 查询库存信息列表
+     * 查询材料库存信息列表
      */
-    @RequiresPermissions("in:instore:list")
+    @RequiresPermissions("in:mstore:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(InStore inStore)
@@ -60,21 +64,29 @@ public class InStoreController extends BaseController
     }
 
     /**
-     * 导出库存信息列表
+     * 导出材料库存信息列表
      */
-    @RequiresPermissions("in:instore:export")
-    @Log(title = "库存信息", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("in:mstore:export")
+    @Log(title = "材料库存信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(InStore inStore)
     {
         List<InStore> list = inStoreService.selectInStoreList(inStore);
-        ExcelUtil<InStore> util = new ExcelUtil<InStore>(InStore.class);
-        return util.exportExcel(list, "库存信息数据");
+        List<InMStore> mlist = new ArrayList<InMStore>();
+        if(StringUtils.isNotEmpty(list)){
+            for(InStore obj:list){
+                InMStore inMStore = new InMStore();
+                BeanUtils.copyProperties(obj, inMStore);
+                mlist.add(inMStore);
+            } 
+        }
+        ExcelUtil<InMStore> util = new ExcelUtil<InMStore>(InMStore.class);
+        return util.exportExcel(mlist, "材料库存信息数据");
     }
 
     /**
-     * 新增库存信息
+     * 新增材料库存信息
      */
     @GetMapping("/add")
     public String add()
@@ -83,10 +95,10 @@ public class InStoreController extends BaseController
     }
 
     /**
-     * 新增保存库存信息
+     * 新增保存材料库存信息
      */
-    @RequiresPermissions("in:instore:add")
-    @Log(title = "库存信息", businessType = BusinessType.INSERT)
+    @RequiresPermissions("in:mstore:add")
+    @Log(title = "材料库存信息", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(InStore inStore)
@@ -95,7 +107,7 @@ public class InStoreController extends BaseController
     }
 
     /**
-     * 修改库存信息
+     * 修改材料库存信息
      */
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, ModelMap mmap)
@@ -106,10 +118,10 @@ public class InStoreController extends BaseController
     }
 
     /**
-     * 修改保存库存信息
+     * 修改保存材料库存信息
      */
-    @RequiresPermissions("in:instore:edit")
-    @Log(title = "库存信息", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("in:mstore:edit")
+    @Log(title = "材料库存信息", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(InStore inStore)
@@ -118,10 +130,10 @@ public class InStoreController extends BaseController
     }
 
     /**
-     * 删除库存信息
+     * 删除材料库存信息
      */
-    @RequiresPermissions("in:instore:remove")
-    @Log(title = "库存信息", businessType = BusinessType.DELETE)
+    @RequiresPermissions("in:mstore:remove")
+    @Log(title = "材料库存信息", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody
     public AjaxResult remove(String ids)
@@ -136,60 +148,63 @@ public class InStoreController extends BaseController
     @ResponseBody
     public AjaxResult importTemplate()
     {
-        ExcelUtil<InStore> util = new ExcelUtil<InStore>(InStore.class);
-        return util.importTemplateExcel("库存记录列表");
+        ExcelUtil<InMStore> util = new ExcelUtil<InMStore>(InMStore.class);
+        return util.importTemplateExcel("材料库存记录列表");
     }
     
     /**
      * 导入数据
      */
-    @RequiresPermissions("in:instore:import")
+    @RequiresPermissions("in:mstore:import")
     @PostMapping("/importData")
     @ResponseBody
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<InStore> util = new ExcelUtil<InStore>(InStore.class);
-        List<InStore> inStoreList = util.importExcel(file.getInputStream());
-        String message = importInStore(inStoreList, updateSupport);
+        ExcelUtil<InMStore> util = new ExcelUtil<InMStore>(InMStore.class);
+        List<InMStore> inMStoreList = util.importExcel(file.getInputStream());
+        String message = importInMStore(inMStoreList, updateSupport);
         return AjaxResult.success(message);
     }
 
     /**
-     * 导入库存记录数据
+     * 导入材料库存记录数据
      * 
-     * @param userList 库存记录数据列表
+     * @param userList 材料库存记录数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
      * @return 结果
      */
-    public String importInStore(List<InStore> inStoreList, Boolean isUpdateSupport)
+    public String importInMStore(List<InMStore> inMStoreList, Boolean isUpdateSupport)
     {
-        if (StringUtils.isEmpty(inStoreList) || inStoreList.size() == 0)
+        if (StringUtils.isEmpty(inMStoreList) || inMStoreList.size() == 0)
         {
-            throw new BusinessException("导入库存记录数据不能为空！");
+            throw new BusinessException("导入材料库存记录数据不能为空！");
         }
         int successNum = 0;
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        for (InStore inStore : inStoreList)
+        for (InMStore inMStore : inMStoreList)
         {
             try
             {
+                InStore inStore = new InStore();
+                BeanUtils.copyProperties(inMStore, inStore);
+                inStore.setPtype("0");//材料库存
                 inStore.setIsValid("1");
                 boolean lossFlag = false;
                 List<InStore>  dblist= inStoreService.selectInStoreList(inStore);
-                logger.info("同名库存记录条数："+dblist.size());
+                logger.info("同名材料库存记录条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个库存记录
+                	lossFlag = true;  // 验证是否存在这个材料库存记录
 				}
                 if (!lossFlag)
                 {
                     inStore.setCreateBy(ShiroUtils.getLoginName());
                     inStore.setUpdateBy(ShiroUtils.getLoginName());
                     // qcMatCheckMain.setIsValid("1");
-                    inStoreService.insertInStore(inStore);//插入库存记录
+                    inStoreService.insertInStore(inStore);//插入材料库存记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、库存记录 " +inStore.getMname()+ " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、材料库存记录 " +inStore.getMname()+ " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -197,18 +212,18 @@ public class InStoreController extends BaseController
                     inStore.setUpdateBy(ShiroUtils.getLoginName());
                 	inStoreService.updateInStore(inStore);//修改材料检验标准记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、库存记录 " +inStore.getMname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、材料库存记录 " +inStore.getMname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、库存记录 " +inStore.getMname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、材料库存记录 " +inStore.getMname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、库存记录 " + inStore.getMname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、材料库存记录 " + inMStore.getMname()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

@@ -50,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBsCraftSopMainList" parameterType="BsCraftSopMain" resultMap="BsCraftSopMainResult">
         <include refid="selectBsCraftSopMainVo"/>
         <where>  
-            <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
+            <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             and is_valid = '1'
             <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
@@ -68,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from bs_craft_sop_main a
         left join bs_craft_sop_detail b on b.main_id = a.id
         where a.id = #{id}
+        order by b.upload_time
     </select>
         
     <insert id="insertBsCraftSopMain" parameterType="BsCraftSopMain" useGeneratedKeys="true" keyProperty="id">

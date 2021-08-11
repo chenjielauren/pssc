@@ -1,21 +1,22 @@
 package com.saas.pssc.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.saas.common.annotation.DataScope;
+import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
+import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.uuid.IdUtils;
+import com.saas.pssc.domain.BsBomDetail;
+import com.saas.pssc.domain.BsBomMain;
+import com.saas.pssc.mapper.BsBomMainMapper;
+import com.saas.pssc.service.IBsBomMainService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import com.saas.common.utils.StringUtils;
-import com.saas.common.utils.uuid.IdUtils;
-
 import org.springframework.transaction.annotation.Transactional;
-import com.saas.pssc.domain.BsBomDetail;
-import com.saas.pssc.mapper.BsBomMainMapper;
-import com.saas.pssc.domain.BsBomMain;
-import com.saas.pssc.service.IBsBomMainService;
-import com.saas.common.core.text.Convert;
 
 /**
  * bom物料清单Service业务层处理
@@ -48,6 +49,7 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      * @return bom物料清单
      */
     @Override
+    @DataScope(userAlias = "su")
     public List<BsBomMain> selectBsBomMainList(BsBomMain bsBomMain)
     {
         return bsBomMainMapper.selectBsBomMainList(bsBomMain);

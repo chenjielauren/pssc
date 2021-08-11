@@ -21,6 +21,9 @@ public class QcProcessCheckDetail extends BaseEntity
     /** 主表ID */
     private String mainId;
 
+    /** 序号 */
+    private int no;
+
     /** 项目编号 */
     @Excel(name = "项目编号")
     private String projectCode;
@@ -70,6 +73,12 @@ public class QcProcessCheckDetail extends BaseEntity
     public String getMainId() 
     {
         return mainId;
+    }
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
     }
     public void setProjectCode(String projectCode) 
     {

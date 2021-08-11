@@ -97,3 +97,4 @@ ALTER TABLE pssc.qc_prod_check_main CHANGE handle_result handle_result varchar(5
 ALTER TABLE pssc.qc_prod_check_main ADD pspec varchar(100) NULL COMMENT '成品规格';
 ALTER TABLE pssc.qc_prod_check_main CHANGE pspec pspec varchar(100) NULL COMMENT '成品规格' AFTER pname;
 
+ALTER TABLE pssc.qc_wo_yield_rate MODIFY COLUMN id varchar(50) NOT NULL COMMENT '计划工单号ID';
