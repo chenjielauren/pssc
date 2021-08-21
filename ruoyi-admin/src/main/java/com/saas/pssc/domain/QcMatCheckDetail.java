@@ -22,11 +22,15 @@ public class QcMatCheckDetail extends BaseEntity
     private String mainId;
 
     /** 序号 */
-    private int no;
+    private int orderno;
+
+    /** 检验项目 */
+    @Excel(name = "检验项目")
+    private String cproject;
 
     /** 检验项目编号 */
     @Excel(name = "检验项目编号")
-    private String cproject;
+    private String projectCode;
 
     /** 检验标准 */
     @Excel(name = "检验标准")
@@ -70,20 +74,27 @@ public class QcMatCheckDetail extends BaseEntity
     {
         return mainId;
     }
-    public int getNo() {
-        return no;
-    }
-    public void setNo(int no) {
-        this.no = no;
-    }
-    public void setCproject(String cproject) 
-    {
-        this.cproject = cproject;
+    
+    public int getOrderno() {
+        return orderno;
     }
 
-    public String getCproject() 
-    {
+    public void setOrderno(int orderno) {
+        this.orderno = orderno;
+    }
+    public String getCproject() {
         return cproject;
+    }
+
+    public void setCproject(String cproject) {
+        this.cproject = cproject;
+    }
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
     public void setCsop(String csop) 
     {
@@ -154,7 +165,7 @@ public class QcMatCheckDetail extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("mainId", getMainId())
-            .append("cproject", getCproject())
+            .append("projectCode", getProjectCode())
             .append("csop", getCsop())
             .append("cmethod", getCmethod())
             .append("qcResult", getQcResult())

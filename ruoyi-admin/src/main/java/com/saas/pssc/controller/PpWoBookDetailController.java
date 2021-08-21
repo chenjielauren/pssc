@@ -1,5 +1,6 @@
 package com.saas.pssc.controller;
 
+import java.text.NumberFormat;
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.saas.pssc.domain.PpWoBookDetail;
 import com.saas.pssc.service.IPpWoBookDetailService;
 import com.saas.common.core.controller.BaseController;
 import com.saas.common.core.domain.AjaxResult;
+import com.saas.common.utils.StringUtils;
 import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.common.core.page.TableDataInfo;
 
@@ -145,6 +147,16 @@ public class PpWoBookDetailController extends BaseController
     {
         ExcelUtil<PpWoBookDetail> util = new ExcelUtil<PpWoBookDetail>(PpWoBookDetail.class);
         List<PpWoBookDetail> list = util.importExcel(file.getInputStream());
+        if(StringUtils.isNotEmpty(list)){
+            NumberFormat num = NumberFormat.getPercentInstance();
+            num.setMinimumFractionDigits(2);
+            for(PpWoBookDetail detail : list){
+                String stdrate = num.format(Double.valueOf(detail.getStdrate()));//将标准成品率 小数转换为百分比
+                String actrate = num.format(Double.valueOf(detail.getActrate()));//将实际成品率 小数转换为百分比
+                detail.setStdrate(stdrate);
+                detail.setActrate(actrate);
+            }
+        }
         return AjaxResult.success(list);
     }
 }

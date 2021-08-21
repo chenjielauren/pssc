@@ -188,7 +188,7 @@ public class PpWoBookMainController extends BaseController
                     // ppWoBookMain.setIsValid("1");
                     ppWoBookMainService.insertPpWoBookMain(ppWoBookMain);//插入工单记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工单记录 " +ppWoBookMain.getPname() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +ppWoBookMain.getPcode() + " 产品名称" +ppWoBookMain.getPname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -196,18 +196,18 @@ public class PpWoBookMainController extends BaseController
                     ppWoBookMain.setUpdateBy(ShiroUtils.getLoginName());
                 	ppWoBookMainService.updatePpWoBookMain(ppWoBookMain);//修改工单记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工单记录 " +ppWoBookMain.getPname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +ppWoBookMain.getPcode() + " 产品名称" +ppWoBookMain.getPname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、工单记录 " +ppWoBookMain.getPname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +ppWoBookMain.getPcode() + " 产品名称" +ppWoBookMain.getPname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、工单记录 " + ppWoBookMain.getPname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +ppWoBookMain.getPcode() + " 产品名称" +ppWoBookMain.getPname()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }
@@ -221,5 +221,15 @@ public class PpWoBookMainController extends BaseController
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    /**
+     * 校验产品编号和产品名称唯一
+     */
+    @PostMapping("/checkPcodeUnique")
+    @ResponseBody
+    public String checkPcodeUnique(PpWoBookMain ppWoBookMain)
+    {
+        return ppWoBookMainService.checkPcodeUnique(ppWoBookMain);
     }
 }

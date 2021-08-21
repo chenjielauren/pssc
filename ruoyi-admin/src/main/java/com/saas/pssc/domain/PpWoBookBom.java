@@ -63,7 +63,7 @@ public class PpWoBookBom extends BaseEntity
 
     /** 损耗率 */
     @Excel(name = "损耗率")
-    private BigDecimal unratio;
+    private String unratio;
 
     /** 工艺路线 */
     @Excel(name = "工艺路线")
@@ -192,12 +192,12 @@ public class PpWoBookBom extends BaseEntity
     {
         return unit;
     }
-    public void setUnratio(BigDecimal unratio) 
+    public void setUnratio(String unratio) 
     {
         this.unratio = unratio;
     }
 
-    public BigDecimal getUnratio() 
+    public String getUnratio() 
     {
         return unratio;
     }

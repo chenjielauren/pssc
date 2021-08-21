@@ -1,6 +1,7 @@
 package com.saas.pssc.service;
 
 import java.util.List;
+
 import com.saas.pssc.domain.SdDelivery;
 
 /**
@@ -58,4 +59,6 @@ public interface ISdDeliveryService
      * @return 结果
      */
     public int deleteSdDeliveryById(String id);
+
+	public void batchSdDeliveryDetail(SdDelivery sdDelivery);
 }

@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="pcode"    column="sub_pcode"    />
         <result property="name"    column="sub_name"    />
         <result property="standard"    column="sub_standard"    />
-        <result property="pmethod"    column="sub_pmethod"    />
+        <result property="method"    column="sub_method"    />
         <result property="remark"    column="sub_remark"    />
         <result property="isValid"    column="sub_is_valid"    />
         <result property="createBy"    column="sub_create_by"    />
@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectBsMatSopMainById" parameterType="String" resultMap="BsMatSopMainBsMatSopDetailResult">
         select a.id, a.pcode, a.name, a.spec, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
-            b.id as sub_id, b.main_id as sub_main_id, b.orderno as sub_orderno, b.pcode as sub_pcode, b.name as sub_name, b.standard as sub_standard, b.pmethod as sub_pmethod, b.remark as sub_remark, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
+            b.id as sub_id, b.main_id as sub_main_id, b.orderno as sub_orderno, b.pcode as sub_pcode, b.name as sub_name, b.standard as sub_standard, b.method as sub_method, b.remark as sub_remark, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
         from bs_mat_sop_main a
         left join bs_mat_sop_detail b on b.main_id = a.id
         where a.id = #{id}
@@ -153,9 +153,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <insert id="batchBsMatSopDetail">
-        insert into bs_mat_sop_detail( id, main_id, orderno, pcode, name, standard, pmethod, remark, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
+        insert into bs_mat_sop_detail( id, main_id, orderno, pcode, name, standard, method, remark, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
 		<foreach item="item" index="index" collection="list" separator=",">
-            ( #{item.id}, #{item.mainId}, #{item.orderno}, #{item.pcode}, #{item.name}, #{item.standard}, #{item.pmethod}, #{item.remark}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
+            ( #{item.id}, #{item.mainId}, #{item.orderno}, #{item.pcode}, #{item.name}, #{item.standard}, #{item.method}, #{item.remark}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
         </foreach>
     </insert>
 

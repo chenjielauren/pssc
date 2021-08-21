@@ -105,4 +105,6 @@ public interface PpWoBookMainMapper
 	public int updatePpWoBookMainByIds(String[] strArray);
 
 	public PpWoBookMain selectPpWoBookMainByMap(Map<String, Object> paramMap);
+
+	public List<PpWoBookMain> checkPcodeUnique(PpWoBookMain ppWoBookMain);
 }

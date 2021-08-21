@@ -23,7 +23,7 @@ public class QcBadProjectDetail extends BaseEntity
     private String mainId;
 
     /** 序号 */
-    private int no;
+    private int orderno;
 
     /** 发生工序 */
     @Excel(name = "发生工序")
@@ -99,11 +99,13 @@ public class QcBadProjectDetail extends BaseEntity
     {
         return mainId;
     }
-    public int getNo() {
-        return no;
+    
+    public int getOrderno() {
+        return orderno;
     }
-    public void setNo(int no) {
-        this.no = no;
+
+    public void setOrderno(int orderno) {
+        this.orderno = orderno;
     }
     public void setCwork(String cwork) 
     {
@@ -268,4 +270,5 @@ public class QcBadProjectDetail extends BaseEntity
             .append("attribute2", getAttribute2())
             .toString();
     }
+
 }

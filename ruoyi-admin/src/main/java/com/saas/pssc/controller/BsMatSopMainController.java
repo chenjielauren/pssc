@@ -175,20 +175,20 @@ public class BsMatSopMainController extends BaseController
             try
             {
                 bsMatSopMain.setIsValid("1");
-                boolean lossFlag = false;
+                boolean flag = false;
                 List<BsMatSopMain>  dblist= bsMatSopMainService.selectBsMatSopMainList(bsMatSopMain);
                 logger.info("同名材料检验标准记录条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个材料检验标准记录
+                	flag = true;  // 验证是否存在这个材料检验标准记录
 				}
-                if (!lossFlag)
+                if (!flag)
                 {
                     bsMatSopMain.setCreateBy(ShiroUtils.getLoginName());
                     bsMatSopMain.setUpdateBy(ShiroUtils.getLoginName());
                     // qcMatCheckMain.setIsValid("1");
                     bsMatSopMainService.insertBsMatSopMain(bsMatSopMain);//插入材料检验标准记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、材料检验标准记录 " +bsMatSopMain.getName()+ " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、材料编号 " +bsMatSopMain.getPcode() + " 材料名称 " +bsMatSopMain.getName()+ " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -196,18 +196,18 @@ public class BsMatSopMainController extends BaseController
                     bsMatSopMain.setUpdateBy(ShiroUtils.getLoginName());
                 	bsMatSopMainService.updateBsMatSopMain(bsMatSopMain);//修改材料检验标准记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、材料检验标准记录 " +bsMatSopMain.getName() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、材料编号 " +bsMatSopMain.getPcode() + " 材料名称 " +bsMatSopMain.getName() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、材料检验标准记录 " +bsMatSopMain.getName() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、材料编号 " +bsMatSopMain.getPcode() + " 材料名称 " +bsMatSopMain.getName() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、材料检验标准记录 " + bsMatSopMain.getName()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、材料编号 " +bsMatSopMain.getPcode() + " 材料名称 " +bsMatSopMain.getName()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

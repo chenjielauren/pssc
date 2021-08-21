@@ -1,6 +1,7 @@
 package com.saas.pssc.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.saas.common.annotation.Excel;
@@ -70,6 +71,9 @@ public class SdDelivery extends BaseEntity
 
     /**  */
     private String attribute3;
+
+     /** 发货单标注明细信息 */
+     private List<SdDeliveryDetail> sdDeliveryDetailList;
 
     public void setId(String id) 
     {
@@ -194,6 +198,16 @@ public class SdDelivery extends BaseEntity
     public String getAttribute3() 
     {
         return attribute3;
+    }
+
+    public List<SdDeliveryDetail> getSdDeliveryDetailList()
+    {
+        return sdDeliveryDetailList;
+    }
+
+    public void setSdDeliveryDetailList(List<SdDeliveryDetail> sdDeliveryDetailList)
+    {
+        this.sdDeliveryDetailList = sdDeliveryDetailList;
     }
 
     @Override

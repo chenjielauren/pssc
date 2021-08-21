@@ -22,7 +22,7 @@ public class QcProdCheckDetail extends BaseEntity
     private String mainId;
 
     /** 序号 */
-    private int no;
+    private int orderno;
 
     /** 检验项目编号 */
     @Excel(name = "检验项目编号")
@@ -74,11 +74,11 @@ public class QcProdCheckDetail extends BaseEntity
     {
         return mainId;
     }
-    public int getNo() {
-        return no;
+    public int getOrderno() {
+        return orderno;
     }
-    public void setNo(int no) {
-        this.no = no;
+    public void setOrderno(int orderno) {
+        this.orderno = orderno;
     }
     public void setProjectCode(String projectCode) 
     {

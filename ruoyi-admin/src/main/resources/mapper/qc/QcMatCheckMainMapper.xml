@@ -34,8 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="QcMatCheckDetail" id="QcMatCheckDetailResult">
         <result property="id"    column="sub_id"    />
         <result property="mainId"    column="sub_main_id"    />
-        <result property="no"    column="sub_no"    />
+        <result property="orderno"    column="sub_orderno"    />
         <result property="cproject"    column="sub_cproject"    />
+        <result property="projectCode"    column="sub_project_code"    />
         <result property="csop"    column="sub_csop"    />
         <result property="cmethod"    column="sub_cmethod"    />
         <result property="qcResult"    column="sub_qc_result"    />
@@ -57,10 +58,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectQcMatCheckMainList" parameterType="QcMatCheckMain" resultMap="QcMatCheckMainResult">
         <include refid="selectQcMatCheckMainVo"/>
         <where>
-            <if test="qStarttime != null "> and qtime >= #{qStarttime}</if>
-            <if test="qEndtime != null "> and qtime  &lt;=#{qEndtime}</if>  
+            <if test="qStarttime != null "> and DATE_FORMAT(qtime ,'%Y-%m-%d') >= DATE_FORMAT(#{qStarttime} ,'%Y-%m-%d')</if>
+            <if test="qEndtime != null "> and DATE_FORMAT(qtime ,'%Y-%m-%d') &lt;= DATE_FORMAT(#{qEndtime} ,'%Y-%m-%d')</if>  
             <if test="qcode != null  and qcode != ''"> and qcode like concat('%', #{qcode}, '%')</if>
             <if test="qtime != null "> and qtime = #{qtime}</if>
+            <if test="qcResult != null and qcResult != ''"> and qc_result = #{qcResult}</if>
             <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
             and is_valid = '1'  ${params.dataScope}
@@ -70,11 +72,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectQcMatCheckMainById" parameterType="String" resultMap="QcMatCheckMainQcMatCheckDetailResult">
         select a.id, a.qcode, a.qtime, a.quser, a.pcode, a.pname,a.pspec, a.lot, a.vendor, a.qc_result,a.handle_result, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
-            b.id as sub_id, b.main_id as sub_main_id,b.no as sub_no, b.cproject as sub_cproject, b.csop as sub_csop, b.cmethod as sub_cmethod, b.qc_result as sub_qc_result, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
+            b.id as sub_id, b.main_id as sub_main_id,b.orderno as sub_orderno, b.cproject as sub_cproject,b.project_code as sub_project_code, b.csop as sub_csop, b.cmethod as sub_cmethod, b.qc_result as sub_qc_result, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
         from qc_mat_check_main a
         left join qc_mat_check_detail b on b.main_id = a.id
         where a.id = #{id}
-        order by b.no
+        order by b.orderno
     </select>
         
     <insert id="insertQcMatCheckMain" parameterType="QcMatCheckMain" useGeneratedKeys="true" keyProperty="id">
@@ -183,9 +185,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <insert id="batchQcMatCheckDetail">
-        insert into qc_mat_check_detail( id, main_id, no, cproject, csop, cmethod, qc_result, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
+        insert into qc_mat_check_detail( id, main_id, orderno, cproject, project_code, csop, cmethod, qc_result, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
 		<foreach item="item" index="index" collection="list" separator=",">
-            ( #{item.id}, #{item.mainId},#{item.no}, #{item.cproject}, #{item.csop}, #{item.cmethod}, #{item.qcResult}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
+            ( #{item.id}, #{item.mainId},#{item.orderno}, #{item.cproject},#{item.projectCode}, #{item.csop}, #{item.cmethod}, #{item.qcResult}, #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
         </foreach>
     </insert>
 

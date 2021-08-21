@@ -176,20 +176,20 @@ public class SdDeliveryController extends BaseController
             try
             {
                 sdDelivery.setIsValid("1");
-                boolean lossFlag = false;
+                boolean flag = false;
                 List<SdDelivery>  dblist= sdDeliveryService.selectSdDeliveryList(sdDelivery);
                 logger.info("同名发货单条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个发货单
+                	flag = true;  // 验证是否存在这个发货单
 				}
-                if (!lossFlag)
+                if (!flag)
                 {
                     sdDelivery.setCreateBy(ShiroUtils.getLoginName());
                     sdDelivery.setUpdateBy(ShiroUtils.getLoginName());
                     // sdDelivery.setIsValid("1");
                     sdDeliveryService.insertSdDelivery(sdDelivery);//插入发货单
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、发货单 " +sdDelivery.getPname() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +sdDelivery.getPcode() + " 产品名称 " +sdDelivery.getPname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -197,18 +197,18 @@ public class SdDeliveryController extends BaseController
                     sdDelivery.setUpdateBy(ShiroUtils.getLoginName());
                 	sdDeliveryService.updateSdDelivery(sdDelivery);//修改发货单
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、发货单 " +sdDelivery.getPname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +sdDelivery.getPcode() + " 产品名称 " +sdDelivery.getPname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、发货单 " +sdDelivery.getPname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +sdDelivery.getPcode() + " 产品名称 " +sdDelivery.getPname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、发货单 " + sdDelivery.getPname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +sdDelivery.getPcode() + " 产品名称 " +sdDelivery.getPname()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

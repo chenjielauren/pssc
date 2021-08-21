@@ -22,7 +22,7 @@
             <div class="form-group">    
                 <label class="col-sm-2 control-label">产品规格：</label>
                 <div class="col-sm-4">
-                    <input name="pspec" th:field="*{pspec}" class="form-control" type="text">
+                    <input name="spec" th:field="*{spec}" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">
@@ -79,7 +79,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='bsBomDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='bsBomDetailList[%s].orderno' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
@@ -91,7 +91,7 @@
                         var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].mcode' value='%s'>", index, value);
                         return html;
                     }
-				},
+                },
                 {
                     field: 'mname',
                     align: 'center',
@@ -100,16 +100,16 @@
                         var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].mname' value='%s'>", index, value);
                         return html;
                     }
-				},
+                },
                 {
-                    field: 'spec',
+                    field: 'mspec',
                     align: 'center',
                     title: '部件规格',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].spec' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].mspec' value='%s'>", index, value);
                         return html;
                     }
-				},
+                },
                 {
                     field: 'attribute',
                     align: 'center',
@@ -118,34 +118,61 @@
                         var name = $.common.sprintf("bsBomDetailList[%s].attribute", index);
                         return $.common.dictToSelect(attrDatas, value, name);
                     }
-				},
+                },
                 {
-                    field: 'msize',
+                    field: 'onsize',
                     align: 'center',
                     title: '上机尺寸',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].msize' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].onsize' value='%s'>", index, value);
                         return html;
                     }
-				},
+                },
                 {
-                    field: 'dnumber',
+                    field: 'moqieqty',
                     align: 'center',
                     title: '模切拼数',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].dnumber' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].moqieqty' value='%s'>", index, value);
                         return html;
                     }
-				},
+                },
                 {
-                    field: 'pnumber',
+                    field: 'qiezhiqty',
                     align: 'center',
                     title: '切纸拼数',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].pnumber' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].qiezhiqty' value='%s'>", index, value);
                         return html;
                     }
-				},
+                },
+                {
+                    field: 'unit',
+                    align: 'center',
+                    title: '单位',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].unit' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'unratio',
+                    align: 'center',
+                    title: '损耗率',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].unratio' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'ruter',
+                    align: 'center',
+                    title: '工艺路线',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].ruter' value='%s'>", index, value);
+                        return html;
+                    }
+                },
                 {
                     field: 'qty',
                     align: 'center',
@@ -154,7 +181,7 @@
                         var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].qty' value='%s'>", index, value);
                         return html;
                     }
-				},
+                },
                 {
                     field: 'remark',
                     align: 'center',
@@ -163,7 +190,7 @@
                         var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].remark' value='%s'>", index, value);
                         return html;
                     }
-				}]
+                }]
             };
             $.table.init(options);
         });
@@ -176,13 +203,17 @@
                 index: count,
                 row: {
                     index: $.table.serialNumber(count),
+                    orderno: $.table.serialNumber(count),
                     mcode: $.common.isNotEmpty(obj)?obj.mcode:"",
                     mname: $.common.isNotEmpty(obj)?obj.mname:"",
-                    spec: $.common.isNotEmpty(obj)?obj.spec:"",
+                    mspec: $.common.isNotEmpty(obj)?obj.mspec:"",
                     attribute: $.common.isNotEmpty(obj)?obj.attribute:"",
-                    msize: $.common.isNotEmpty(obj)?obj.msize:"",
-                    dnumber: $.common.isNotEmpty(obj)?obj.dnumber:"",
-                    pnumber: $.common.isNotEmpty(obj)?obj.pnumber:"",
+                    onsize: $.common.isNotEmpty(obj)?obj.onsize:"",
+                    moqieqty: $.common.isNotEmpty(obj)?obj.moqieqty:"",
+                    qiezhiqty: $.common.isNotEmpty(obj)?obj.qiezhiqty:"",
+                    unit: $.common.isNotEmpty(obj)?obj.unit:"",
+                    unratio: $.common.isNotEmpty(obj)?obj.unratio:"",
+                    ruter: $.common.isNotEmpty(obj)?obj.ruter:"",
                     qty: $.common.isNotEmpty(obj)?obj.qty:"",
                     remark: $.common.isNotEmpty(obj)?obj.remark:""
         	    }

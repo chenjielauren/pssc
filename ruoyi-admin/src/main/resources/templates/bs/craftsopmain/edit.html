@@ -16,9 +16,15 @@
                 <div class="col-sm-4">
                     <input name="pcode" th:field="*{pcode}"  class="form-control" type="text" required>
                 </div>
-                <label class="col-sm-2 control-label">产品名称：</label>
+                <label class="col-sm-2 control-label is-required">产品名称：</label>
                 <div class="col-sm-4">
-                    <input name="name" th:field="*{name}" class="form-control" type="text">
+                    <input name="name" th:field="*{name}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">   
+                <label class="col-sm-2 control-label">产品规格：</label>
+                <div class="col-sm-4">
+                    <input name="spec" th:field="*{spec}" class="form-control" type="text">
                 </div>
             </div>
             <h4 class="form-header h4">技术标准</h4>

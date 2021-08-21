@@ -40,9 +40,10 @@ public class QcMatCheckMainController extends BaseController
     private IQcMatCheckMainService qcMatCheckMainService;
 
     @RequiresPermissions("qc:matcm:view")
-    @GetMapping()
-    public String matcm()
+    @GetMapping(value = {"","/{qcResult}" })
+    public String matcm(@PathVariable(value = "qcResult", required = false) String qcResult, ModelMap mmap)
     {
+        mmap.put("qcResult", qcResult);
         return prefix + "/matcm";
     }
 
@@ -176,20 +177,20 @@ public class QcMatCheckMainController extends BaseController
             try
             {
                 qcMatCheckMain.setIsValid("1");
-                boolean lossFlag = false;
+                boolean flag = false;
                 List<QcMatCheckMain>  dblist= qcMatCheckMainService.selectQcMatCheckMainList(qcMatCheckMain);
                 logger.info("同名原材料检验记录条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个原材料检验记录
+                	flag = true;  // 验证是否存在这个原材料检验记录
 				}
-                if (!lossFlag)
+                if (!flag)
                 {
                     qcMatCheckMain.setCreateBy(ShiroUtils.getLoginName());
                     qcMatCheckMain.setUpdateBy(ShiroUtils.getLoginName());
                     // qcMatCheckMain.setIsValid("1");
                     qcMatCheckMainService.insertQcMatCheckMain(qcMatCheckMain);//插入原材料检验记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、原材料检验记录 " +qcMatCheckMain.getPname() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +qcMatCheckMain.getPcode() + " 产品名称" +qcMatCheckMain.getPname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -197,18 +198,18 @@ public class QcMatCheckMainController extends BaseController
                     qcMatCheckMain.setUpdateBy(ShiroUtils.getLoginName());
                 	qcMatCheckMainService.updateQcMatCheckMain(qcMatCheckMain);//修改原材料检验记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、原材料检验记录 " +qcMatCheckMain.getPname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +qcMatCheckMain.getPcode() + " 产品名称" +qcMatCheckMain.getPname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、原材料检验记录 " +qcMatCheckMain.getPname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +qcMatCheckMain.getPcode() + " 产品名称" +qcMatCheckMain.getPname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、原材料检验记录 " + qcMatCheckMain.getPname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +qcMatCheckMain.getPcode() + " 产品名称" +qcMatCheckMain.getPname() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

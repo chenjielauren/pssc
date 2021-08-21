@@ -43,7 +43,7 @@ public class QcProcessCheckMain extends BaseEntity
 
     /** 检验机台 */
     @Excel(name = "检验机台")
-    private String cmachine;
+    private String cstation;
 
     /** 检验时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -208,14 +208,14 @@ public class QcProcessCheckMain extends BaseEntity
         this.pspec = pspec;
     }
 
-    public String getCmachine() {
-        return cmachine;
+    public String getCstation() {
+        return cstation;
     }
 
-    public void setCmachine(String cmachine) {
-        this.cmachine = cmachine;
+    public void setCstation(String cstation) {
+        this.cstation = cstation;
     }
-
+    
     public List<QcProcessCheckDetail> getQcProcessCheckDetailList()
     {
         return qcProcessCheckDetailList;
@@ -266,6 +266,5 @@ public class QcProcessCheckMain extends BaseEntity
             .append("attribute3", getAttribute3())
             .append("qcProcessCheckDetailList", getQcProcessCheckDetailList())
             .toString();
-    }
-    
+    } 
 }

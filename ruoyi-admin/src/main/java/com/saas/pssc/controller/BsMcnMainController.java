@@ -196,7 +196,7 @@ public class BsMcnMainController extends BaseController
                     bsMcnMain.setUpdateBy(ShiroUtils.getLoginName());
                     bsMcnMainService.insertBsMcnMain(bsMcnMain);//插入4M变更单标准
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、4M变更单标准 " +bsMcnMain.getName() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +bsMcnMain.getPcode()+ " 产品名称 " +bsMcnMain.getName() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -204,18 +204,18 @@ public class BsMcnMainController extends BaseController
                     bsMcnMain.setUpdateBy(ShiroUtils.getLoginName());
                 	bsMcnMainService.updateBsMcnMain(bsMcnMain);//修改4M变更单标准
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、4M变更单标准 " +bsMcnMain.getName() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +bsMcnMain.getPcode()+ " 产品名称 " +bsMcnMain.getName() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、4M变更单标准 " +bsMcnMain.getName() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +bsMcnMain.getPcode()+ " 产品名称 " +bsMcnMain.getName() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、4M变更单标准 " + bsMcnMain.getName()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +bsMcnMain.getPcode()+ " 产品名称 " +bsMcnMain.getName()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

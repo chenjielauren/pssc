@@ -16,7 +16,7 @@ public class BsVendor extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 工序ID */
-    private Long id;
+    private String id;
 
     /** 供方分类 */
     @Excel(name = "供方分类",readConverterExp = "0=主材供应商,1=辅材供应商,2=未知")
@@ -59,12 +59,12 @@ public class BsVendor extends BaseEntity
 
     private String attribute3;
 
-    public void setId(Long id) 
+    public void setId(String id) 
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId() 
     {
         return id;
     }

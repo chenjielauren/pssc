@@ -1,5 +1,6 @@
 package com.saas.pssc.controller;
 
+import java.text.NumberFormat;
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,25 +171,29 @@ public class QcBadProjectMainController extends BaseController
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
+        NumberFormat num = NumberFormat.getPercentInstance();
+        num.setMinimumFractionDigits(2);
         for (QcBadProjectMain qcBadProjectMain : qcBadProjectMainList)
         {
             try
             {
                 qcBadProjectMain.setIsValid("1");
-                boolean lossFlag = false;
+                boolean flag = false;
                 List<QcBadProjectMain>  dblist= qcBadProjectMainService.selectQcBadProjectMainList(qcBadProjectMain);
                 logger.info("同名不良项目记录条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个不良项目记录
+                	flag = true;  // 验证是否存在这个不良项目记录
 				}
-                if (!lossFlag)
+                if (!flag)
                 {
+                    String okratio = num.format(Double.valueOf(qcBadProjectMain.getOkratio()));//将小数转换为百分比
+                    qcBadProjectMain.setOkratio(okratio);
                     qcBadProjectMain.setCreateBy(ShiroUtils.getLoginName());
                     qcBadProjectMain.setUpdateBy(ShiroUtils.getLoginName());
                     // qcBadProjectMain.setIsValid("1");
                     qcBadProjectMainService.insertQcBadProjectMain(qcBadProjectMain);//插入不良项目记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、不良项目记录 " +qcBadProjectMain.getPname() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +qcBadProjectMain.getPcode() + " 产品名称" +qcBadProjectMain.getPname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -196,18 +201,18 @@ public class QcBadProjectMainController extends BaseController
                     qcBadProjectMain.setUpdateBy(ShiroUtils.getLoginName());
                 	qcBadProjectMainService.updateQcBadProjectMain(qcBadProjectMain);//修改不良项目记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、不良项目记录 " +qcBadProjectMain.getPname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +qcBadProjectMain.getPcode() + " 产品名称" +qcBadProjectMain.getPname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、不良项目记录 " +qcBadProjectMain.getPname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +qcBadProjectMain.getPcode() + " 产品名称" +qcBadProjectMain.getPname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、不良项目记录 " + qcBadProjectMain.getPname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +qcBadProjectMain.getPcode() + " 产品名称" +qcBadProjectMain.getPname() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

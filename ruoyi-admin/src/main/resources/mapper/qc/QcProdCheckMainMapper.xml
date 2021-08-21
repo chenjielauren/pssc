@@ -57,8 +57,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectQcProdCheckMainList" parameterType="QcProdCheckMain" resultMap="QcProdCheckMainResult">
         <include refid="selectQcProdCheckMainVo"/>
         <where>  
-            <if test="qStarttime != null "> and qtime >= #{qStarttime}</if>
-            <if test="qEndtime != null "> and qtime  &lt;=#{qEndtime}</if> 
+            <if test="qStarttime != null "> and DATE_FORMAT(qtime ,'%Y-%m-%d') >= DATE_FORMAT(#{qStarttime} ,'%Y-%m-%d')</if>
+            <if test="qEndtime != null "> and DATE_FORMAT(qtime ,'%Y-%m-%d') &lt;= DATE_FORMAT(#{qEndtime} ,'%Y-%m-%d')</if> 
             <if test="qcode != null  and qcode != ''"> and qcode like concat('%', #{qcode}, '%')</if>
             <if test="qtime != null "> and qtime = #{qtime}</if>
             <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>

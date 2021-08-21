@@ -195,7 +195,7 @@ public class BsCraftSopMainController extends BaseController
                     bsCraftSopMain.setUpdateBy(ShiroUtils.getLoginName());
                     bsCraftSopMainService.insertBsCraftSopMain(bsCraftSopMain);//插入工艺标准
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工艺标准 " +bsCraftSopMain.getName() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +bsCraftSopMain.getPcode() +" 产品标准 " + bsCraftSopMain.getName() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -203,18 +203,18 @@ public class BsCraftSopMainController extends BaseController
                     bsCraftSopMain.setUpdateBy(ShiroUtils.getLoginName());
                 	bsCraftSopMainService.updateBsCraftSopMain(bsCraftSopMain);//修改工艺标准
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工艺标准 " +bsCraftSopMain.getName() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +bsCraftSopMain.getPcode() +" 产品标准 " + bsCraftSopMain.getName() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、工艺标准 " +bsCraftSopMain.getName() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +bsCraftSopMain.getPcode() +" 产品标准 " + bsCraftSopMain.getName() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、工艺标准 " + bsCraftSopMain.getName()+ " 导入失败：";
+                String msg = "<br/>" + failureNum +  "、产品编号 " +bsCraftSopMain.getPcode() +" 产品标准 " + bsCraftSopMain.getName()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

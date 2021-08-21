@@ -6,17 +6,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="BsBomDetail" id="BsBomDetailResult">
         <result property="id"    column="id"    />
+        <result property="orderno"    column="orderno"    />
         <result property="mainId"    column="main_id"    />
-        <result property="no"    column="no"    />
         <result property="mcode"    column="mcode"    />
         <result property="mname"    column="mname"    />
-        <result property="spec"    column="spec"    />
+        <result property="mspec"    column="mspec"    />
         <result property="attribute"    column="attribute"    />
         <result property="msize"    column="msize"    />
-        <result property="dnumber"    column="dnumber"    />
-        <result property="pnumber"    column="pnumber"    />
+        <result property="moqieqty"    column="moqieqty"    />
+        <result property="qiezhiqty"    column="qiezhiqty"    />
+        <result property="unit"    column="unit"    />
         <result property="qty"    column="qty"    />
+        <result property="unratio"    column="unratio"    />
         <result property="remark"    column="remark"    />
+        <result property="ruter"    column="ruter"    />
         <result property="isValid"    column="is_valid"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
@@ -28,21 +31,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsBomDetailVo">
-        select id, main_id, no, mcode, mname, spec, attribute, msize, dnumber, pnumber, qty, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_bom_detail
+        select id, orderno, main_id, mcode, mname, mspec, attribute, msize, moqieqty, qiezhiqty, unit, qty, unratio, remark, ruter, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_bom_detail
     </sql>
 
     <select id="selectBsBomDetailList" parameterType="BsBomDetail" resultMap="BsBomDetailResult">
         <include refid="selectBsBomDetailVo"/>
         <where>  
+            <if test="orderno != null "> and orderno = #{orderno}</if>
             <if test="mainId != null  and mainId != ''"> and main_id = #{mainId}</if>
             <if test="mcode != null  and mcode != ''"> and mcode = #{mcode}</if>
             <if test="mname != null  and mname != ''"> and mname like concat('%', #{mname}, '%')</if>
-            <if test="spec != null  and spec != ''"> and spec = #{spec}</if>
+            <if test="mspec != null  and mspec != ''"> and mspec = #{mspec}</if>
             <if test="attribute != null  and attribute != ''"> and attribute = #{attribute}</if>
             <if test="msize != null  and msize != ''"> and msize = #{msize}</if>
-            <if test="dnumber != null "> and dnumber = #{dnumber}</if>
-            <if test="pnumber != null "> and pnumber = #{pnumber}</if>
+            <if test="moqieqty != null "> and moqieqty = #{moqieqty}</if>
+            <if test="qiezhiqty != null "> and qiezhiqty = #{qiezhiqty}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
             <if test="qty != null "> and qty = #{qty}</if>
+            <if test="unratio != null  and unratio != ''"> and unratio = #{unratio}</if>
+            <if test="ruter != null  and ruter != ''"> and ruter = #{ruter}</if>
             <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
         </where>
     </select>
@@ -55,18 +62,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertBsBomDetail" parameterType="BsBomDetail" useGeneratedKeys="true" keyProperty="id">
         insert into bs_bom_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="mainId != null">main_id,</if>
-            <if test="no != null">no,</if>
+            <if test="orderno != null">orderno,</if>
+            <if test="mainId != null and mainId != ''">main_id,</if>
             <if test="mcode != null">mcode,</if>
             <if test="mname != null">mname,</if>
-            <if test="spec != null">spec,</if>
+            <if test="mspec != null">mspec,</if>
             <if test="attribute != null and attribute != ''">attribute,</if>
             <if test="msize != null">msize,</if>
-            <if test="dnumber != null">dnumber,</if>
-            <if test="pnumber != null">pnumber,</if>
+            <if test="moqieqty != null">moqieqty,</if>
+            <if test="qiezhiqty != null">qiezhiqty,</if>
+            <if test="unit != null">unit,</if>
             <if test="qty != null">qty,</if>
+            <if test="unratio != null">unratio,</if>
             <if test="remark != null">remark,</if>
+            <if test="ruter != null">ruter,</if>
             <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             <if test="createTime != null">create_time,</if>
@@ -77,18 +86,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">#{id},</if>
-            <if test="mainId != null">#{mainId},</if>
-            <if test="no != null">#{no},</if>
+            <if test="orderno != null">#{orderno},</if>
+            <if test="mainId != null and mainId != ''">#{mainId},</if>
             <if test="mcode != null">#{mcode},</if>
             <if test="mname != null">#{mname},</if>
-            <if test="spec != null">#{spec},</if>
+            <if test="mspec != null">#{mspec},</if>
             <if test="attribute != null and attribute != ''">#{attribute},</if>
             <if test="msize != null">#{msize},</if>
-            <if test="dnumber != null">#{dnumber},</if>
-            <if test="pnumber != null">#{pnumber},</if>
+            <if test="moqieqty != null">#{moqieqty},</if>
+            <if test="qiezhiqty != null">#{qiezhiqty},</if>
+            <if test="unit != null">#{unit},</if>
             <if test="qty != null">#{qty},</if>
+            <if test="unratio != null">#{unratio},</if>
             <if test="remark != null">#{remark},</if>
+            <if test="ruter != null">#{ruter},</if>
             <if test="isValid != null">#{isValid},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
@@ -103,19 +114,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateBsBomDetail" parameterType="BsBomDetail">
         update bs_bom_detail
         <trim prefix="SET" suffixOverrides=",">
+            <if test="orderno != null">orderno = #{orderno},</if>
             <if test="mainId != null and mainId != ''">main_id = #{mainId},</if>
             <if test="mcode != null">mcode = #{mcode},</if>
             <if test="mname != null">mname = #{mname},</if>
-            <if test="spec != null">spec = #{spec},</if>
+            <if test="mspec != null">mspec = #{mspec},</if>
             <if test="attribute != null and attribute != ''">attribute = #{attribute},</if>
             <if test="msize != null">msize = #{msize},</if>
-            <if test="dnumber != null">dnumber = #{dnumber},</if>
-            <if test="pnumber != null">pnumber = #{pnumber},</if>
+            <if test="moqieqty != null">moqieqty = #{moqieqty},</if>
+            <if test="qiezhiqty != null">qiezhiqty = #{qiezhiqty},</if>
+            <if test="unit != null">unit = #{unit},</if>
             <if test="qty != null">qty = #{qty},</if>
+            <if test="unratio != null">unratio = #{unratio},</if>
             <if test="remark != null">remark = #{remark},</if>
+            <if test="ruter != null">ruter = #{ruter},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
-            update_time = sysdate(),
+            <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="attribute1 != null">attribute1 = #{attribute1},</if>
             <if test="attribute2 != null">attribute2 = #{attribute2},</if>
             <if test="attribute3 != null">attribute3 = #{attribute3},</if>

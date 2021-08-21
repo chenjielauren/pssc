@@ -75,8 +75,16 @@
         var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
         var prefix = ctx + "qc/prodcm";
+        var pcode = [[${pcode}]];
+        var qcResult = [[${qcResult}]];
 
         $(function() {
+            if($.common.isNotEmpty(pcode)){
+                $("input[name='pcode']").val(pcode);
+            }
+            if($.common.isNotEmpty(qcResult)){
+                $("select[name='qcResult']").val(qcResult);
+            }
             var options = {
                 url: prefix + "/list",
                 createUrl: prefix + "/add",

@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="attribute1"    column="attribute1"    />
         <result property="attribute2"    column="attribute2"    />
         <result property="attribute3"    column="attribute3"    />
+        <result property="ppCount"    column="ppCount"    />
     </resultMap>
 
     <sql id="selectSdOrderVo">
@@ -32,8 +33,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSdOrderList" parameterType="SdOrder" resultMap="SdOrderResult">
         <include refid="selectSdOrderVo"/>
         <where>
-            <if test="oStarttime != null "> and otime >= #{oStarttime}</if>
-            <if test="oEndtime != null "> and otime  &lt;=#{oEndtime}</if>
+            <if test="oStarttime != null "> and DATE_FORMAT(otime ,'%Y-%m-%d') >= DATE_FORMAT(#{oStarttime} ,'%Y-%m-%d')</if>
+            <if test="oEndtime != null ">  and DATE_FORMAT(otime ,'%Y-%m-%d') &lt;= DATE_FORMAT(#{oEndtime} ,'%Y-%m-%d')</if>
             <if test="ocode != null  and ocode != ''"> and ocode = #{ocode}</if>
             <if test="otime != null "> and otime = #{otime}</if>
             <if test="qty != null "> and qty = #{qty}</if>
@@ -137,4 +138,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="selectOrderAndPpList" parameterType="SdOrder" resultMap="SdOrderResult">
+        select id, ocode, otime, qty, pcode, pname, ptype, pspec, t.remark, t.is_valid,t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3,
+        if((select count(1) from pp_wo_book_main pwbm  where orderno = #{ocode})>0,2,0) ppCount
+               from sd_order t
+           where ocode = #{ocode}
+    </select>
 </mapper>

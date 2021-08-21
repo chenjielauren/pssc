@@ -191,20 +191,20 @@ public class InMStoreController extends BaseController
                 BeanUtils.copyProperties(inMStore, inStore);
                 inStore.setPtype("0");//材料库存
                 inStore.setIsValid("1");
-                boolean lossFlag = false;
+                boolean flag = false;
                 List<InStore>  dblist= inStoreService.selectInStoreList(inStore);
                 logger.info("同名材料库存记录条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个材料库存记录
+                	flag = true;  // 验证是否存在这个材料库存记录
 				}
-                if (!lossFlag)
+                if (!flag)
                 {
                     inStore.setCreateBy(ShiroUtils.getLoginName());
                     inStore.setUpdateBy(ShiroUtils.getLoginName());
                     // qcMatCheckMain.setIsValid("1");
                     inStoreService.insertInStore(inStore);//插入材料库存记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、材料库存记录 " +inStore.getMname()+ " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、材料编号 " +inStore.getMcode() + " 材料名称 " +inStore.getMname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -212,18 +212,18 @@ public class InMStoreController extends BaseController
                     inStore.setUpdateBy(ShiroUtils.getLoginName());
                 	inStoreService.updateInStore(inStore);//修改材料检验标准记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、材料库存记录 " +inStore.getMname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、材料编号 " +inStore.getMcode() + " 材料名称 " +inStore.getMname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、材料库存记录 " +inStore.getMname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、材料编号 " +inStore.getMcode() + " 材料名称 " +inStore.getMname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、材料库存记录 " + inMStore.getMname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum  + "、材料编号 " +inMStore.getMcode() + " 材料名称 " +inMStore.getMname() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

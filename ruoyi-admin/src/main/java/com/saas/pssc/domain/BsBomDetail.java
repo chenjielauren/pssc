@@ -9,7 +9,7 @@ import com.saas.common.core.domain.BaseEntity;
  * bom物料清单明细对象 bs_bom_detail
  * 
  * @author admin
- * @date 2021-08-09
+ * @date 2021-08-21
  */
 public class BsBomDetail extends BaseEntity
 {
@@ -18,11 +18,11 @@ public class BsBomDetail extends BaseEntity
     /** 工序ID */
     private String id;
 
+    /** 序号 */
+    private Long orderno;
+
     /** 主表ID */
     private String mainId;
-
-    /** 序号 */
-    private int no;
 
     /** 部件编号 */
     @Excel(name = "部件编号")
@@ -34,31 +34,43 @@ public class BsBomDetail extends BaseEntity
 
     /** 部件规格 */
     @Excel(name = "部件规格")
-    private String spec;
+    private String mspec;
 
-    /** 部件属性 */
+    /** 部件属性(生产/采购) */
     @Excel(name = "部件属性",readConverterExp = "0=生产,1=采购,2=未知")
     private String attribute;
 
     /** 上机尺寸 */
     @Excel(name = "上机尺寸")
-    private String msize;
+    private String onsize;
 
     /** 模切拼数 */
     @Excel(name = "模切拼数")
-    private Long dnumber;
+    private Long moqieqty;
 
     /** 切纸拼数 */
     @Excel(name = "切纸拼数")
-    private Long pnumber;
+    private Long qiezhiqty;  
 
+    /** 单位 */
+    @Excel(name = "单位")
+    private String unit;
+
+    /** 损耗率 */
+    @Excel(name = "损耗率")
+    private String unratio;
+
+    /** 工艺路线 */
+    @Excel(name = "工艺路线")
+    private String ruter;
+    
     /** 用量 */
     @Excel(name = "用量")
-    private Long qty;
+    private Long qty;  
 
     /** 备注 */
     @Excel(name = "备注")
-    private String remark;
+    private String remark; 
 
     /** 有效否 0失效1有效 */
     private String isValid;
@@ -81,6 +93,15 @@ public class BsBomDetail extends BaseEntity
     {
         return id;
     }
+    public void setOrderno(Long orderno) 
+    {
+        this.orderno = orderno;
+    }
+
+    public Long getOrderno() 
+    {
+        return orderno;
+    }
     public void setMainId(String mainId) 
     {
         this.mainId = mainId;
@@ -89,12 +110,6 @@ public class BsBomDetail extends BaseEntity
     public String getMainId() 
     {
         return mainId;
-    }
-    public int getNo() {
-        return no;
-    }
-    public void setNo(int no) {
-        this.no = no;
     }
     public void setMcode(String mcode) 
     {
@@ -114,14 +129,13 @@ public class BsBomDetail extends BaseEntity
     {
         return mname;
     }
-    public void setSpec(String spec) 
-    {
-        this.spec = spec;
+    
+    public String getMspec() {
+        return mspec;
     }
 
-    public String getSpec() 
-    {
-        return spec;
+    public void setMspec(String mspec) {
+        this.mspec = mspec;
     }
     public void setAttribute(String attribute) 
     {
@@ -132,32 +146,41 @@ public class BsBomDetail extends BaseEntity
     {
         return attribute;
     }
-    public void setMsize(String msize) 
-    {
-        this.msize = msize;
+
+    public String getOnsize() {
+        return onsize;
     }
 
-    public String getMsize() 
-    {
-        return msize;
+    public void setOnsize(String onsize) {
+        this.onsize = onsize;
     }
-    public void setDnumber(Long dnumber) 
+    
+    public void setMoqieqty(Long moqieqty) 
     {
-        this.dnumber = dnumber;
-    }
-
-    public Long getDnumber() 
-    {
-        return dnumber;
-    }
-    public void setPnumber(Long pnumber) 
-    {
-        this.pnumber = pnumber;
+        this.moqieqty = moqieqty;
     }
 
-    public Long getPnumber() 
+    public Long getMoqieqty() 
     {
-        return pnumber;
+        return moqieqty;
+    }
+    public void setQiezhiqty(Long qiezhiqty) 
+    {
+        this.qiezhiqty = qiezhiqty;
+    }
+
+    public Long getQiezhiqty() 
+    {
+        return qiezhiqty;
+    }
+    public void setUnit(String unit) 
+    {
+        this.unit = unit;
+    }
+
+    public String getUnit() 
+    {
+        return unit;
     }
     public void setQty(Long qty) 
     {
@@ -167,6 +190,24 @@ public class BsBomDetail extends BaseEntity
     public Long getQty() 
     {
         return qty;
+    }
+    public void setUnratio(String unratio) 
+    {
+        this.unratio = unratio;
+    }
+
+    public String getUnratio() 
+    {
+        return unratio;
+    }
+    public void setRuter(String ruter) 
+    {
+        this.ruter = ruter;
+    }
+
+    public String getRuter() 
+    {
+        return ruter;
     }
     public String getRemark() {
         return remark;
@@ -216,16 +257,20 @@ public class BsBomDetail extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+            .append("orderno", getOrderno())
             .append("mainId", getMainId())
             .append("mcode", getMcode())
             .append("mname", getMname())
-            .append("spec", getSpec())
+            .append("mspec", getMspec())
             .append("attribute", getAttribute())
-            .append("msize", getMsize())
-            .append("dnumber", getDnumber())
-            .append("pnumber", getPnumber())
+            .append("onsize", getOnsize())
+            .append("moqieqty", getMoqieqty())
+            .append("qiezhiqty", getQiezhiqty())
+            .append("unit", getUnit())
             .append("qty", getQty())
+            .append("unratio", getUnratio())
             .append("remark", getRemark())
+            .append("ruter", getRuter())
             .append("isValid", getIsValid())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
@@ -236,4 +281,5 @@ public class BsBomDetail extends BaseEntity
             .append("attribute3", getAttribute3())
             .toString();
     }
+    
 }

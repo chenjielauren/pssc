@@ -31,6 +31,10 @@ public class BsPqcMain extends BaseEntity
     @Excel(name = "产品规格")
     private String spec;
 
+    /** 检验工序 */
+    @Excel(name = "检验工序")
+    private String procName;
+
     /** 是否有效 */
     private String isValid;
 
@@ -55,12 +59,6 @@ public class BsPqcMain extends BaseEntity
 
     /** 专检验标准明细信息 */
     private List<BsPqcDetail> xjDetailList;
-
-    private Long sjcount;
-
-    private Long xjcount;
-
-    private Long zjcount;
 
     public void setId(String id) 
     {
@@ -97,6 +95,14 @@ public class BsPqcMain extends BaseEntity
     public void setSpec(String spec) {
         this.spec = spec;
     }
+    public String getProcName() {
+		return procName;
+	}
+
+	public void setProcName(String procName) {
+		this.procName = procName;
+    }
+    
     public void setIsValid(String isValid) 
     {
         this.isValid = isValid;
@@ -177,30 +183,6 @@ public class BsPqcMain extends BaseEntity
         this.xjDetailList = xjDetailList;
     }   
     
-    
-    public Long getSjcount() {
-        return sjcount;
-    }
-
-    public void setSjcount(Long sjcount) {
-        this.sjcount = sjcount;
-    }
-
-    public Long getXjcount() {
-        return xjcount;
-    }
-
-    public void setXjcount(Long xjcount) {
-        this.xjcount = xjcount;
-    }
-
-    public Long getZjcount() {
-        return zjcount;
-    }
-
-    public void setZjcount(Long zjcount) {
-        this.zjcount = zjcount;
-    }
 
     @Override
     public String toString() {
@@ -219,5 +201,7 @@ public class BsPqcMain extends BaseEntity
             .append("attribute3", getAttribute3())
             .append("bsPqcDetailList", getBsPqcDetailList())
             .toString();
-    }
+    }	
+
+
 }

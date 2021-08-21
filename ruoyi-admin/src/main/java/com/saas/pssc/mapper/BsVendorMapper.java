@@ -17,7 +17,7 @@ public interface BsVendorMapper
      * @param Id 合格供方名录ID
      * @return 合格供方名录
      */
-    public BsVendor selectBsVendorById(Long Id);
+    public BsVendor selectBsVendorById(String Id);
 
     /**
      * 查询合格供方名录列表
@@ -49,7 +49,7 @@ public interface BsVendorMapper
      * @param Id 合格供方名录ID
      * @return 结果
      */
-    public int deleteBsVendorById(Long Id);
+    public int deleteBsVendorById(String Id);
     
     /**
      * 失效合格供方名录
@@ -57,7 +57,7 @@ public interface BsVendorMapper
      * @param Id 合格供方名录ID
      * @return 结果
      */
-    public int updateBsVendorById(Long Id);
+    public int updateBsVendorById(String Id);
 
     /**
      * 批量删除合格供方名录

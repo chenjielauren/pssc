@@ -1,6 +1,8 @@
 package com.saas.pssc.controller;
 
+import java.text.NumberFormat;
 import java.util.List;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import com.saas.pssc.domain.BsBomDetail;
 import com.saas.pssc.service.IBsBomDetailService;
 import com.saas.common.core.controller.BaseController;
 import com.saas.common.core.domain.AjaxResult;
+import com.saas.common.utils.StringUtils;
 import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.common.core.page.TableDataInfo;
 
@@ -146,6 +149,14 @@ public class BsBomDetailController extends BaseController
     {
         ExcelUtil<BsBomDetail> util = new ExcelUtil<BsBomDetail>(BsBomDetail.class);
         List<BsBomDetail> list = util.importExcel(file.getInputStream());
+        if(StringUtils.isNotEmpty(list)){
+            NumberFormat num = NumberFormat.getPercentInstance();
+            num.setMinimumFractionDigits(2);
+            for(BsBomDetail bom:list){
+                String unratio = num.format(Double.valueOf(bom.getUnratio()));//将小数转换为百分比
+                bom.setUnratio(unratio);
+            }
+        }
         return AjaxResult.success(list);
     }
 }

@@ -48,8 +48,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qiezhiqty != null "> and qiezhiqty = #{qiezhiqty}</if>
             <if test="qty != null "> and qty = #{qty}</if>
             <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
-            <if test="unratio != null "> and unratio = #{unratio}</if>
             <if test="ruter != null  and ruter != ''"> and ruter = #{ruter}</if>
+            <if test="attribute1 != null  and attribute1 != ''"> and mcode = #{attribute1}</if>
         </where>
     </select>
     
@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qiezhiqty != null">qiezhiqty,</if>
             <if test="qty != null">qty,</if>
             <if test="unit != null">unit,</if>
-            <if test="unratio != null">unratio,</if>
+            <if test="unratio != null and unratio != ''">unratio,</if>
             <if test="ruter != null">ruter,</if>
             <if test="remark != null">remark,</if>
             <if test="isValid != null">is_valid,</if>
@@ -98,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qiezhiqty != null">#{qiezhiqty},</if>
             <if test="qty != null">#{qty},</if>
             <if test="unit != null">#{unit},</if>
-            <if test="unratio != null">#{unratio},</if>
+            <if test="unratio != null and unratio != ''">#{unratio},</if>
             <if test="ruter != null">#{ruter},</if>
             <if test="remark != null">#{remark},</if>
             <if test="isValid != null">#{isValid},</if>
@@ -126,7 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qiezhiqty != null">qiezhiqty = #{qiezhiqty},</if>
             <if test="qty != null">qty = #{qty},</if>
             <if test="unit != null">unit = #{unit},</if>
-            <if test="unratio != null">unratio = #{unratio},</if>
+            <if test="unratio != null and unratio != ''">unratio = #{unratio},</if>
             <if test="ruter != null">ruter = #{ruter},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>

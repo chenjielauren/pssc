@@ -5,6 +5,7 @@ import java.util.List;
 import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
+import com.saas.common.utils.uuid.IdUtils;
 import com.saas.pssc.domain.BsVendor;
 import com.saas.pssc.mapper.BsVendorMapper;
 import com.saas.pssc.service.IBsVendorService;
@@ -31,7 +32,7 @@ public class BsVendorServiceImpl implements IBsVendorService
      * @return 合格供方名录
      */
     @Override
-    public BsVendor selectBsVendorById(Long Id)
+    public BsVendor selectBsVendorById(String Id)
     {
         return bsVendorMapper.selectBsVendorById(Id);
     }
@@ -58,6 +59,7 @@ public class BsVendorServiceImpl implements IBsVendorService
     @Override
     public int insertBsVendor(BsVendor bsVendor)
     {
+        bsVendor.setId(IdUtils.fastUUID());
         bsVendor.setCreateTime(DateUtils.getNowDate());
         return bsVendorMapper.insertBsVendor(bsVendor);
     }
@@ -94,7 +96,7 @@ public class BsVendorServiceImpl implements IBsVendorService
      * @return 结果
      */
     @Override
-    public int deleteBsVendorById(Long Id)
+    public int deleteBsVendorById(String Id)
     {
         return bsVendorMapper.updateBsVendorById(Id);
     }

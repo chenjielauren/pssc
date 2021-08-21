@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('标注')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-remark" th:object="${sdDelivery}">
+            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="createByName" th:value="${@permission.getPrincipalProperty('userName')}"> 
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <h4 class="form-header h4">标注</h4>
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">发货批次号：</label>
+                <div class="col-sm-4">
+                    <input name="dlot" th:field="*{dlot}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                        <table id="bootstrap-table" style="min-width:1000px;"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "query/remark";
+        $("#form-remark").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-remark').serialize());
+            }
+        }
+
+        $(function() {
+            var options = {
+                data: [[${sdDelivery.sdDeliveryDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'id',
+                    align: 'center',
+                    title: '主键id',
+                    visible:false,
+                },
+                {
+                    field: 'fileTitle',
+                    align: 'center',
+                    title: '文件标题',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sdDeliveryDetailList[%s].fileTitle' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'fileName',
+                    align: 'center',
+                    title: '文件名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sdDeliveryDetailList[%s].fileName' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'fileUrl',
+                    align: 'center',
+                    title: '文件路径',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        // actions.push($.common.sprintf("<input class='form-control' type='hidden' name='sdDeliveryDetailList[%s].fileName' value='%s'>", index, value));
+                        actions.push($.common.sprintf("<input class='form-control' type='hidden' name='sdDeliveryDetailList[%s].fileUrl' value='%s'>", index, row.fileUrl));
+                        actions.push($.common.sprintf("<a id='a%s' href='%s' target='_blank'>%s</a>",index,row.fileUrl,row.fileTitle));                        
+                        return actions.join('');
+                    }
+				},
+                {
+                    field: 'uploadUser',
+                    align: 'center',
+                    title: '上传人',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sdDeliveryDetailList[%s].uploadUser' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'uploadTime',
+                    align: 'center',
+                    title: '上传时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sdDeliveryDetailList[%s].uploadTime' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'isValid',
+                    align: 'center',
+                    title: '是否有效',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='sdDeliveryDetailList[%s].isValid' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="uploadfile(\'' + index + '\')"><i class="fa fa-upload"></i>浏览</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        //添加行
+        function addColumn() {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+        	
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    fileTitle: "",
+                    fileName: "",
+                    fileUrl:"",
+                    uploadUser:  $("input[name='createByName']").val(),
+                    uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
+                    isValid: ""
+        	    }
+            });
+        }
+        
+        //上传文件
+        function uploadfile(index){
+            var options = {
+                title: '上传附件',
+                width: "500",
+                height: "300",
+                url:  prefix + '/toUpload'+"/"+index,
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+        //上传文件后回调
+        function doSubmit(index, layero) {
+            var body = layer.getChildFrame('body', index);
+            //当前行
+            var rowIndex = body.find('#rowIndex').val();
+            //文件名称
+            var fileName = body.find('#fileName').val();
+            //文件url
+            var fileUrl = body.find('#fileUrl').val();
+            console.log(rowIndex);
+            console.log(fileName);
+            $("input[name='sdDeliveryDetailList["+(rowIndex)+"].fileTitle']").val(fileName);//设置上传文件名称    
+            $("input[name='sdDeliveryDetailList["+(rowIndex)+"].fileUrl']").val(fileUrl);//设置上传文件路径       
+            $("#a"+rowIndex+"").attr("href",fileUrl); //设置文档超链接  
+            $("#a"+rowIndex+"").text(fileName); //设置超链接名称
+            layer.close(index);
+        }
+    </script>
+</body>
+</html>

@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="BsPqcDetail" id="BsPqcDetailResult">
         <result property="id"    column="Id"    />
         <result property="mainId"    column="main_id"    />
+        <result property="orderno"    column="orderno"    />
         <result property="ptype"    column="ptype"    />
         <result property="pcode"    column="pcode"    />
         <result property="name"    column="name"    />
@@ -24,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsPqcDetailVo">
-        select Id, main_id, ptype, pcode, name, standard, method, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_pqc_detail
+        select Id, main_id,orderno, ptype, pcode, name, standard, method, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_pqc_detail
     </sql>
 
     <select id="selectBsPqcDetailList" parameterType="BsPqcDetail" resultMap="BsPqcDetailResult">
@@ -52,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into bs_pqc_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="mainId != null">main_id,</if>
+            <if test="orderno != null">orderno,</if>
             <if test="ptype != null">ptype,</if>
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="name != null">name,</if>
@@ -68,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="mainId != null">#{mainId},</if>
+            <if test="orderno != null">#{orderno},</if>
             <if test="ptype != null">#{ptype},</if>
             <if test="pcode != null and pcode != ''">#{pcode},</if>
             <if test="name != null">#{name},</if>
@@ -88,6 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update bs_pqc_detail
         <trim prefix="SET" suffixOverrides=",">
             <if test="mainId != null">main_id = #{mainId},</if>
+            <if test="orderno != null">orderno = #{orderno},</if>
             <if test="ptype != null">ptype = #{ptype},</if>
             <if test="pcode != null and pcode != ''">pcode = #{pcode},</if>
             <if test="name != null">name = #{name},</if>

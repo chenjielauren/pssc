@@ -22,7 +22,7 @@ public class BsPqcDetail extends BaseEntity
     private String mainId;
 
     /** 序号 */
-    private int no;
+    private int orderno;
 
     /** 检验类型 0首检 1自检 2巡检 3未知 */
     private String ptype;
@@ -70,11 +70,13 @@ public class BsPqcDetail extends BaseEntity
     {
         return mainId;
     }
-    public int getNo() {
-        return no;
+    
+    public int getOrderno() {
+        return orderno;
     }
-    public void setNo(int no) {
-        this.no = no;
+
+    public void setOrderno(int orderno) {
+        this.orderno = orderno;
     }
     public void setPtype(String ptype) 
     {

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.pssc.mapper.SdDeliveryDetailMapper">
+    
+    <resultMap type="SdDeliveryDetail" id="SdDeliveryDetailResult">
+        <result property="id"    column="id"    />
+        <result property="mainId"    column="main_id"    />
+        <result property="fileTitle"    column="file_title"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="uploadUser"    column="upload_user"    />
+        <result property="uploadTime"    column="upload_time"    />
+        <result property="isValid"    column="is_valid"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+    </resultMap>
+
+    <sql id="selectSdDeliveryDetailVo">
+        select id, main_id, file_title,file_name, file_url, upload_user, upload_time, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from sd_delivery_detail
+    </sql>
+
+    <select id="selectSdDeliveryDetailList" parameterType="SdDeliveryDetail" resultMap="SdDeliveryDetailResult">
+        <include refid="selectSdDeliveryDetailVo"/>
+        <where>  
+            <if test="mainId != null  and mainId != ''"> and main_id = #{mainId}</if>
+            <if test="fileTitle != null  and fileTitle != ''"> and file_title like concat('%', #{fileTitle}, '%')</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and file_url like concat('%', #{fileUrl}, '%')</if>
+            <if test="uploadUser != null  and uploadUser != ''"> and upload_user = #{uploadUser}</if>
+            <if test="uploadTime != null "> and upload_time = #{uploadTime}</if>
+            <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
+        </where>
+    </select>
+    
+    <select id="selectSdDeliveryDetailById" parameterType="String" resultMap="SdDeliveryDetailResult">
+        <include refid="selectSdDeliveryDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSdDeliveryDetail" parameterType="SdDeliveryDetail">
+        insert into sd_delivery_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="mainId != null and mainId != ''">main_id,</if>
+            <if test="fileTitle != null">file_title,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="fileUrl != null">file_url,</if>
+            <if test="uploadUser != null">upload_user,</if>
+            <if test="uploadTime != null">upload_time,</if>
+            <if test="isValid != null">is_valid,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="mainId != null and mainId != ''">#{mainId},</if>
+            <if test="fileTitle != null">#{fileTitle},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="uploadUser != null">#{uploadUser},</if>
+            <if test="uploadTime != null">#{uploadTime},</if>
+            <if test="isValid != null">#{isValid},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSdDeliveryDetail" parameterType="SdDeliveryDetail">
+        update sd_delivery_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mainId != null and mainId != ''">main_id = #{mainId},</if>
+            <if test="fileTitle != null">file_title = #{fileTitle},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="uploadUser != null">upload_user = #{uploadUser},</if>
+            <if test="uploadTime != null">upload_time = #{uploadTime},</if>
+            <if test="isValid != null">is_valid = #{isValid},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSdDeliveryDetailById" parameterType="String">
+        delete from sd_delivery_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteSdDeliveryDetailByIds" parameterType="String">
+        delete from sd_delivery_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

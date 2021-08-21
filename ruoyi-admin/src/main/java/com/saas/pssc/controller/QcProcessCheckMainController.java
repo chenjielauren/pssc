@@ -40,9 +40,10 @@ public class QcProcessCheckMainController extends BaseController
     private IQcProcessCheckMainService qcProcessCheckMainService;
 
     @RequiresPermissions("qc:proccm:view")
-    @GetMapping()
-    public String proccm()
+    @GetMapping(value = {"","/{qcResult}"})
+    public String proccm(@PathVariable(value = "qcResult", required = false) String qcResult, ModelMap mmap)
     {
+        mmap.put("qcResult", qcResult);
         return prefix + "/proccm";
     }
 
@@ -176,20 +177,20 @@ public class QcProcessCheckMainController extends BaseController
             try
             {
                 qcProcessCheckMain.setIsValid("1");
-                boolean lossFlag = false;
+                boolean flag = false;
                 List<QcProcessCheckMain>  dblist= qcProcessCheckMainService.selectQcProcessCheckMainList(qcProcessCheckMain);
                 logger.info("同名过程检验记录条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个过程检验记录
+                	flag = true;  // 验证是否存在这个过程检验记录
 				}
-                if (!lossFlag)
+                if (!flag)
                 {
                     qcProcessCheckMain.setCreateBy(ShiroUtils.getLoginName());
                     qcProcessCheckMain.setUpdateBy(ShiroUtils.getLoginName());
                     // qcProcessCheckMain.setIsValid("1");
                     qcProcessCheckMainService.insertQcProcessCheckMain(qcProcessCheckMain);//插入过程检验记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、过程检验记录 " +qcProcessCheckMain.getPname() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +qcProcessCheckMain.getPcode() + " 产品名称" +qcProcessCheckMain.getPname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -197,18 +198,18 @@ public class QcProcessCheckMainController extends BaseController
                     qcProcessCheckMain.setUpdateBy(ShiroUtils.getLoginName());
                 	qcProcessCheckMainService.updateQcProcessCheckMain(qcProcessCheckMain);//修改过程检验记录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、过程检验记录 " +qcProcessCheckMain.getPname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +qcProcessCheckMain.getPcode() + " 产品名称" +qcProcessCheckMain.getPname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、过程检验记录 " +qcProcessCheckMain.getPname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +qcProcessCheckMain.getPcode() + " 产品名称" +qcProcessCheckMain.getPname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、过程检验记录 " + qcProcessCheckMain.getPname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +qcProcessCheckMain.getPcode() + " 产品名称" +qcProcessCheckMain.getPname()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

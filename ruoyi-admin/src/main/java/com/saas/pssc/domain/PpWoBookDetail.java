@@ -24,7 +24,7 @@ public class PpWoBookDetail extends BaseEntity
     private String mainId;
 
     /** 序号 */
-    private int no;
+    private int orderno;
 
     /** 子工单号 */
     @Excel(name = "子工单号")
@@ -122,12 +122,16 @@ public class PpWoBookDetail extends BaseEntity
     {
         return mainId;
     }
-    public int getNo() {
-        return no;
+    
+
+    public int getOrderno() {
+        return orderno;
     }
-    public void setNo(int no) {
-        this.no = no;
+
+    public void setOrderno(int orderno) {
+        this.orderno = orderno;
     }
+    
     public void setSoncode(String soncode) 
     {
         this.soncode = soncode;
@@ -340,4 +344,5 @@ public class PpWoBookDetail extends BaseEntity
             .append("attribute3", getAttribute3())
             .toString();
     }
+
 }

@@ -189,7 +189,7 @@ public class BsPqcMainController extends BaseController
                     pqcMain.setUpdateBy(ShiroUtils.getLoginName());
                     bsPqcMainService.insertBsPqcMain(pqcMain);//插入产品检验标准标准
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、产品检验标准标准 " +pqcMain.getName() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +pqcMain.getPcode()+ " 产品名称 " +pqcMain.getName() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -197,18 +197,18 @@ public class BsPqcMainController extends BaseController
                     pqcMain.setUpdateBy(ShiroUtils.getLoginName());
                 	bsPqcMainService.updateBsPqcMain(pqcMain);//修改产品检验标准标准
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、产品检验标准标准 " +pqcMain.getName() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +pqcMain.getPcode()+ " 产品名称 " +pqcMain.getName() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、产品检验标准标准 " +pqcMain.getName() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +pqcMain.getPcode()+ " 产品名称 " +pqcMain.getName() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、产品检验标准标准 " + pqcMain.getName()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +pqcMain.getPcode()+ " 产品名称 " +pqcMain.getName()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

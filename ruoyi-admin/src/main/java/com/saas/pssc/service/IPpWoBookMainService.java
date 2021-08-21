@@ -62,4 +62,6 @@ public interface IPpWoBookMainService
     public int deletePpWoBookMainById(String id);
 
 	public PpWoBookMain selectPpWoBookMainByMap(Map<String, Object> paramMap);
+
+	public String checkPcodeUnique(PpWoBookMain ppWoBookMain);
 }

@@ -111,11 +111,11 @@
                     }
 				},
                 {
-                    field: 'pmethod',
+                    field: 'method',
                     align: 'center',
                     title: '检验方法',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].pmethod' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].method' value='%s'>", index, value);
                         return html;
                     }
 				},
@@ -194,7 +194,7 @@
                     pcode: $.common.isNotEmpty(obj)?obj.pcode:"",
                     name: $.common.isNotEmpty(obj)?obj.name:"",
                     standard: $.common.isNotEmpty(obj)?obj.standard:"",
-                    pmethod: $.common.isNotEmpty(obj)?obj.pmethod:"",
+                    method: $.common.isNotEmpty(obj)?obj.method:"",
                     remark: $.common.isNotEmpty(obj)?obj.remark:""
         	    }
             });

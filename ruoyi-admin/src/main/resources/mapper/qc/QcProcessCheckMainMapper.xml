@@ -58,14 +58,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectQcProcessCheckMainList" parameterType="QcProcessCheckMain" resultMap="QcProcessCheckMainResult">
         <include refid="selectQcProcessCheckMainVo"/>
         <where>  
-            <if test="qStarttime != null "> and qtime >= #{qStarttime}</if>
-            <if test="qEndtime != null "> and qtime  &lt;=#{qEndtime}</if> 
+            <if test="qStarttime != null "> and DATE_FORMAT(qtime ,'%Y-%m-%d') >= DATE_FORMAT(#{qStarttime} ,'%Y-%m-%d')</if>
+            <if test="qEndtime != null "> and DATE_FORMAT(qtime ,'%Y-%m-%d') &lt;= DATE_FORMAT(#{qEndtime} ,'%Y-%m-%d')</if> 
             <if test="qcode != null  and qcode != ''"> and qcode like concat('%', #{qcode}, '%')</if>
             <if test="qtime != null "> and qtime = #{qtime}</if>
             <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
             <if test="cwork != null  and cwork != ''"> and cwork like concat('%', #{cwork}, '%')</if>
             <if test="ctype != null  and ctype != ''"> and ctype like concat('%', #{ctype}, '%')</if>
+            <if test="qcResult != null and qcResult != ''"> and qc_result = #{qcResult}</if>
             and is_valid = '1'  
             <!-- 数据范围过滤 --> 
             ${params.dataScope}

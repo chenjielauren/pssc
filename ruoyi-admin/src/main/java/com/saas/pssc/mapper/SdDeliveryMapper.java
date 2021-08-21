@@ -2,6 +2,7 @@ package com.saas.pssc.mapper;
 
 import java.util.List;
 import com.saas.pssc.domain.SdDelivery;
+import com.saas.pssc.domain.SdDeliveryDetail;
 
 /**
  * 发货信息Mapper接口
@@ -74,4 +75,6 @@ public interface SdDeliveryMapper
      * @return 结果
      */
 	public int updateSdDeliveryById(String id);
+
+	public void batchSdDeliveryDetail(List<SdDeliveryDetail> sdDeliveryDetails);
 }

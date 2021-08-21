@@ -38,7 +38,7 @@ public class BsProSopDetail extends BaseEntity
 
     /** 检验方法 */
     @Excel(name = "检验方法")
-    private String pmethod;
+    private String method;
 
     /** 备注 */
     @Excel(name = "备注")
@@ -110,15 +110,15 @@ public class BsProSopDetail extends BaseEntity
     {
         return standard;
     }
-    public void setPmethod(String pmethod) 
-    {
-        this.pmethod = pmethod;
-    }
+    
+	public String getMethod() {
+		return method;
+	}
 
-    public String getPmethod() 
-    {
-        return pmethod;
-    }
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
     public String getRemark() {
         return remark;
     }
@@ -172,7 +172,7 @@ public class BsProSopDetail extends BaseEntity
             .append("pcode", getPcode())
             .append("name", getName())
             .append("standard", getStandard())
-            .append("pmethod", getPmethod())
+            .append("method", getMethod())
             .append("remark", getRemark())
             .append("isValid", getIsValid())
             .append("createBy", getCreateBy())
@@ -184,4 +184,5 @@ public class BsProSopDetail extends BaseEntity
             .append("attribute3", getAttribute3())
             .toString();
     }
+
 }

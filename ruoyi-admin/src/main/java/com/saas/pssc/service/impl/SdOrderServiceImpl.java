@@ -100,4 +100,9 @@ public class SdOrderServiceImpl implements ISdOrderService
     {
         return sdOrderMapper.updateSdOrderById(id);
     }
+
+    @Override
+    public List<SdOrder> selectOrderAndPpList(SdOrder sdOrder) {
+        return sdOrderMapper.selectOrderAndPpList(sdOrder);
+    }
 }

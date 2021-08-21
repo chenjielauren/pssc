@@ -168,7 +168,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from bs_mcn_main a
         left join bs_mcn_detail b on b.main_id = a.id
         left join sys_user su on a.create_by = su.login_name
-        where a.pcode = #{pcode} and a.create_by = #{vendor} and a.is_valid = '1'
+        where a.pcode = #{pcode} and a.is_valid = '1'
         order by b.upload_time
     </select>
 

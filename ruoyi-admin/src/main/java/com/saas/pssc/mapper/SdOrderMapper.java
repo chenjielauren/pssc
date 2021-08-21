@@ -74,4 +74,6 @@ public interface SdOrderMapper
      * @return 结果
      */
     public int deleteSdOrderByIds(String[] ids);
+
+	public List<SdOrder> selectOrderAndPpList(SdOrder sdOrder);
 }

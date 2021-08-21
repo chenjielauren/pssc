@@ -188,7 +188,7 @@ public class BsBomMainController extends BaseController
                     bsBomMain.setUpdateBy(ShiroUtils.getLoginName());
                     bsBomMainService.insertBsBomMain(bsBomMain);//插入BOM
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、BOM " +bsBomMain.getName() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +bsBomMain.getPcode() + " 产品名称 " +bsBomMain.getName() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -196,18 +196,18 @@ public class BsBomMainController extends BaseController
                     bsBomMain.setUpdateBy(ShiroUtils.getLoginName());
                 	bsBomMainService.updateBsBomMain(bsBomMain);//修改BOM
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、BOM " +bsBomMain.getName() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +bsBomMain.getPcode() + " 产品名称 " +bsBomMain.getName() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、BOM " +bsBomMain.getName() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +bsBomMain.getPcode()+ " 产品名称 " +bsBomMain.getName() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、BOM " + bsBomMain.getName()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +bsBomMain.getPcode() + " 产品名称 " + bsBomMain.getName()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

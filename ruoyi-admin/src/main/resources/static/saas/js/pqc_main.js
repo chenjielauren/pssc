@@ -8,7 +8,7 @@ function addColumn(ptype,obj) {
             index: count,
             row: {
                 index: $.table.serialNumber(count),
-                no: $.table.serialNumber(count),
+                orderno: $.table.serialNumber(count),
                 ptype: "0",
                 pcode: $.common.isNotEmpty(obj)?obj.pcode:"",
                 name: $.common.isNotEmpty(obj)?obj.name:"",
@@ -29,7 +29,7 @@ function addColumn(ptype,obj) {
             index: count,
             row: {
                 index: $.table.serialNumber(count),
-                no: $.table.serialNumber(count),
+                orderno: $.table.serialNumber(count),
                 ptype: "1",
                 pcode: $.common.isNotEmpty(obj)?obj.pcode:"",
                 name: $.common.isNotEmpty(obj)?obj.name:"",
@@ -50,7 +50,7 @@ function addColumn(ptype,obj) {
             index: count,
             row: {
                 index: $.table.serialNumber(count),
-                no: $.table.serialNumber(count),
+                orderno: $.table.serialNumber(count),
                 ptype: "2",
                 pcode: $.common.isNotEmpty(obj)?obj.pcode:"",
                 name: $.common.isNotEmpty(obj)?obj.name:"",

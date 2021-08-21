@@ -176,20 +176,20 @@ public class SdOrderController extends BaseController
             try
             {
                 order.setIsValid("1");
-                boolean lossFlag = false;
+                boolean flag = false;
                 List<SdOrder>  dblist= sdOrderService.selectSdOrderList(order);
                 logger.info("同名订单条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个订单
+                	flag = true;  // 验证是否存在这个订单
 				}
-                if (!lossFlag)
+                if (!flag)
                 {
                     order.setCreateBy(ShiroUtils.getLoginName());
                     order.setUpdateBy(ShiroUtils.getLoginName());
                     // order.setIsValid("1");
                     sdOrderService.insertSdOrder(order);//插入订单
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、订单 " +order.getPname() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +order.getPcode()+ " 产品名称 " +order.getPname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -197,18 +197,18 @@ public class SdOrderController extends BaseController
                     order.setUpdateBy(ShiroUtils.getLoginName());
                 	sdOrderService.updateSdOrder(order);//修改订单
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、订单 " +order.getPname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、产品编号 " +order.getPcode()+ " 产品名称 " +order.getPname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、订单 " +order.getPname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、产品编号 " +order.getPcode()+ " 产品名称 " +order.getPname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、订单 " + order.getPname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、产品编号 " +order.getPcode()+ " 产品名称 " +order.getPname() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

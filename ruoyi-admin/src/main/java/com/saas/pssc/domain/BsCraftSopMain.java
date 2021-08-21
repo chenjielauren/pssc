@@ -29,6 +29,10 @@ public class BsCraftSopMain extends BaseEntity
     @Excel(name = "产品名称")
     private String name;
 
+    /** 产品规格 */
+    @Excel(name = "产品规格")
+    private String spec;
+
     /** 有效否 */
     private String isValid;
 
@@ -81,6 +85,15 @@ public class BsCraftSopMain extends BaseEntity
     {
         return name;
     }
+    
+    public String getSpec() {
+        return spec;
+    }
+
+    public void setSpec(String spec) {
+        this.spec = spec;
+    }
+    
     public void setIsValid(String isValid) 
     {
         this.isValid = isValid;
@@ -171,4 +184,5 @@ public class BsCraftSopMain extends BaseEntity
             .toString();
     }
 
+    
 }

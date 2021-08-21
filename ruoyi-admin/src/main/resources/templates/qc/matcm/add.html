@@ -131,16 +131,25 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='qcMatCheckDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='qcMatCheckDetailList[%s].orderno' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
                 {
                     field: 'cproject',
                     align: 'center',
-                    title: '检验项目编号',
+                    title: '检验项目',
                     formatter: function(value, row, index) {
                         var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].cproject' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'projectCode',
+                    align: 'center',
+                    title: '检验项目编号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].projectCode' value='%s'>", index, value);
                         return html;
                     }
                 },
@@ -233,8 +242,9 @@
                 index: count,
                 row: {
                     index: $.table.serialNumber(count),
-                    no: $.table.serialNumber(count),
+                    orderno: $.table.serialNumber(count),
                     cproject: $.common.isNotEmpty(obj)?obj.cproject:"",
+                    projectCode: $.common.isNotEmpty(obj)?obj.projectCode:"",
                     csop: $.common.isNotEmpty(obj)?obj.csop:"",
                     cmethod: $.common.isNotEmpty(obj)?obj.cmethod:"",
                     qcResult: $.common.isNotEmpty(obj)?obj.qcResult:"",

@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.saas.pssc.mapper.BsVendorMapper">
     
     <resultMap type="BsVendor" id="BsVendorResult">
-        <result property="id"    column="Id"    />
+        <result property="id"    column="id"    />
         <result property="category"    column="category"    />
         <result property="vcode"    column="vcode"    />
         <result property="name"    column="name"    />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsVendorVo">
-        select Id, category, vcode, name, phone, contract_user, contract_mobile, address, t.remark,  t.is_valid,  t.create_by,  t.create_time,  su.user_name update_by,  t.update_time, attribute1, attribute2, attribute3 
+        select id, category, vcode, name, phone, contract_user, contract_mobile, address, t.remark,  t.is_valid,  t.create_by,  t.create_time,  su.user_name update_by,  t.update_time, attribute1, attribute2, attribute3 
         from bs_vendor t left join sys_user su on t.update_by = su.login_name
     </sql>
 
@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by t.create_time desc
     </select>
     
-    <select id="selectBsVendorById" parameterType="Long" resultMap="BsVendorResult">
+    <select id="selectBsVendorById" parameterType="String" resultMap="BsVendorResult">
         <include refid="selectBsVendorVo"/>
         where id = #{id}
     </select>
@@ -57,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertBsVendor" parameterType="BsVendor" useGeneratedKeys="true" keyProperty="id">
         insert into bs_vendor
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
             <if test="category != null and category != ''">category,</if>
             <if test="vcode != null and vcode != ''">vcode,</if>
             <if test="name != null">name,</if>
@@ -74,6 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="attribute3 != null">attribute3,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
             <if test="category != null and category != ''">#{category},</if>
             <if test="vcode != null and vcode != ''">#{vcode},</if>
             <if test="name != null">#{name},</if>
@@ -115,23 +117,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteBsVendorById" parameterType="Long">
+    <delete id="deleteBsVendorById" parameterType="String">
         delete from bs_vendor where id = #{id}
     </delete>
 
-    <update id="updateBsVendorById" parameterType="Long">
+    <update id="updateBsVendorById" parameterType="String">
         update bs_vendor set is_valid = 0 where id = #{id}
     </update>
 
     <update id="updateBsVendorByIds" parameterType="String">
-        update bs_vendor set is_valid = 0 where Id in 
+        update bs_vendor set is_valid = 0 where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </update>
 
     <delete id="deleteBsVendorByIds" parameterType="String">
-        delete from bs_vendor where Id in 
+        delete from bs_vendor where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

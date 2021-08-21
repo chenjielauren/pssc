@@ -57,8 +57,8 @@
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn('')"><i class="fa fa-plus"> 增加</i></button>
                     <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
                     <button type="button" class="btn btn-info btn-sm" onclick="$.table.custImportExcel()"><i class="fa fa-upload"></i> 导入</button>
-                    <div class="col-sm-12 select-table table-striped">
-                        <table id="bootstrap-table"></table>
+                    <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                        <table id="bootstrap-table" style="min-width:2000px;"></table>
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input type='hidden' name='qcBadProjectDetailList[%s].no' value='%s'>", index,$.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='qcBadProjectDetailList[%s].orderno' value='%s'>", index,$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
@@ -272,7 +272,7 @@
                 index: count,
                 row: {
                     index: $.table.serialNumber(count),
-                    no: $.table.serialNumber(count),
+                    orderno: $.table.serialNumber(count),
                     cwork: $.common.isNotEmpty(obj)?obj.cwork:"",
                     cstation: $.common.isNotEmpty(obj)?obj.cstation:"",
                     lot: $.common.isNotEmpty(obj)?obj.lot:"",

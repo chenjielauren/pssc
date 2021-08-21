@@ -180,20 +180,20 @@ public class QcWoYieldRateController extends BaseController
             try
             {
                 qcWoYieldRate.setIsValid("1");
-                boolean lossFlag = false;
+                boolean flag = false;
                 List<QcWoYieldRate>  dblist= qcWoYieldRateService.selectQcWoYieldRateList(qcWoYieldRate);
                 logger.info("同名工单良品率分析条数："+dblist.size());
                 if (dblist.size()>0) {
-                	lossFlag = true;  // 验证是否存在这个工单良品率分析
+                	flag = true;  // 验证是否存在这个工单良品率分析
 				}
-                if (!lossFlag)
+                if (!flag)
                 {
                     qcWoYieldRate.setCreateBy(ShiroUtils.getLoginName());
                     qcWoYieldRate.setUpdateBy(ShiroUtils.getLoginName());
                     // qcWoYieldRate.setIsValid("1");
                     qcWoYieldRateService.insertQcWoYieldRate(qcWoYieldRate);//插入工单良品率分析
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工单良品率分析 " +qcWoYieldRate.getPname() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、成品编号 " +qcWoYieldRate.getPcode() + " 成品名称 " +qcWoYieldRate.getPname() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -201,18 +201,18 @@ public class QcWoYieldRateController extends BaseController
                     qcWoYieldRate.setUpdateBy(ShiroUtils.getLoginName());
                 	qcWoYieldRateService.updateQcWoYieldRate(qcWoYieldRate);//修改工单良品率分析
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、工单良品率分析 " +qcWoYieldRate.getPname() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、成品编号 " +qcWoYieldRate.getPcode() + " 成品名称 " +qcWoYieldRate.getPname() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、工单良品率分析 " +qcWoYieldRate.getPname() + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、成品编号 " +qcWoYieldRate.getPcode() + " 成品名称 " +qcWoYieldRate.getPname() + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、工单良品率分析 " + qcWoYieldRate.getPname()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、成品编号 " +qcWoYieldRate.getPcode() + " 成品名称 " +qcWoYieldRate.getPname() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

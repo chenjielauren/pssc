@@ -46,7 +46,7 @@ public class QcBadProjectMain extends BaseEntity
 
     /** 良品率 */
     @Excel(name = "良品率")
-    private BigDecimal okratio;
+    private String okratio;
 
     /** 有效否 0失效1有效 */
     private String isValid;
@@ -134,12 +134,12 @@ public class QcBadProjectMain extends BaseEntity
     {
         return outqty;
     }
-    public void setOkratio(BigDecimal okratio) 
+    public void setOkratio(String okratio) 
     {
         this.okratio = okratio;
     }
 
-    public BigDecimal getOkratio() 
+    public String getOkratio() 
     {
         return okratio;
     }

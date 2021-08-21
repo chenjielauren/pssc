@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.saas.common.annotation.DataScope;
+import com.saas.common.constant.UserConstants;
 import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
 import com.saas.common.utils.ShiroUtils;
@@ -154,5 +155,17 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService {
     @Override
     public PpWoBookMain selectPpWoBookMainByMap(Map<String, Object> paramMap) {
         return ppWoBookMainMapper.selectPpWoBookMainByMap(paramMap);
+    }
+
+    @Override
+    public String checkPcodeUnique(PpWoBookMain ppWoBookMain) {
+        if(StringUtils.isNotEmpty(ppWoBookMain.getPcode()) && StringUtils.isNotEmpty(ppWoBookMain.getPname())){
+            List<PpWoBookMain> list = ppWoBookMainMapper.checkPcodeUnique(ppWoBookMain);
+            if (StringUtils.isNotEmpty(list))
+            {
+                return UserConstants.DEPT_NAME_NOT_UNIQUE;
+            }
+        }
+        return UserConstants.DEPT_NAME_UNIQUE;
     }
 }

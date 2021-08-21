@@ -58,4 +58,6 @@ public interface ISdOrderService
      * @return 结果
      */
     public int deleteSdOrderById(String id);
+
+	public List<SdOrder> selectOrderAndPpList(SdOrder sdOrder);
 }

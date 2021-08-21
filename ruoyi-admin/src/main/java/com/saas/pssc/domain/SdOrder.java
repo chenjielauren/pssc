@@ -65,9 +65,15 @@ public class SdOrder extends BaseEntity
     /**  */
     private String attribute3;
 
+    /** 开始日期  */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date oStarttime;
 
+    /** 结束日期  */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date oEndtime;
+
+    private int ppCount;//查询订单下所有工单数据为空时显示未填报，有工单为正常
 
     public void setId(String id) 
     {
@@ -198,6 +204,14 @@ public class SdOrder extends BaseEntity
 
     public void setoEndtime(Date oEndtime) {
         this.oEndtime = oEndtime;
+    }
+    
+    public int getPpCount() {
+        return ppCount;
+    }
+
+    public void setPpCount(int ppCount) {
+        this.ppCount = ppCount;
     }
 
     @Override

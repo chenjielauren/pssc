@@ -17,7 +17,7 @@ public interface IBsVendorService
      * @param Id 合格供方名录ID
      * @return 合格供方名录
      */
-    public BsVendor selectBsVendorById(Long Id);
+    public BsVendor selectBsVendorById(String Id);
 
     /**
      * 查询合格供方名录列表
@@ -57,5 +57,5 @@ public interface IBsVendorService
      * @param Id 合格供方名录ID
      * @return 结果
      */
-    public int deleteBsVendorById(Long Id);
+    public int deleteBsVendorById(String Id);
 }

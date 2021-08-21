@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('查询标准列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>工单号：</label>
+                                <input type="text" name="wcode" th:value="*{wcode}"/>
+                            </li>
+                            <li>
+                                <label>产品编号：</label>
+                                <input type="text" name="pcode" th:value="*{pcode}"/>
+                            </li>
+                            <!-- <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                <p class="select-title">工单BOM信息</p>
+                <table id="bootstrap-table1" style="min-width:1500px;"></table>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <p class="select-title">工单制造信息</p>
+                <table id="bootstrap-table2" style="min-width:1500px;"></table>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <p class="select-title">过程检验记录</p>
+                <table id="bootstrap-table3"></table>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <p class="select-title">不良项目记录</p>
+                <table id="bootstrap-table4"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "query";
+        var attrDatas = [[${@dict.getType('bs_bom_attr')}]];
+        var ctypeDatas = [[${@dict.getType('bs_pqc_type')}]];
+        var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
+        //工单BOM信息
+        $(function() {
+            var options1 = {
+                id:"bootstrap-table1",
+                data: [[${ppWoBookBomList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                modalName: "工单标准记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'mcode',
+                    align: 'center',
+                    title: '部件编号'
+                },
+                {
+                    field: 'mname',
+                    align: 'center',
+                    title: '部件名称'
+                },
+                {
+                    field: 'mspec',
+                    align: 'center',
+                    title: '产品规格'
+                },
+                {
+                    field: 'attribute',
+                    align: 'center',
+                    title: '属性',
+                    width: '100px',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(attrDatas, value);
+                    }
+                },
+                {
+                    field: 'onsize',
+                    align: 'center',
+                    title: '上机尺寸'
+                },
+                {
+                    field: 'moqieqty',
+                    align: 'center',
+                    title: '模切拼数'
+                },
+                {
+                    field: 'qiezhiqty',
+                    align: 'center',
+                    title: '切纸拼数'
+                },
+                {
+                    field: 'qty',
+                    align: 'center',
+                    title: '用量'
+                },
+                {
+                    field: 'unit',
+                    align: 'center',
+                    title: '单位'
+                },
+                {
+                    field: 'unratio',
+                    align: 'center',
+                    title: '损耗率'
+                },
+                {
+                    field: 'ruter',
+                    align: 'center',
+                    title: '工艺路线'
+                },
+                {
+                    field: 'remark',
+                    align: 'center',
+                    title: '备注'
+                }]
+            };
+            $.table.init(options1);
+        });
+        //工单制造信息
+        $(function() {
+            var options2 = {
+                id:"bootstrap-table2",
+                data: [[${ppWoBookDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                modalName: "工单制造信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>",$.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'soncode',
+                    align: 'center',
+                    title: '子工单号'
+                },
+                {
+                    field: 'mcode',
+                    align: 'center',
+                    title: '产品编号'
+                },
+                {
+                    field: 'mname',
+                    align: 'center',
+                    title: '产品名称'
+                },
+                {
+                    field: 'mspec',
+                    align: 'center',
+                    title: '产品规格'
+                },
+                {
+                    field: 'stime',
+                    align: 'center',
+                    title: '开工时间'
+                },
+                {
+                    field: 'etime',
+                    align: 'center',
+                    title: '完工时间'
+                },
+                // {
+                //     field: 'cwork',
+                //     align: 'center',
+                //     title: '生产工序'
+                // },
+                // {
+                //     field: 'cstation',
+                //     align: 'center',
+                //     title: '生产机台'
+                // },
+                // {
+                //     field: 'planqty',
+                //     align: 'center',
+                //     title: '计划数量'
+                // },
+                {
+                    field: 'inputqty',
+                    align: 'center',
+                    title: '投入数量'
+                },
+                {
+                    field: 'outputqty',
+                    align: 'center',
+                    title: '产出数量'
+                },
+                // {
+                //     field: 'stdtime',
+                //     align: 'center',
+                //     title: '标准耗时'
+                // },
+                // {
+                //     field: 'stdrate',
+                //     align: 'center',
+                //     title: '标准成品率%'
+                // },
+                {
+                    field: 'acttime',
+                    align: 'center',
+                    title: '实际耗时'
+                },
+                {
+                    field: 'actrate',
+                    align: 'center',
+                    title: '实际成品率%'
+                },
+                {
+                    field: 'remark',
+                    align: 'center',
+                    title: '备注'
+                }]
+            };
+            $.table.init(options2);
+        });
+        //过程检验记录
+        $(function() {
+            var options3 = {
+                id:"bootstrap-table3",
+                data: [[${qcProcessCheckMainList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                modalName: "过程检验记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '工单号ID',
+                    visible: false
+                },
+                {
+                    field: 'qcode',
+                    title: '子工单号'
+                },
+                {
+                    field: 'qtime',
+                    title: '检验时间'
+                },
+                {
+                    field: 'quser',
+                    title: '检验人'
+                },
+                {
+                    field: 'pcode',
+                    title: '产品编号'
+                },
+                {
+                    field: 'pname',
+                    title: '产品名称'
+                },
+                {
+                    field: 'pspec',
+                    title: '产品规格'
+                },
+                {
+                    field: 'cwork',
+                    title: '检验工序'
+                },
+                {
+                    field: 'cmachine',
+                    title: '检验机台'
+                },
+                {
+                    field: 'ctype',
+                    title: '检验类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(ctypeDatas, value);
+                    }
+                },
+                {
+                    field: 'qcResult',
+                    title: '检验结果',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(qcResultDatas, value);
+                    }
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
+                }]
+            };
+            $.table.init(options3);
+        });
+        
+        //不良项目记录
+        $(function() {
+            var options4 = {
+                id:"bootstrap-table4",
+                data: [[${qcBadProjectMainList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                modalName: "不良项目记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'ID',
+                    visible: false
+                },
+                {
+                    field: 'wcode',
+                    title: '子工单号'
+                },
+                {
+                    field: 'pcode',
+                    title: '产品编号'
+                },
+                {
+                    field: 'pname',
+                    title: '产品名称'
+                },
+                {
+                    field: 'pspec',
+                    title: '产品规格'
+                },
+                {
+                    field: 'inqty',
+                    title: '投入数量'
+                },
+                {
+                    field: 'outqty',
+                    title: '产出数量'
+                },
+                {
+                    field: 'okratio',
+                    title: '良品率'
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
+                }]
+            };
+            $.table.init(options4);
+        });
+
+        //查看库存和标准信息
+        function delivery(pcode){
+            var url = prefix + '/delivery/'+pcode;
+            var options = {
+                title: '查看库存和标准信息',
+                url: url,
+                btn: ['关闭'],
+                skin: 'layui-layer-gray',
+                yes: function (index, layero) {
+                    layer.close(index);
+                }
+             };
+             $.modal.openOptions(options);
+        }
+    </script>
+</body>
+</html>

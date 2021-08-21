@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="pcode"    column="pcode"    />
         <result property="name"    column="name"    />
+        <result property="spec"    column="spec"    />
         <result property="remark"    column="remark"    />
         <result property="isValid"    column="is_valid"    />
         <result property="createBy"    column="create_by"    />
@@ -43,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsCraftSopMainVo">
-        select id, pcode, t.name, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
+        select id, pcode, t.name, t.spec,t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
         from bs_craft_sop_main t left join sys_user su on t.update_by = su.login_name 
     </sql>
 
@@ -63,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectBsCraftSopMainById" parameterType="String" resultMap="BsCraftSopMainBsCraftSopDetailResult">
-        select a.id, a.pcode, a.name, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
+        select a.id, a.pcode, a.name, a.spec, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
             b.id as sub_id, b.main_id as sub_main_id, b.ptype as sub_ptype, b.file_title as sub_file_title, b.file_name as sub_file_name,b.file_url as sub_file_url, b.upload_user as sub_upload_user, b.upload_time as sub_upload_time, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
         from bs_craft_sop_main a
         left join bs_craft_sop_detail b on b.main_id = a.id
@@ -77,6 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">id,</if>
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="name != null">name,</if>
+            <if test="spec != null and spec != ''">spec,</if>
             <if test="remark != null">remark,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             create_time,
@@ -89,7 +91,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="pcode != null and pcode != ''">#{pcode},</if>
-            <if test="name != null">#{name},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="spec != null and spec != ''">#{spec},</if>
             <if test="remark != null">#{remark},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             sysdate(),
@@ -105,7 +108,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update bs_craft_sop_main
         <trim prefix="SET" suffixOverrides=",">
             <if test="pcode != null and pcode != ''">pcode = #{pcode},</if>
-            <if test="name != null">name = #{name},</if>
+            <if test="name != null and name !=''">name = #{name},</if>
+            <if test="spec != null and spec !=''">spec = #{spec},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
             <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
@@ -165,7 +169,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from bs_craft_sop_main a
         left join bs_craft_sop_detail b on b.main_id = a.id
         left join sys_user su on a.create_by = su.login_name
-        where a.pcode = #{pcode} and a.create_by = #{vendor} and a.is_valid = '1'
+        where a.pcode = #{pcode} and a.is_valid = '1'
         order by b.upload_time
     </select>
 </mapper>

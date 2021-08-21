@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="pcode"    column="pcode"    />
         <result property="name"    column="name"    />
         <result property="standard"    column="standard"    />
-        <result property="pmethod"    column="pmethod"    />
+        <result property="method"    column="method"    />
         <result property="remark"    column="remark"    />
         <result property="isValid"    column="is_valid"    />
         <result property="createBy"    column="create_by"    />
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsMatSopDetailVo">
-        select id, main_id, orderno, pcode, name, standard, pmethod, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_mat_sop_detail
+        select id, main_id, orderno, pcode, name, standard, method, remark, is_valid, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3 from bs_mat_sop_detail
     </sql>
 
     <select id="selectBsMatSopDetailList" parameterType="BsMatSopDetail" resultMap="BsMatSopDetailResult">
@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="standard != null  and standard != ''"> and standard = #{standard}</if>
-            <if test="pmethod != null  and pmethod != ''"> and pmethod = #{pmethod}</if>
+            <if test="method != null  and method != ''"> and method = #{method}</if>
         </where>
     </select>
     
@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pcode != null and pcode != ''">pcode,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="standard != null and standard != ''">standard,</if>
-            <if test="pmethod != null and pmethod != ''">pmethod,</if>
+            <if test="method != null and method != ''">method,</if>
             <if test="remark != null">remark,</if>
             <if test="isValid != null">is_valid,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pcode != null and pcode != ''">#{pcode},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="standard != null and standard != ''">#{standard},</if>
-            <if test="pmethod != null and pmethod != ''">#{pmethod},</if>
+            <if test="method != null and method != ''">#{method},</if>
             <if test="remark != null">#{remark},</if>
             <if test="isValid != null">#{isValid},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
@@ -92,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pcode != null and pcode != ''">pcode = #{pcode},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="standard != null and standard != ''">standard = #{standard},</if>
-            <if test="pmethod != null and pmethod != ''">pmethod = #{pmethod},</if>
+            <if test="method != null and method != ''">method = #{method},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="isValid != null">is_valid = #{isValid},</if>
             <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>

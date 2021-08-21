@@ -249,8 +249,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from pp_wo_book_main a
         left join pp_wo_book_bom c on c.main_id = a.id
         left join sys_user su on a.create_by = su.login_name
-        where a.pcode = #{pcode} and a.create_by = #{vendor} and a.is_valid = '1'
+        where a.pcode = #{pcode}
+        and a.is_valid = '1'
         order by c.orderno
     </select>
 
+    <select id="checkPcodeUnique" resultMap="PpWoBookMainResult" parameterType="PpWoBookMain">
+    select a.id, a.wcode, a.orderno, a.pcode, a.pname, a.pspec, a.qty, a.pstar_time, a.pend_time, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3
+        from pp_wo_book_main a
+    where a.pcode = #{pcode} and a.pname = #{pname}
+    </select>
 </mapper>

@@ -1,64 +1,119 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('修改订单信息')" />
-    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: header('订单信息列表')" />
 </head>
-<body class="white-bg">
-    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-order-edit" th:object="${sdOrder}">
-            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
-            <input name="id" th:field="*{id}" type="hidden">
-            <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">订单号：</label>
-                <div class="col-sm-4">
-                    <input name="ocode" th:field="*{ocode}" class="form-control" type="text" required>
-                </div>
-                <label class="col-sm-2 control-label  is-required">订单时间：</label>
-                <div class="col-sm-4">
-                    <div class="input-group date">
-                        <input name="otime" th:value="${#dates.format(sdOrder.otime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>订单号：</label>
+                                <input type="text" name="ocode" th:value="${ocode}"/>
+                            </li>
+                            <!-- <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li> -->
+                        </ul>
                     </div>
-                </div>
+                </form>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-2 control-label  is-required">订单数量：</label>
-                <div class="col-sm-4">
-                    <input name="qty" class="form-control" th:field="*{qty}" type="text" required>
-                </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success single disabled" onclick="queryPp()" shiro:hasPermission="qc:proccm:edit">
+                    <i class="fa fa-edit"></i> 查询工单
+                </a>
             </div>
-            <div class="form-group">  
-                <label class="col-sm-2 control-label  is-required">产品编号：</label>
-                <div class="col-sm-4">
-                    <input name="pcode" class="form-control"  th:field="*{pcode}" type="text" required>
-                </div>  
-                <label class="col-sm-2 control-label  is-required">产品名称：</label>
-                <div class="col-sm-4">
-                    <input name="pname" class="form-control" type="text"  th:field="*{pname}" required>
-                </div>
+            <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                <table id="bootstrap-table" style="min-width:2000px;"></table>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label  is-required">产品类别：</label>
-                <div class="col-sm-4">
-                    <input name="ptype" class="form-control" type="text" th:field="*{ptype}" required>
-                </div>    
-                <label class="col-sm-2 control-label">产品规格：</label>
-                <div class="col-sm-4">
-                    <input name="pspec" class="form-control" type="text" th:field="*{pspec}">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label  is-required">备注：</label>
-                <div class="col-sm-10">
-                    <textarea name="remark" class="form-control" required>[[*{remark}]]</textarea>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        
+        var ppStateDatas = [[${@dict.getType('pp_state')}]];
+        var prefix = ctx + "query";
+        $(function() {
+            var options = {
+                url: prefix + "/order/list",
+                modalName: "订单信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '订单ID',
+                    visible: false
+                },
+                {
+                    field: 'otime',
+                    title: '订单时间'
+                },
+                {
+                    field: 'ocode',
+                    title: '订单号'
+                },
+                {
+                    field: 'pcode',
+                    title: '产品编号'
+                },
+                {
+                    field: 'pname',
+                    title: '产品名称'
+                },
+                {
+                    field: 'pspec',
+                    title: '产品规格'
+                },
+                {
+                    field: 'ptype',
+                    title: '产品类别'
+                },
+                {
+                    field: 'qty',
+                    title: '订单数量'
+                },
+                {
+                    field: 'remark',
+                    title: '订单备注'
+                },
+                {
+                    field: 'ppCount',
+                    title: '工单数据状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(ppStateDatas, value);
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="queryPp(\'' + row.ocode + '\')"><i class="fa fa-edit"></i>查询工单</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        //查询工单
+        function queryPp(ocode){
+            if($.common.isEmpty(ocode)){
+                var rows = $.table.selectColumns('ocode');
+                if (rows.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                ocode = rows[0];
+            }
+            var url = prefix + "/ppwb/" + ocode;
+            $.modal.openTab("查询工单",url);
+        }
     </script>
 </body>
 </html>

@@ -99,7 +99,7 @@ public class BsVendorController extends BaseController
      * 修改合格供方名录
      */
     @GetMapping("/edit/{Id}")
-    public String edit(@PathVariable("Id") Long Id, ModelMap mmap)
+    public String edit(@PathVariable("Id") String Id, ModelMap mmap)
     {
         BsVendor bsVendor = bsVendorService.selectBsVendorById(Id);
         mmap.put("bsVendor", bsVendor);
@@ -194,7 +194,7 @@ public class BsVendorController extends BaseController
                     vendor.setUpdateBy(ShiroUtils.getLoginName());
                     bsVendorService.insertBsVendor(vendor);//插入合格供方目录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、合格供方目录 " +vendor.getName() + " 导入成功");
+                    successMsg.append("<br/>" + successNum + "、供方编号 " +vendor.getVcode()  + " 供方名称 " +vendor.getName() + " 导入成功");
                 }
                 else if (isUpdateSupport)
                 {
@@ -202,18 +202,18 @@ public class BsVendorController extends BaseController
                     vendor.setUpdateBy(ShiroUtils.getLoginName());
                 	bsVendorService.updateBsVendor(vendor);//修改合格供方目录
                     successNum++;
-                    successMsg.append("<br/>" + successNum + "、合格供方目录 " +vendor.getName() + " 更新成功");
+                    successMsg.append("<br/>" + successNum + "、供方编号 " +vendor.getVcode()  + " 供方名称 " +vendor.getName() + " 更新成功");
                 }
                 else
                 {
                     failureNum++;
-                    failureMsg.append("<br/>" + failureNum + "、合格供方目录 " +vendor.getName()  + " 已存在");
+                    failureMsg.append("<br/>" + failureNum + "、供方编号 " +vendor.getVcode()  + " 供方名称 " +vendor.getName()  + " 已存在");
                 }
             }
             catch (Exception e)
             {
                 failureNum++;
-                String msg = "<br/>" + failureNum + "、合格供方目录 " + vendor.getName()+ " 导入失败：";
+                String msg = "<br/>" + failureNum + "、供方编号 " +vendor.getVcode()  + " 供方名称 " +vendor.getName()+ " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }

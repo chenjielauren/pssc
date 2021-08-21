@@ -33,8 +33,8 @@ public class QcProdCheckMain extends BaseEntity
     @Excel(name = "成品名称")
     private String pname;
 
-    /** 成品名称 */
-    @Excel(name = "成品名称")
+    /** 成品规格 */
+    @Excel(name = "成品规格")
     private String pspec;
 
     /** 批次号 */
