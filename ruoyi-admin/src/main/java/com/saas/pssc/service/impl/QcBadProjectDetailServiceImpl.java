@@ -1,13 +1,15 @@
 package com.saas.pssc.service.impl;
 
 import java.util.List;
+
+import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
+import com.saas.pssc.domain.QcBadProjectDetail;
+import com.saas.pssc.mapper.QcBadProjectDetailMapper;
+import com.saas.pssc.service.IQcBadProjectDetailService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.saas.pssc.mapper.QcBadProjectDetailMapper;
-import com.saas.pssc.domain.QcBadProjectDetail;
-import com.saas.pssc.service.IQcBadProjectDetailService;
-import com.saas.common.core.text.Convert;
 
 /**
  * 不良项目记录明细Service业务层处理
@@ -93,5 +95,31 @@ public class QcBadProjectDetailServiceImpl implements IQcBadProjectDetailService
     public int deleteQcBadProjectDetailById(String id)
     {
         return qcBadProjectDetailMapper.deleteQcBadProjectDetailById(id);
+    }
+
+    /**
+     * 同订单号下所有工单→不良项目记录明细信息→不良项目名称/不良项目数量
+     * （显示数量前10位的不良项目）
+     * 
+     * @param pcode 产品编号
+     * @return 结果
+     */
+    @Override
+    public List<QcBadProjectDetail> loadPieChartBydcode(String dcode) {
+        List<QcBadProjectDetail> projectList = qcBadProjectDetailMapper.loadPieChartBydcode(dcode);
+        return projectList;
+    }
+
+    /**
+     * 所选用户下所有产品不良项目名称/不良项目数量
+     * （显示数量前10位的不良项目）
+     * 
+     * @param pcode 产品编号
+     * @return 结果
+    */
+    @Override
+    public List<QcBadProjectDetail> loadPieChartByVendor(String vendor) {
+        List<QcBadProjectDetail> projectList = qcBadProjectDetailMapper.loadPieChartByVendor(vendor);
+        return projectList;
     }
 }

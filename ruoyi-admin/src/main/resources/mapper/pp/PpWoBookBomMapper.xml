@@ -49,8 +49,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qty != null "> and qty = #{qty}</if>
             <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
             <if test="ruter != null  and ruter != ''"> and ruter = #{ruter}</if>
-            <if test="attribute1 != null  and attribute1 != ''"> and mcode = #{attribute1}</if>
         </where>
+        order by orderno
     </select>
     
     <select id="selectPpWoBookBomById" parameterType="String" resultMap="PpWoBookBomResult">

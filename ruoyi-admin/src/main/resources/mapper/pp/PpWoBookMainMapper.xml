@@ -29,8 +29,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <collection property="ppWoBookDetailList" notNullColumn="sub_id" javaType="java.util.List" resultMap="PpWoBookDetailResult" />
         <collection property="ppWoBookBomList" notNullColumn="sub_bom_id" javaType="java.util.List" resultMap="PpWoBookBomResult" />
     </resultMap>
-    <resultMap id="PpWoBookMainPpWoBookBomResult" type="PpWoBookMain" extends="PpWoBookMainResult">
+    <resultMap id="pwbMainPpWoBookBomResult" type="PpWoBookMain" extends="PpWoBookMainResult">
         <collection property="ppWoBookBomList" notNullColumn="sub_bom_id" javaType="java.util.List" resultMap="PpWoBookBomResult" />
+    </resultMap>
+    <resultMap id="pwbMainPpWoBookDetailResult" type="PpWoBookMain" extends="PpWoBookMainResult">
+        <collection property="ppWoBookDetailList" notNullColumn="sub_id" javaType="java.util.List" resultMap="PpWoBookDetailResult" />
     </resultMap>
 
     <resultMap type="PpWoBookDetail" id="PpWoBookDetailResult">
@@ -230,9 +233,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <insert id="batchPpWoBookDetail">
-        insert into pp_wo_book_detail( id, main_id, soncode, mcode, mname, mspec, stime, etime, cwork, cstation, planqty, inputqty, outputqty, stdtime, stdrate, acttime, actrate, remark, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
+        insert into pp_wo_book_detail( id, main_id,orderno, soncode, mcode, mname, mspec, stime, etime, cwork, cstation, planqty, inputqty, outputqty, stdtime, stdrate, acttime, actrate, remark, create_by, create_time, update_by, update_time, attribute1, attribute2, attribute3) values
 		<foreach item="item" index="index" collection="list" separator=",">
-            ( #{item.id}, #{item.mainId}, #{item.soncode}, #{item.mcode}, #{item.mname}, #{item.mspec}, #{item.stime}, #{item.etime}, #{item.cwork}, #{item.cstation}, #{item.planqty}, #{item.inputqty}, #{item.outputqty}, #{item.stdtime}, #{item.stdrate}, #{item.acttime}, #{item.actrate}, #{item.remark},  #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
+            ( #{item.id}, #{item.mainId},#{item.orderno}, #{item.soncode}, #{item.mcode}, #{item.mname}, #{item.mspec}, #{item.stime}, #{item.etime}, #{item.cwork}, #{item.cstation}, #{item.planqty}, #{item.inputqty}, #{item.outputqty}, #{item.stdtime}, #{item.stdrate}, #{item.acttime}, #{item.actrate}, #{item.remark},  #{item.createBy}, sysdate(), #{item.updateBy}, sysdate(), #{item.attribute1}, #{item.attribute2}, #{item.attribute3})
         </foreach>
     </insert>
 
@@ -243,7 +246,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
-    <select id="selectPpWoBookMainByMap" parameterType="Map" resultMap="PpWoBookMainPpWoBookBomResult">
+    <select id="selectPpWoBookMainByMap" parameterType="Map" resultMap="pwbMainPpWoBookBomResult">
         select a.id, a.wcode, a.orderno, a.pcode, a.pname, a.pspec, a.qty, a.pstar_time, a.pend_time, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
             c.id as sub_bom_id, c.main_id as sub_bom_main_id, c.orderno as sub_bom_orderno, c.mcode as sub_bom_mcode, c.mname as sub_bom_mname, c.mspec as sub_bom_mspec, c.attribute as sub_bom_attribute, c.onsize as sub_bom_onsize, c.moqieqty as sub_bom_moqieqty, c.qiezhiqty as sub_bom_qiezhiqty, c.qty as sub_bom_qty, c.unit as sub_bom_unit, c.unratio as sub_bom_unratio, c.ruter as sub_bom_ruter, c.remark as sub_bom_remark, c.is_valid as sub_bom_is_valid, c.create_by as sub_bom_create_by, c.create_time as sub_bom_create_time, c.update_by as sub_bom_update_by, c.update_time as sub_bom_update_time, c.attribute1 as sub_bom_attribute1, c.attribute2 as sub_bom_attribute2, c.attribute3 as sub_bom_attribute3
         from pp_wo_book_main a
@@ -258,5 +261,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     select a.id, a.wcode, a.orderno, a.pcode, a.pname, a.pspec, a.qty, a.pstar_time, a.pend_time, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3
         from pp_wo_book_main a
     where a.pcode = #{pcode} and a.pname = #{pname}
+    </select>
+
+    <select id="selectPpWoBookDetail" parameterType="PpWoBookMain" resultMap="pwbMainPpWoBookDetailResult">
+        select a.id, a.wcode, a.orderno, a.pcode, a.pname, a.pspec, a.qty, a.pstar_time, a.pend_time, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
+            b.id as sub_id, b.main_id as sub_main_id, b.soncode as sub_soncode, b.mcode as sub_mcode, b.mname as sub_mname, b.mspec as sub_mspec, b.stime as sub_stime, b.etime as sub_etime, b.cwork as sub_cwork, b.cstation as sub_cstation, b.planqty as sub_planqty, b.inputqty as sub_inputqty, b.outputqty as sub_outputqty, b.stdtime as sub_stdtime, b.stdrate as sub_stdrate, b.acttime as sub_acttime, b.actrate as sub_actrate, b.remark as sub_remark, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
+        from pp_wo_book_main a
+        left join pp_wo_book_detail b on b.main_id = a.id
+        left join sys_user su on a.create_by = su.login_name
+        where a.pcode = #{pcode}
+        and a.is_valid = '1'
+        order by a.create_time desc,b.orderno
     </select>
 </mapper>

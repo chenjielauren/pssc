@@ -58,4 +58,6 @@ public interface BsMatSopDetailMapper
      * @return 结果
      */
     public int deleteBsMatSopDetailByIds(String[] ids);
+
+	public List<BsMatSopDetail> selectBsMatSopDetailByPcode(String pcode);
 }

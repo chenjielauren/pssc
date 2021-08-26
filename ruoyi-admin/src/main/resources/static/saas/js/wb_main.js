@@ -66,7 +66,7 @@ function addColumn(mtype,obj) {
             index: count,
             row: {
                 index: $.table.serialNumber(count),
-                no: $.table.serialNumber(count),
+                orderno: $.table.serialNumber(count),
                 soncode: $.common.isNotEmpty(obj)?obj.soncode:"",
                 mcode: $.common.isNotEmpty(obj)?obj.mcode:"",
                 mname: $.common.isNotEmpty(obj)?obj.mname:"",

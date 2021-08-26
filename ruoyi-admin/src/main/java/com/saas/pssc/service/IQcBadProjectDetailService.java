@@ -58,4 +58,8 @@ public interface IQcBadProjectDetailService
      * @return 结果
      */
     public int deleteQcBadProjectDetailById(String id);
+
+    public List<QcBadProjectDetail> loadPieChartBydcode(String dcode);
+
+	public List<QcBadProjectDetail> loadPieChartByVendor(String vendor);
 }

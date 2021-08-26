@@ -185,7 +185,6 @@ public class BsMatSopMainController extends BaseController
                 {
                     bsMatSopMain.setCreateBy(ShiroUtils.getLoginName());
                     bsMatSopMain.setUpdateBy(ShiroUtils.getLoginName());
-                    // qcMatCheckMain.setIsValid("1");
                     bsMatSopMainService.insertBsMatSopMain(bsMatSopMain);//插入材料检验标准记录
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、材料编号 " +bsMatSopMain.getPcode() + " 材料名称 " +bsMatSopMain.getName()+ " 导入成功");

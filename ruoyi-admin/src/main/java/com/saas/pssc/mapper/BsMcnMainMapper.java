@@ -103,5 +103,5 @@ public interface BsMcnMainMapper
      */
     public int deleteBsMcnDetailByMainId(String string);
 
-	public BsMcnMain selectBsMcnMainByMap(Map<String, Object> paramMap);
+	public List<BsMcnMain> selectBsMcnMainByMap(Map<String, Object> paramMap);
 }

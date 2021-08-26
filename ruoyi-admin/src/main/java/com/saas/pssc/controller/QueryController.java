@@ -10,28 +10,36 @@ import com.saas.common.core.domain.AjaxResult;
 import com.saas.common.core.page.TableDataInfo;
 import com.saas.common.enums.BusinessType;
 import com.saas.common.utils.StringUtils;
+import com.saas.pssc.domain.BsBomMain;
 import com.saas.pssc.domain.BsCraftSopMain;
+import com.saas.pssc.domain.BsMatSopDetail;
 import com.saas.pssc.domain.BsMatSopMain;
 import com.saas.pssc.domain.BsMcnMain;
 import com.saas.pssc.domain.BsPqcMain;
 import com.saas.pssc.domain.BsProSopMain;
-import com.saas.pssc.domain.PpWoBookBom;
+import com.saas.pssc.domain.BsVendor;
 import com.saas.pssc.domain.PpWoBookDetail;
 import com.saas.pssc.domain.PpWoBookMain;
+import com.saas.pssc.domain.QcBadProjectDetail;
 import com.saas.pssc.domain.QcBadProjectMain;
+import com.saas.pssc.domain.QcMatCheckMain;
 import com.saas.pssc.domain.QcProcessCheckMain;
 import com.saas.pssc.domain.SdDelivery;
 import com.saas.pssc.domain.SdDeliveryDetail;
 import com.saas.pssc.domain.SdOrder;
+import com.saas.pssc.service.IBsBomMainService;
 import com.saas.pssc.service.IBsCraftSopMainService;
+import com.saas.pssc.service.IBsMatSopDetailService;
 import com.saas.pssc.service.IBsMatSopMainService;
 import com.saas.pssc.service.IBsMcnMainService;
 import com.saas.pssc.service.IBsPqcMainService;
 import com.saas.pssc.service.IBsProSopMainService;
-import com.saas.pssc.service.IPpWoBookBomService;
+import com.saas.pssc.service.IBsVendorService;
 import com.saas.pssc.service.IPpWoBookDetailService;
 import com.saas.pssc.service.IPpWoBookMainService;
+import com.saas.pssc.service.IQcBadProjectDetailService;
 import com.saas.pssc.service.IQcBadProjectMainService;
+import com.saas.pssc.service.IQcMatCheckMainService;
 import com.saas.pssc.service.IQcProcessCheckMainService;
 import com.saas.pssc.service.ISdDeliveryDetailService;
 import com.saas.pssc.service.ISdDeliveryService;
@@ -65,6 +73,9 @@ public class QueryController extends BaseController
     private IPpWoBookMainService ppWoBookMainService;//工单记录信息
 
     @Autowired
+    private IBsBomMainService bsBomMainService;//BOM明细信息
+
+    @Autowired
     private IBsCraftSopMainService bsCraftSopMainService;//工艺技术标准
 
     @Autowired
@@ -80,13 +91,16 @@ public class QueryController extends BaseController
     private IBsMatSopMainService bsMatSopMainService;//材料检验标准
 
     @Autowired
+    private IBsMatSopDetailService bsMatSopDetailService;//材料检验标准明细
+
+    @Autowired
     private IBsProSopMainService bsProSopMainService;//成品检验标准
 
     @Autowired
-    private IPpWoBookBomService ppWoBookBomService;//工单BOM信息
+    private IPpWoBookDetailService ppWoBookDetailService;//工单制造信息
 
     @Autowired
-    private IPpWoBookDetailService ppWoBookDetailService;//工单制造信息
+    private IQcMatCheckMainService qcMatCheckMainService;//材料检验记录
 
     @Autowired
     private IQcProcessCheckMainService qcProcessCheckMainService;//过程检验记录
@@ -95,7 +109,55 @@ public class QueryController extends BaseController
     private IQcBadProjectMainService qcBadProjectMainService;//不良项目记录
 
     @Autowired
+    private IQcBadProjectDetailService qcBadProjectDetailService;//不良项目记录明细
+
+    @Autowired
     private ISdDeliveryDetailService sdDeliveryDetailService;//发货明细信息
+
+    @Autowired
+    private IBsVendorService bsVendorService;//供方名录信息
+
+    /**
+     * 查询发货信息列表
+     */
+    @PostMapping("/delivery/list")
+    @ResponseBody
+    public TableDataInfo list(SdDelivery sdDelivery)
+    {
+        startPage();
+        List<SdDelivery> list = sdDeliveryService.selectSdDeliveryList(sdDelivery);
+        if(StringUtils.isNotEmpty(list)){
+            for(SdDelivery obj:list){
+                List<String> qcResultList = sdDeliveryService.selectQcResult(obj);
+                if(StringUtils.isEmpty(qcResultList)){
+                    obj.setPpState("0");//未填报
+                }else if(qcResultList.size() > 1 && qcResultList.toString().contains("0")){
+                    obj.setPpState("1");//异常 中间有一条为不合格即为异常，
+                }else if(qcResultList.size() == 1 && qcResultList.toString().contains("1")){
+                    obj.setPpState("2");//合格 所有数据都要合格
+                }
+            }
+        }
+        return getDataTable(list);
+    }
+    /**
+     * 查看供应商
+     */
+    @PostMapping("/findVendor")
+    @ResponseBody
+    public AjaxResult findVendor(SdDelivery sdDelivery)
+    {
+        AjaxResult ajaxResult = AjaxResult.success();
+        if(StringUtils.isNotEmpty(sdDelivery.getDlot())){
+            List<BsVendor> list = bsVendorService.selectVendor(sdDelivery.getDlot());
+            BsVendor bsVendor = new BsVendor();
+            if(StringUtils.isNotEmpty(list)){
+                bsVendor = list.get(0);
+            }
+            ajaxResult.put("data", bsVendor);
+        }
+        return ajaxResult;
+    }
     /**
      * 查询订单
      */
@@ -147,10 +209,13 @@ public class QueryController extends BaseController
     public String detail(@PathVariable(value = "wcode", required = false) String wcode,@PathVariable(value = "pcode", required = false) String pcode, ModelMap mmap)
     {
         //根据产品编号查询工单BOM信息
-        PpWoBookBom ppWoBookBom = new PpWoBookBom();
-        ppWoBookBom.setAttribute1(pcode);
-        List<PpWoBookBom> ppWoBookBomList =  ppWoBookBomService.selectPpWoBookBomList(ppWoBookBom);
-        mmap.put("ppWoBookBomList", ppWoBookBomList);
+        PpWoBookMain ppWoBookMain = new PpWoBookMain();
+        ppWoBookMain.setPcode(pcode);
+        List<PpWoBookMain> list = ppWoBookMainService.selectPpWoBookMainList(ppWoBookMain);
+        if(StringUtils.isNotEmpty(list)){
+            ppWoBookMain  = ppWoBookMainService.selectPpWoBookMainById(list.get(0).getId());
+            mmap.put("ppWoBookBomList", ppWoBookMain.getPpWoBookBomList());
+        }
         //根据母工单号模糊查询子工单制造信息
         PpWoBookDetail ppWoBookDetail = new PpWoBookDetail();
         ppWoBookDetail.setSoncode(wcode);
@@ -172,6 +237,24 @@ public class QueryController extends BaseController
     }
 
     /**
+     * 查询详情
+     */
+    @GetMapping("/ppdetail/matcm/{pcode}")
+    public String matcm(@PathVariable(value = "pcode", required = false) String pcode, ModelMap mmap)
+    {
+        //根据产品编号查询原材料检验记录
+        QcMatCheckMain qcMatCheckMain = new QcMatCheckMain();
+        qcMatCheckMain.setAttribute1(pcode);
+        List<QcMatCheckMain> qcMatCheckMainList = qcMatCheckMainService.selectQcMatCheckMainList(qcMatCheckMain);
+        mmap.put("qcMatCheckMainList", qcMatCheckMainList);
+        //根据产品编号查询原材料检验标准
+        List<BsMatSopDetail> bsMatSopDetailList = bsMatSopDetailService.selectBsMatSopDetailByPcode(pcode);
+        mmap.put("bsMatSopDetailList", bsMatSopDetailList);
+        mmap.put("pcode", pcode);
+        return prefix + "/matcm";
+    }
+
+    /**
      * 根据产品编号和供应商查询产品BOM信息、产品工艺技术标准和4M变更单
      * 查询标准
      */
@@ -180,8 +263,8 @@ public class QueryController extends BaseController
     {
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("pcode", pcode);
-        PpWoBookMain ppWoBookMain = ppWoBookMainService.selectPpWoBookMainByMap(paramMap);
-        mmap.put("ppWoBookMain", ppWoBookMain);
+        BsBomMain bsBomMain = bsBomMainService.selectBsBomMainByMap(paramMap);
+        mmap.put("bsBomMain", bsBomMain);
         BsCraftSopMain bsCraftSopMain = bsCraftSopMainService.selectBsCraftSopMainByMap(paramMap);
         mmap.put("bsCraftSopMain", bsCraftSopMain);
         BsMcnMain bsMcnMain = bsMcnMainService.selectBsMcnMainByMap(paramMap);
@@ -268,5 +351,62 @@ public class QueryController extends BaseController
     {
         sdDeliveryService.batchSdDeliveryDetail(sdDelivery);
         return AjaxResult.success();
+    }
+
+    //加载左侧饼图
+    @PostMapping("/loadPieChartLeft")
+	@ResponseBody
+	public AjaxResult loadPieChartLeft(String dcode) {
+        AjaxResult ajaxResult = AjaxResult.success();
+        //同订单号下所有工单→不良项目记录明细信息→不良项目名称/不良项目数量（显示数量前10位的不良项目）
+        if(StringUtils.isNotEmpty(dcode)){
+            List<QcBadProjectDetail> projectList= qcBadProjectDetailService.loadPieChartBydcode(dcode); 
+            ajaxResult.put("projectList", projectList);
+        }
+        return ajaxResult;
+    }
+    
+    //加载右侧饼图
+    @PostMapping("/loadPieChartRight")
+	@ResponseBody
+	public AjaxResult loadPieChartRight(String vendor) {
+        AjaxResult ajaxResult = AjaxResult.success();
+        //所选用户下所有产品不良项目名称/不良项目数量
+        if(StringUtils.isNotEmpty(vendor)){
+            List<QcBadProjectDetail> pnameList= qcBadProjectDetailService.loadPieChartByVendor(vendor);
+            ajaxResult.put("pnameList", pnameList);
+        }
+        return ajaxResult;
+    }
+    
+    // 加载折线图
+	@PostMapping("/loadLineChart")
+	@ResponseBody
+	public Map<String, Object> loadLineChart(String dcode) {
+        Map<String, Object> retMap = new HashMap<String, Object>();
+        // PpWoBookMain ppWoBookMain = new PpWoBookMain();
+        // ppWoBookMain.setOrderno(dcode);
+        // PpWoBookMain retObj = ppWoBookMainService.selectPpWoBookDetail(ppWoBookMain);
+        if(dcode != null){
+            List<PpWoBookDetail> ppWoBookDetailList = ppWoBookDetailService.loadLineChart(dcode);
+            //计划工单号列表
+            List<String> wCodeList =  ppWoBookDetailList.stream().map(PpWoBookDetail::getSoncode).collect(Collectors.toList());
+            retMap.put("wCodeList", StringUtils.isNotEmpty(wCodeList)?wCodeList.toArray():"");
+            //标准成品率
+            String standardYield = ppWoBookDetailList.stream().map(PpWoBookDetail::getStdrate).collect(Collectors.joining(";"));
+            if(StringUtils.isNotEmpty(standardYield)){
+                standardYield = standardYield.replaceAll("%", "");
+                List<String> standardYieldList = Arrays.asList(standardYield.split(";"));
+                retMap.put("standardYieldList",standardYieldList);
+            }
+            //实际成品率
+            String actualYield = ppWoBookDetailList.stream().map(PpWoBookDetail::getActrate).collect(Collectors.joining(";"));
+            if(StringUtils.isNotEmpty(actualYield)){
+                actualYield = actualYield.replaceAll("%", "");
+                List<String> actualYieldList = Arrays.asList(actualYield.split(";"));
+                retMap.put("actualYieldList",actualYieldList);
+            }
+        }
+        return retMap;
     }
 }

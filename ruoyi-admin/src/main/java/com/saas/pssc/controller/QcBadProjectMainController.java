@@ -2,6 +2,8 @@ package com.saas.pssc.controller;
 
 import java.text.NumberFormat;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -186,8 +188,10 @@ public class QcBadProjectMainController extends BaseController
 				}
                 if (!flag)
                 {
-                    String okratio = num.format(Double.valueOf(qcBadProjectMain.getOkratio()));//将小数转换为百分比
-                    qcBadProjectMain.setOkratio(okratio);
+                    if(StringUtils.isNoneEmpty(qcBadProjectMain.getOkratio())){
+                        String okratio = num.format(Double.valueOf(qcBadProjectMain.getOkratio()));//将小数转换为百分比
+                        qcBadProjectMain.setOkratio(okratio);
+                    }
                     qcBadProjectMain.setCreateBy(ShiroUtils.getLoginName());
                     qcBadProjectMain.setUpdateBy(ShiroUtils.getLoginName());
                     // qcBadProjectMain.setIsValid("1");
@@ -227,18 +231,5 @@ public class QcBadProjectMainController extends BaseController
         }
         return successMsg.toString();
     }
-    
-    //加载饼图
-    @PostMapping("/loadPieChart")
-	@ResponseBody
-	public AjaxResult loadPieChart(QcBadProjectMain qcBadProjectMain) {
-        AjaxResult ajaxResult = AjaxResult.success();
-        //查询不良项目饼图数据
-        List<QcBadProjectMain> projectList= qcBadProjectMainService.loadPieChartByProject(qcBadProjectMain);        
-        ajaxResult.put("projectList", projectList);
-        //查询不良项目饼图数据
-        List<QcBadProjectMain> pnameList= qcBadProjectMainService.loadPieChartByPname(qcBadProjectMain);
-        ajaxResult.put("pnameList", pnameList);
-        return ajaxResult;
-	}
+
 }

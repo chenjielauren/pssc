@@ -138,6 +138,11 @@ public class BsMcnMainServiceImpl implements IBsMcnMainService {
 
     @Override
     public BsMcnMain selectBsMcnMainByMap(Map<String, Object> paramMap) {
-        return bsMcnMainMapper.selectBsMcnMainByMap(paramMap);
+        BsMcnMain bsMcnMain = new BsMcnMain();
+        List<BsMcnMain> list = bsMcnMainMapper.selectBsMcnMainByMap(paramMap);
+        if(StringUtils.isNotEmpty(list)){
+            bsMcnMain = list.get(0);
+        }
+        return bsMcnMain;
     }
 }

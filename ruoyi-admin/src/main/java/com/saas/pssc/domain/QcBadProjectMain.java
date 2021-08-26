@@ -64,12 +64,10 @@ public class QcBadProjectMain extends BaseEntity
     /**  */
     private String attribute3;
 
-    private String name;
-
-    private Long value;
-
     /** 不良项目记录明细信息 */
     private List<QcBadProjectDetail> qcBadProjectDetailList;
+
+    private String vendor;//供应商名称
 
     public void setId(String id) 
     {
@@ -189,21 +187,12 @@ public class QcBadProjectMain extends BaseEntity
         return attribute3;
     }
 
-    
-    public String getName() {
-        return name;
+    public String getVendor() {
+        return vendor;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getValue() {
-        return value;
-    }
-
-    public void setValue(Long value) {
-        this.value = value;
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
     }
     
     public List<QcBadProjectDetail> getQcBadProjectDetailList()
@@ -239,4 +228,5 @@ public class QcBadProjectMain extends BaseEntity
             .append("qcBadProjectDetailList", getQcBadProjectDetailList())
             .toString();
     }
+
 }

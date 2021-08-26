@@ -94,4 +94,9 @@ public class BsMatSopDetailServiceImpl implements IBsMatSopDetailService
     {
         return bsMatSopDetailMapper.deleteBsMatSopDetailById(id);
     }
+
+    @Override
+    public List<BsMatSopDetail> selectBsMatSopDetailByPcode(String pcode) {
+        return bsMatSopDetailMapper.selectBsMatSopDetailByPcode(pcode);
+    }
 }

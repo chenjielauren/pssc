@@ -152,8 +152,10 @@ public class PpWoBookBomController extends BaseController
             NumberFormat num = NumberFormat.getPercentInstance();
             num.setMinimumFractionDigits(2);
             for(PpWoBookBom bom : list){
-                String unratio = num.format(Double.valueOf(bom.getUnratio()));//将小数转换为百分比
-                bom.setUnratio(unratio);
+                if(StringUtils.isNotEmpty(bom.getUnratio())){
+                    String unratio = num.format(Double.valueOf(bom.getUnratio()));//将小数转换为百分比
+                    bom.setUnratio(unratio);
+                }
             }
         }
         return AjaxResult.success(list);

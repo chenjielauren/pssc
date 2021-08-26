@@ -166,6 +166,11 @@ public class BsCraftSopMainServiceImpl implements IBsCraftSopMainService {
 
     @Override
     public BsCraftSopMain selectBsCraftSopMainByMap(Map<String, Object> paramMap) {
-        return bsCraftSopMainMapper.selectBsCraftSopMainByMap(paramMap);
+        BsCraftSopMain craftSopMain = new BsCraftSopMain();
+        List<BsCraftSopMain> list = bsCraftSopMainMapper.selectBsCraftSopMainByMap(paramMap);
+        if(StringUtils.isNotEmpty(list)){
+            craftSopMain = list.get(0);
+        }
+        return craftSopMain;
     }
 }

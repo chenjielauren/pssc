@@ -117,4 +117,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="selectBsMatSopDetailByPcode" parameterType="String" resultMap="BsMatSopDetailResult">
+        <include refid="selectBsMatSopDetailVo"/>
+        where main_id in (select id from bs_mat_sop_main where pcode = #{pcode} and is_valid = '1')
+        order by orderno
+    </select>
 </mapper>

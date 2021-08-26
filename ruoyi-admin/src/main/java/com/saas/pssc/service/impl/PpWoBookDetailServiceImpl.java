@@ -94,4 +94,9 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
     {
         return ppWoBookDetailMapper.deletePpWoBookDetailById(id);
     }
+
+    @Override
+    public List<PpWoBookDetail> loadLineChart(String dcode) {
+        return ppWoBookDetailMapper.loadLineChart(dcode);
+    }
 }

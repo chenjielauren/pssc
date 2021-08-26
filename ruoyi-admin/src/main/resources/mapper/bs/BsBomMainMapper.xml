@@ -171,4 +171,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+    <select id="selectBsBomMainByMap" parameterType="Map" resultMap="BsBomMainBsBomDetailResult">
+        select a.id, a.pcode, a.name, a.spec, a.remark, a.is_valid, a.create_by, a.create_time, a.update_by, a.update_time, a.attribute1, a.attribute2, a.attribute3,
+            b.id as sub_id, b.orderno as sub_orderno, b.main_id as sub_main_id, b.mcode as sub_mcode, b.mname as sub_mname, b.mspec as sub_mspec, b.attribute as sub_attribute, b.onsize as sub_onsize, b.moqieqty as sub_moqieqty, b.qiezhiqty as sub_qiezhiqty, b.unit as sub_unit, b.qty as sub_qty, b.unratio as sub_unratio, b.remark as sub_remark, b.ruter as sub_ruter, b.is_valid as sub_is_valid, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.attribute1 as sub_attribute1, b.attribute2 as sub_attribute2, b.attribute3 as sub_attribute3
+        from bs_bom_main a
+        left join bs_bom_detail b on b.main_id = a.id
+        where a.pcode = #{pcode}
+        and a.is_valid = '1'
+        order by b.orderno
+    </select>
+
 </mapper>

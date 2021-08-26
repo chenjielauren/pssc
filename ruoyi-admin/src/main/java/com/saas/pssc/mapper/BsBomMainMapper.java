@@ -1,6 +1,8 @@
 package com.saas.pssc.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.BsBomMain;
 import com.saas.pssc.domain.BsBomDetail;
 
@@ -88,4 +90,6 @@ public interface BsBomMainMapper
 	public int updateBsBomMainByIds(String[] strArray);
 
 	public int updateBsBomMainById(String id);
+
+	public BsBomMain selectBsBomMainByMap(Map<String, Object> paramMap);
 }

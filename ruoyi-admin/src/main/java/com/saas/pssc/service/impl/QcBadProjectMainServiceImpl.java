@@ -144,17 +144,4 @@ public class QcBadProjectMainServiceImpl implements IQcBadProjectMainService
         }
     }
 
-    @Override
-    @DataScope(userAlias = "su")
-    public List<QcBadProjectMain> loadPieChartByProject(QcBadProjectMain qcBadProjectMain) {
-        List<QcBadProjectMain> projectList = qcBadProjectMainMapper.getPieChartByProject(qcBadProjectMain);
-        return projectList;
-    }
-
-    @Override
-    @DataScope(userAlias = "su")
-    public List<QcBadProjectMain> loadPieChartByPname(QcBadProjectMain qcBadProjectMain) {
-        List<QcBadProjectMain> projectList = qcBadProjectMainMapper.getPieChartByPname(qcBadProjectMain);
-        return projectList;
-    }
 }

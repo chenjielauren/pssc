@@ -61,4 +61,6 @@ public interface ISdDeliveryService
     public int deleteSdDeliveryById(String id);
 
 	public void batchSdDeliveryDetail(SdDelivery sdDelivery);
+
+	public List<String> selectQcResult(SdDelivery sdDelivery);
 }

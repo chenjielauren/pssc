@@ -27,6 +27,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="attribute1"    column="attribute1"    />
         <result property="attribute3"    column="attribute3"    />
         <result property="attribute2"    column="attribute2"    />
+        <result property="name"    column="name"    />
+        <result property="value"   column="value"    />
     </resultMap>
 
     <sql id="selectQcBadProjectDetailVo">
@@ -144,5 +146,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="loadPieChartBydcode" parameterType="String" resultMap="QcBadProjectDetailResult">
+        select project as name,qty as value
+        from qc_bad_project_detail  
+        where main_id  in (
+            select id from qc_bad_project_main  
+            where wcode in (
+                select wcode 
+                from pp_wo_book_main  
+                where orderno = #{dcode} and is_valid = '1'
+            )
+        )
+        order by create_time desc
+        limit 10
+    </select>
+
+    <select id="loadPieChartByVendor" parameterType="String" resultMap="QcBadProjectDetailResult">
+        select project as name,qty as value
+        from qc_bad_project_detail  
+        where main_id  in (
+            select id 
+            from qc_bad_project_main t 
+            where t.create_by in (select login_name from sys_user where user_name = #{vendor} )
+            and t.is_valid = '1'
+        )
+        order by qty desc
+        limit 10
+    </select>
 
 </mapper>

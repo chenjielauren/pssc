@@ -139,4 +139,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="selectVendor" parameterType="String" resultMap="BsVendorResult">
+        <include refid="selectBsVendorVo"/>
+        where t.create_by in (select distinct d.create_by from sd_delivery d where dlot = #{dlot} and is_valid = '1')
+        order by t.create_time desc
+    </select>
 </mapper>

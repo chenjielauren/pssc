@@ -1,6 +1,8 @@
 package com.saas.pssc.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.BsBomMain;
 
 /**
@@ -58,4 +60,6 @@ public interface IBsBomMainService
      * @return 结果
      */
     public int deleteBsBomMainById(String id);
+
+	public BsBomMain selectBsBomMainByMap(Map<String, Object> paramMap);
 }

@@ -81,6 +81,10 @@ public class QcBadProjectDetail extends BaseEntity
     /**  */
     private String attribute2;
 
+    private String name;
+
+    private Long value;
+
     public void setId(String id) 
     {
         this.id = id;
@@ -242,6 +246,22 @@ public class QcBadProjectDetail extends BaseEntity
     public String getAttribute2() 
     {
         return attribute2;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getValue() {
+        return value;
+    }
+
+    public void setValue(Long value) {
+        this.value = value;
     }
 
     @Override

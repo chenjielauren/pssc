@@ -74,4 +74,6 @@ public interface BsVendorMapper
      * @return 结果
      */
     public int updateBsVendorByIds(String[] Ids);
+
+	public List<BsVendor> selectVendor(String dlot);
 }

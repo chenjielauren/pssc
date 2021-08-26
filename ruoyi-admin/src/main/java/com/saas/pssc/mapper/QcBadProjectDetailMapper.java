@@ -58,4 +58,8 @@ public interface QcBadProjectDetailMapper
      * @return 结果
      */
     public int deleteQcBadProjectDetailByIds(String[] ids);
+
+	public List<QcBadProjectDetail> loadPieChartBydcode(String dcode);
+
+	public List<QcBadProjectDetail> loadPieChartByVendor(String vendor);
 }

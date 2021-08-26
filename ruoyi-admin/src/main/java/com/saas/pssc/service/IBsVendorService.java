@@ -1,6 +1,7 @@
 package com.saas.pssc.service;
 
 import java.util.List;
+
 import com.saas.pssc.domain.BsVendor;
 
 /**
@@ -58,4 +59,6 @@ public interface IBsVendorService
      * @return 结果
      */
     public int deleteBsVendorById(String Id);
+
+	public List<BsVendor> selectVendor(String dlot);
 }

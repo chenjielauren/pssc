@@ -170,6 +170,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join bs_craft_sop_detail b on b.main_id = a.id
         left join sys_user su on a.create_by = su.login_name
         where a.pcode = #{pcode} and a.is_valid = '1'
-        order by b.upload_time
+        order by a.create_time desc
     </select>
 </mapper>

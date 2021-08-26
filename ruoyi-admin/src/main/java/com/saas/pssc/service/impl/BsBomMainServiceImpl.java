@@ -2,6 +2,7 @@ package com.saas.pssc.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.saas.common.annotation.DataScope;
 import com.saas.common.core.text.Convert;
@@ -25,8 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2021-08-09
  */
 @Service
-public class BsBomMainServiceImpl implements IBsBomMainService 
-{
+public class BsBomMainServiceImpl implements IBsBomMainService {
     @Autowired
     private BsBomMainMapper bsBomMainMapper;
 
@@ -37,8 +37,7 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      * @return bom物料清单
      */
     @Override
-    public BsBomMain selectBsBomMainById(String id)
-    {
+    public BsBomMain selectBsBomMainById(String id) {
         return bsBomMainMapper.selectBsBomMainById(id);
     }
 
@@ -50,8 +49,7 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      */
     @Override
     @DataScope(userAlias = "su")
-    public List<BsBomMain> selectBsBomMainList(BsBomMain bsBomMain)
-    {
+    public List<BsBomMain> selectBsBomMainList(BsBomMain bsBomMain) {
         return bsBomMainMapper.selectBsBomMainList(bsBomMain);
     }
 
@@ -63,8 +61,7 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      */
     @Transactional
     @Override
-    public int insertBsBomMain(BsBomMain bsBomMain)
-    {
+    public int insertBsBomMain(BsBomMain bsBomMain) {
         bsBomMain.setId(IdUtils.fastSimpleUUID());
         bsBomMain.setCreateTime(DateUtils.getNowDate());
         int rows = bsBomMainMapper.insertBsBomMain(bsBomMain);
@@ -80,8 +77,7 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      */
     @Transactional
     @Override
-    public int updateBsBomMain(BsBomMain bsBomMain)
-    {
+    public int updateBsBomMain(BsBomMain bsBomMain) {
         bsBomMain.setUpdateTime(DateUtils.getNowDate());
         bsBomMainMapper.deleteBsBomDetailByMainId(bsBomMain.getId());
         insertBsBomDetail(bsBomMain);
@@ -96,8 +92,7 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      */
     @Transactional
     @Override
-    public int deleteBsBomMainByIds(String ids)
-    {
+    public int deleteBsBomMainByIds(String ids) {
         bsBomMainMapper.deleteBsBomDetailByMainIds(Convert.toStrArray(ids));
         return bsBomMainMapper.updateBsBomMainByIds(Convert.toStrArray(ids));
     }
@@ -109,8 +104,7 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      * @return 结果
      */
     @Override
-    public int deleteBsBomMainById(String id)
-    {
+    public int deleteBsBomMainById(String id) {
         bsBomMainMapper.deleteBsBomDetailByMainId(id);
         return bsBomMainMapper.updateBsBomMainById(id);
     }
@@ -120,25 +114,26 @@ public class BsBomMainServiceImpl implements IBsBomMainService
      * 
      * @param bsBomMain bom物料清单对象
      */
-    public void insertBsBomDetail(BsBomMain bsBomMain)
-    {
+    public void insertBsBomDetail(BsBomMain bsBomMain) {
         List<BsBomDetail> bsBomDetailList = bsBomMain.getBsBomDetailList();
         String id = bsBomMain.getId();
-        if (StringUtils.isNotNull(bsBomDetailList))
-        {
+        if (StringUtils.isNotNull(bsBomDetailList)) {
             List<BsBomDetail> list = new ArrayList<BsBomDetail>();
-            for (BsBomDetail bsBomDetail : bsBomDetailList)
-            {
+            for (BsBomDetail bsBomDetail : bsBomDetailList) {
                 bsBomDetail.setId(IdUtils.fastSimpleUUID());
                 bsBomDetail.setCreateBy(ShiroUtils.getLoginName());
                 bsBomDetail.setUpdateBy(ShiroUtils.getLoginName());
                 bsBomDetail.setMainId(id);
                 list.add(bsBomDetail);
             }
-            if (list.size() > 0)
-            {
+            if (list.size() > 0) {
                 bsBomMainMapper.batchBsBomDetail(list);
             }
         }
+    }
+
+    @Override
+    public BsBomMain selectBsBomMainByMap(Map<String, Object> paramMap) {
+        return bsBomMainMapper.selectBsBomMainByMap(paramMap);
     }
 }

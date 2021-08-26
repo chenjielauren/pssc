@@ -64,4 +64,6 @@ public interface IPpWoBookMainService
 	public PpWoBookMain selectPpWoBookMainByMap(Map<String, Object> paramMap);
 
 	public String checkPcodeUnique(PpWoBookMain ppWoBookMain);
+
+	public PpWoBookMain selectPpWoBookDetail(PpWoBookMain ppWoBookMain);
 }

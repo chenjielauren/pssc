@@ -53,7 +53,7 @@
                 </div>
                 <label class="col-sm-2 control-label">检验机台：</label>
                 <div class="col-sm-4">
-                    <input name="cmachine" th:field="*{cmachine}" class="form-control" type="text">
+                    <input name="cstation" th:field="*{cstation}" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group"> 
@@ -131,7 +131,7 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='qcProcessCheckDetailList[%s].no' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='qcProcessCheckDetailList[%s].orderno' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
                     }
                 },
@@ -242,7 +242,7 @@
                 index: count,
                 row: {
                     index: $.table.serialNumber(count),
-                    no: $.table.serialNumber(count),
+                    orderno: $.table.serialNumber(count),
                     projectCode: $.common.isNotEmpty(obj)?obj.projectCode:"",
                     cproject: $.common.isNotEmpty(obj)?obj.cproject:"",
                     csop: $.common.isNotEmpty(obj)?obj.csop:"",

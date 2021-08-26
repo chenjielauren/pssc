@@ -40,9 +40,10 @@ public class QcMatCheckMainController extends BaseController
     private IQcMatCheckMainService qcMatCheckMainService;
 
     @RequiresPermissions("qc:matcm:view")
-    @GetMapping(value = {"","/{qcResult}" })
-    public String matcm(@PathVariable(value = "qcResult", required = false) String qcResult, ModelMap mmap)
+    @GetMapping(value = {"","/ppdetail/{pcode}","/main/{qcResult}" })
+    public String matcm(@PathVariable(value = "pcode", required = false) String pcode,@PathVariable(value = "qcResult", required = false) String qcResult, ModelMap mmap)
     {
+        mmap.put("pcode", pcode);
         mmap.put("qcResult", qcResult);
         return prefix + "/matcm";
     }

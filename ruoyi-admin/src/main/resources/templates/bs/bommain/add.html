@@ -146,6 +146,15 @@
                     }
                 },
                 {
+                    field: 'qty',
+                    align: 'center',
+                    title: '用量',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].qty' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
                     field: 'unit',
                     align: 'center',
                     title: '单位',
@@ -169,15 +178,6 @@
                     title: '工艺路线',
                     formatter: function(value, row, index) {
                         var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].ruter' value='%s'>", index, value);
-                        return html;
-                    }
-                },
-                {
-                    field: 'qty',
-                    align: 'center',
-                    title: '用量',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsBomDetailList[%s].qty' value='%s'>", index, value);
                         return html;
                     }
                 },

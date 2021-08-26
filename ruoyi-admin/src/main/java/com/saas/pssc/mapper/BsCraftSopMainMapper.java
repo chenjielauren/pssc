@@ -104,5 +104,5 @@ public interface BsCraftSopMainMapper
      */
     public int deleteBsCraftSopDetailByMainId(String id);
 
-	public BsCraftSopMain selectBsCraftSopMainByMap(Map<String, Object> paramMap);
+	public List<BsCraftSopMain> selectBsCraftSopMainByMap(Map<String, Object> paramMap);
 }

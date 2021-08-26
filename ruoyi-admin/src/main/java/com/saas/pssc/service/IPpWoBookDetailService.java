@@ -58,4 +58,6 @@ public interface IPpWoBookDetailService
      * @return 结果
      */
     public int deletePpWoBookDetailById(String id);
+
+	public List<PpWoBookDetail> loadLineChart(String dcode);
 }

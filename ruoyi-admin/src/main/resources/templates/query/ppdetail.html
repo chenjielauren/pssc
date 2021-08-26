@@ -77,7 +77,12 @@
                 {
                     field: 'mcode',
                     align: 'center',
-                    title: '部件编号'
+                    title: '部件编号',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a onclick="queryQcmatcm(\'' + row.mcode + '\')">'+row.mcode+'</a> ')
+                        return actions.join('');
+                    }
                 },
                 {
                     field: 'mname',
@@ -141,6 +146,21 @@
             };
             $.table.init(options1);
         });
+        //根据BOM的部件编号跳转质量信息的原材料检验记录
+        function queryQcmatcm(mcode){
+            var url = prefix + '/ppdetail/matcm/'+mcode;
+            console.log(url);
+            var options = {
+                title: '原材料检验记录',
+                url: url,
+                btn: ['关闭'],
+                skin: 'layui-layer-gray',
+                yes: function (index, layero) {
+                    layer.close(index);
+                }
+             };
+             $.modal.openOptions(options);
+        }
         //工单制造信息
         $(function() {
             var options2 = {
@@ -297,7 +317,7 @@
                     title: '检验工序'
                 },
                 {
-                    field: 'cmachine',
+                    field: 'cstation',
                     title: '检验机台'
                 },
                 {

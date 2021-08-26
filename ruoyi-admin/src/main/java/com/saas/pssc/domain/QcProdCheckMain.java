@@ -73,7 +73,7 @@ public class QcProdCheckMain extends BaseEntity
 
     private Date qEndtime;//检验结束时间
 
-    private String[] pcodes;//成品检验记录列表
+    // private String[] pcodes;//成品检验记录列表
 
     /** 检验信息 */
     private List<QcProdCheckDetail> qcProdCheckDetailList;
@@ -213,13 +213,13 @@ public class QcProdCheckMain extends BaseEntity
         this.qEndtime = qEndtime;
     }
 
-    public String[] getPcodes() {
-        return pcodes;
-    }
+    // public String[] getPcodes() {
+    //     return pcodes;
+    // }
 
-    public void setPcodes(String[] pcodes) {
-        this.pcodes = pcodes;
-    }
+    // public void setPcodes(String[] pcodes) {
+    //     this.pcodes = pcodes;
+    // }
 
     
     public String getPspec() {

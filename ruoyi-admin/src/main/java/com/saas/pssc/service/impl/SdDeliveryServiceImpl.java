@@ -102,6 +102,7 @@ public class SdDeliveryServiceImpl implements ISdDeliveryService {
     public void batchSdDeliveryDetail(SdDelivery sdDelivery) {
         List<SdDeliveryDetail> sdDeliveryDetailList = sdDelivery.getSdDeliveryDetailList();
         String id = sdDelivery.getId();
+        sdDeliveryMapper.deleteSdDeliveryDetailByMainId(id);
         if (StringUtils.isNotNull(sdDeliveryDetailList))
         {
             List<SdDeliveryDetail> list = new ArrayList<SdDeliveryDetail>();
@@ -118,5 +119,10 @@ public class SdDeliveryServiceImpl implements ISdDeliveryService {
                 sdDeliveryMapper.batchSdDeliveryDetail(list);
             }
         }
+    }
+
+    @Override
+    public List<String> selectQcResult(SdDelivery sdDelivery) {
+        return sdDeliveryMapper.selectQcResult(sdDelivery);
     }
 }

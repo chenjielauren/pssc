@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('原材料检验记录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>材料编号：</label>
+                                <input type="text" name="pcode" th:value="*{pcode}"/>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                <p class="select-title">原材料检验记录</p>
+                <table id="bootstrap-table1" style="min-width:1500px;"></table>
+            </div>
+            <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
+                <p class="select-title">材料检验标准</p>
+                <table id="bootstrap-table2" style="min-width:1500px;"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
+        var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
+        var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
+        var prefix = ctx + "query";
+        $(function() {
+            var options1 = {
+                id:"bootstrap-table1",
+                data: [[${qcMatCheckMainList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                modalName: "原材料检验记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '计划工单号ID',
+                    visible: false
+                },
+                {
+                    field: 'qcode',
+                    title: '检验单号'
+                },
+                {
+                    field: 'pcode',
+                    title: '材料编号'
+                },
+                {
+                    field: 'pname',
+                    title: '材料名称'
+                },
+                {
+                    field: 'pspec',
+                    title: '材料规格'
+                },
+                {
+                    field: 'lot',
+                    title: '批次号'
+                },
+                {
+                    field: 'vendor',
+                    title: '供应商'
+                },
+                {
+                    field: 'quser',
+                    title: '检验人员'
+                },
+                {
+                    field: 'qtime',
+                    title: '检验时间'
+                },
+                {
+                    field: 'qcResult',
+                    title: '检验结果',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(qcResultDatas, value);
+                    }
+                },
+                {
+                    field: 'handleResult',
+                    title: '处理结果',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(handleResultDatas, value);
+                    }
+                }]
+            };
+            $.table.init(options1);
+        });
+        $(function() {
+            var options2 = {
+                id:"bootstrap-table2",
+                data: [[${bsMatSopDetailList}]],
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                modalName: "原材料检验标准",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'orderno',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='bsMatSopDetailList[%s].orderno' value='%s'>", index,$.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'pcode',
+                    align: 'center',
+                    title: '检验项目编号',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].pcode' value='%s'>",index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'name',
+                    align: 'center',
+                    title: '检验项目名称',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].name' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'standard',
+                    align: 'center',
+                    title: '检验标准',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].standard' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'method',
+                    align: 'center',
+                    title: '检验方法',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].method' value='%s'>", index, value);
+                        return html;
+                    }
+				},
+                {
+                    field: 'remark',
+                    align: 'center',
+                    title: '备注',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='bsMatSopDetailList[%s].remark' value='%s'>", index, value);
+                        return html;
+                    }
+				}]
+            };
+            $.table.init(options2);
+        });
+    </script>
+</body>
+</html>

@@ -58,4 +58,6 @@ public interface IBsMatSopDetailService
      * @return 结果
      */
     public int deleteBsMatSopDetailById(String id);
+
+	public List<BsMatSopDetail> selectBsMatSopDetailByPcode(String pcode);
 }

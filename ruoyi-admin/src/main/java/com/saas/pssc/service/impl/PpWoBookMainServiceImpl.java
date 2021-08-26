@@ -154,7 +154,12 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService {
 
     @Override
     public PpWoBookMain selectPpWoBookMainByMap(Map<String, Object> paramMap) {
-        return ppWoBookMainMapper.selectPpWoBookMainByMap(paramMap);
+        PpWoBookMain ppWoBookMain = new PpWoBookMain();
+        List<PpWoBookMain> list = ppWoBookMainMapper.selectPpWoBookMainByMap(paramMap);
+        if(StringUtils.isNotEmpty(list)){
+            return list.get(0);
+        }
+        return ppWoBookMain;
     }
 
     @Override
@@ -167,5 +172,14 @@ public class PpWoBookMainServiceImpl implements IPpWoBookMainService {
             }
         }
         return UserConstants.DEPT_NAME_UNIQUE;
+    }
+
+    @Override
+    public PpWoBookMain selectPpWoBookDetail(PpWoBookMain ppWoBookMain) {
+        List<PpWoBookMain> list = ppWoBookMainMapper.selectPpWoBookDetail(ppWoBookMain);
+        if(StringUtils.isNotEmpty(list)){
+            return list.get(0);
+        }
+        return ppWoBookMain;
     }
 }

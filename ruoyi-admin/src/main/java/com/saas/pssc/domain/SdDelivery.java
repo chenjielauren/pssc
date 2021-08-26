@@ -62,6 +62,11 @@ public class SdDelivery extends BaseEntity
     /** 备注 */
     @Excel(name = "备注")
     private String remark;
+
+    /** 成品检验状态
+     *  成品检验和过程检验下所有单据中的状态，中间有一条为不合格即为异常，如果查询无数据即为未填报
+     */
+    private String ppState;
     
     /**  */
     private String attribute1;
@@ -199,7 +204,13 @@ public class SdDelivery extends BaseEntity
     {
         return attribute3;
     }
+    public String getPpState() {
+        return ppState;
+    }
 
+    public void setPpState(String ppState) {
+        this.ppState = ppState;
+    }
     public List<SdDeliveryDetail> getSdDeliveryDetailList()
     {
         return sdDeliveryDetailList;
@@ -233,5 +244,4 @@ public class SdDelivery extends BaseEntity
             .toString();
     }
 
-    
 }

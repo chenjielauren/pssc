@@ -1,9 +1,6 @@
 package com.saas.pssc.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.saas.common.annotation.Log;
 import com.saas.common.core.controller.BaseController;
@@ -12,7 +9,6 @@ import com.saas.common.core.page.TableDataInfo;
 import com.saas.common.enums.BusinessType;
 import com.saas.common.exception.BusinessException;
 import com.saas.common.utils.ShiroUtils;
-import com.saas.common.utils.StringUtils;
 import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.pssc.domain.QcWoYieldRate;
 import com.saas.pssc.service.IQcWoYieldRateService;
@@ -228,24 +224,4 @@ public class QcWoYieldRateController extends BaseController
         return successMsg.toString();
     }
 
-    // 加载折线图
-	@PostMapping("/loadLineChart")
-	@ResponseBody
-	public Map<String, Object> loadLineChart() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        QcWoYieldRate qcWoYieldRate = new QcWoYieldRate();
-        List<QcWoYieldRate> qcWoYieldRateList = qcWoYieldRateService.selectQcWoYieldRateList(qcWoYieldRate);
-        if(StringUtils.isNotEmpty(qcWoYieldRateList)){
-            //计划工单号列表
-            List<String> wCodeList =  qcWoYieldRateList.stream().map(QcWoYieldRate::getWo).collect(Collectors.toList());
-            map.put("wCodeList", StringUtils.isNotEmpty(wCodeList)?wCodeList.toArray():"");
-            //标准成品率
-            List<Long> standardYieldList = qcWoYieldRateList.stream().map(QcWoYieldRate::getIqty).collect(Collectors.toList());
-            map.put("standardYieldList",StringUtils.isNotEmpty(standardYieldList)?standardYieldList.toArray():"");
-            //实际成品率
-            List<Long> actualYieldList = qcWoYieldRateList.stream().map(QcWoYieldRate::getOqty).collect(Collectors.toList());
-            map.put("actualYieldList",StringUtils.isNotEmpty(actualYieldList)?actualYieldList.toArray():"");
-        }
-        return map;
-    }
 }

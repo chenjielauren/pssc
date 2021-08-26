@@ -20,8 +20,7 @@ import org.springframework.stereotype.Service;
  * @date 2021-07-15
  */
 @Service
-public class BsVendorServiceImpl implements IBsVendorService 
-{
+public class BsVendorServiceImpl implements IBsVendorService {
     @Autowired
     private BsVendorMapper bsVendorMapper;
 
@@ -32,8 +31,7 @@ public class BsVendorServiceImpl implements IBsVendorService
      * @return 合格供方名录
      */
     @Override
-    public BsVendor selectBsVendorById(String Id)
-    {
+    public BsVendor selectBsVendorById(String Id) {
         return bsVendorMapper.selectBsVendorById(Id);
     }
 
@@ -45,8 +43,7 @@ public class BsVendorServiceImpl implements IBsVendorService
      */
     @Override
     @DataScope(userAlias = "su")
-    public List<BsVendor> selectBsVendorList(BsVendor bsVendor)
-    {
+    public List<BsVendor> selectBsVendorList(BsVendor bsVendor) {
         return bsVendorMapper.selectBsVendorList(bsVendor);
     }
 
@@ -57,8 +54,7 @@ public class BsVendorServiceImpl implements IBsVendorService
      * @return 结果
      */
     @Override
-    public int insertBsVendor(BsVendor bsVendor)
-    {
+    public int insertBsVendor(BsVendor bsVendor) {
         bsVendor.setId(IdUtils.fastUUID());
         bsVendor.setCreateTime(DateUtils.getNowDate());
         return bsVendorMapper.insertBsVendor(bsVendor);
@@ -71,8 +67,7 @@ public class BsVendorServiceImpl implements IBsVendorService
      * @return 结果
      */
     @Override
-    public int updateBsVendor(BsVendor bsVendor)
-    {
+    public int updateBsVendor(BsVendor bsVendor) {
         bsVendor.setUpdateTime(DateUtils.getNowDate());
         return bsVendorMapper.updateBsVendor(bsVendor);
     }
@@ -84,8 +79,7 @@ public class BsVendorServiceImpl implements IBsVendorService
      * @return 结果
      */
     @Override
-    public int deleteBsVendorByIds(String ids)
-    {
+    public int deleteBsVendorByIds(String ids) {
         return bsVendorMapper.updateBsVendorByIds(Convert.toStrArray(ids));
     }
 
@@ -96,8 +90,12 @@ public class BsVendorServiceImpl implements IBsVendorService
      * @return 结果
      */
     @Override
-    public int deleteBsVendorById(String Id)
-    {
+    public int deleteBsVendorById(String Id) {
         return bsVendorMapper.updateBsVendorById(Id);
+    }
+
+    @Override
+    public List<BsVendor> selectVendor(String dlot) {
+        return bsVendorMapper.selectVendor(dlot);
     }
 }

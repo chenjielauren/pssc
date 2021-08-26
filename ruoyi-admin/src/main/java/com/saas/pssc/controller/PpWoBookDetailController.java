@@ -2,6 +2,17 @@ package com.saas.pssc.controller;
 
 import java.text.NumberFormat;
 import java.util.List;
+
+import com.saas.common.annotation.Log;
+import com.saas.common.core.controller.BaseController;
+import com.saas.common.core.domain.AjaxResult;
+import com.saas.common.core.page.TableDataInfo;
+import com.saas.common.enums.BusinessType;
+import com.saas.common.utils.StringUtils;
+import com.saas.common.utils.poi.ExcelUtil;
+import com.saas.pssc.domain.PpWoBookDetail;
+import com.saas.pssc.service.IPpWoBookDetailService;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,16 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.saas.common.annotation.Log;
-import com.saas.common.enums.BusinessType;
-import com.saas.pssc.domain.PpWoBookDetail;
-import com.saas.pssc.service.IPpWoBookDetailService;
-import com.saas.common.core.controller.BaseController;
-import com.saas.common.core.domain.AjaxResult;
-import com.saas.common.utils.StringUtils;
-import com.saas.common.utils.poi.ExcelUtil;
-import com.saas.common.core.page.TableDataInfo;
 
 /**
  * 工单制造信息Controller
@@ -151,12 +152,17 @@ public class PpWoBookDetailController extends BaseController
             NumberFormat num = NumberFormat.getPercentInstance();
             num.setMinimumFractionDigits(2);
             for(PpWoBookDetail detail : list){
-                String stdrate = num.format(Double.valueOf(detail.getStdrate()));//将标准成品率 小数转换为百分比
-                String actrate = num.format(Double.valueOf(detail.getActrate()));//将实际成品率 小数转换为百分比
-                detail.setStdrate(stdrate);
-                detail.setActrate(actrate);
+                if(StringUtils.isNotEmpty(detail.getStdrate())){
+                    String stdrate = num.format(Double.valueOf(detail.getStdrate()));//将标准成品率 小数转换为百分比
+                    detail.setStdrate(stdrate);
+                }
+                if(StringUtils.isNotEmpty(detail.getActrate())){
+                    String actrate = num.format(Double.valueOf(detail.getActrate()));//将实际成品率 小数转换为百分比
+                    detail.setActrate(actrate);
+                }
             }
         }
         return AjaxResult.success(list);
     }
+
 }

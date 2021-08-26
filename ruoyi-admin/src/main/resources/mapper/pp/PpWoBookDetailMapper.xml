@@ -170,4 +170,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="loadLineChart" parameterType="String" resultMap="PpWoBookDetailResult">
+        <include refid="selectPpWoBookDetailVo"/>
+        where main_id  in (
+            select id 
+            from pp_wo_book_main  
+            where orderno = #{dcode} and is_valid = '1')
+    </select>
+
 </mapper>

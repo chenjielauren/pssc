@@ -183,25 +183,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
-    
-    <select id="getPieChartByProject" parameterType="QcBadProjectMain" resultMap="QcBadProjectMainResult">
-        select project as name,sum(qty) as value 
-        from qc_bad_project_detail t left join sys_user su on t.create_by = su.login_name
-        <!-- 数据范围过滤 -->
-        ${params.dataScope}
-        group by project
-        order by sum(qty) desc
-        limit 5
-    </select>
-
-    <select id="getPieChartByPname" parameterType="QcBadProjectMain" resultMap="QcBadProjectMainResult">
-        select pname as name,sum(inqty) as value 
-        from qc_bad_project_main t left join sys_user su on t.create_by = su.login_name
-        <!-- 数据范围过滤 -->
-        ${params.dataScope}
-        group by pname
-        order by sum(inqty) desc
-        limit 5
-    </select>
-
 </mapper>

@@ -77,4 +77,8 @@ public interface SdDeliveryMapper
 	public int updateSdDeliveryById(String id);
 
 	public void batchSdDeliveryDetail(List<SdDeliveryDetail> sdDeliveryDetails);
+
+	public void deleteSdDeliveryDetailByMainId(String id);
+
+	public List<String> selectQcResult(SdDelivery sdDelivery);
 }

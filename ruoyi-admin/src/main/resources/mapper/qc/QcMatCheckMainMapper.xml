@@ -64,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qtime != null "> and qtime = #{qtime}</if>
             <if test="qcResult != null and qcResult != ''"> and qc_result = #{qcResult}</if>
             <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
+            <if test="attribute1 != null  and attribute1 != ''"> and pcode = #{attribute1}</if>
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
             and is_valid = '1'  ${params.dataScope}
         </where>
