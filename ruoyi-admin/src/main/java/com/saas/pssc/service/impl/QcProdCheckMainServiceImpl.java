@@ -141,4 +141,15 @@ public class QcProdCheckMainServiceImpl implements IQcProdCheckMainService
             }
         }
     }
+    
+    /**
+     * 订单号→所有工单→成品检验报告结果
+     * 
+     * @param dcode 订单号
+     * @return 结果
+     */
+    @Override
+    public List<String> selectQcResult(String dcode) {
+        return qcProdCheckMainMapper.selectQcResult(dcode);
+    }
 }

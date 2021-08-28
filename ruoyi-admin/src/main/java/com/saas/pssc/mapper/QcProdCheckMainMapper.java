@@ -84,4 +84,6 @@ public interface QcProdCheckMainMapper
      * @return 结果
      */
     public int deleteQcProdCheckDetailByMainId(String id);
+
+	public List<String> selectQcResult(String dcode);
 }

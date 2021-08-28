@@ -91,7 +91,10 @@
                 },
                 {
                     field: 'spec',
-                    title: '产品规格'
+                    title: '产品规格',
+                    formatter: function(value, row, index) {
+                       return $.common.nullToStr(value);
+                    }
                 },
                 {
                     field: 'updateTime',

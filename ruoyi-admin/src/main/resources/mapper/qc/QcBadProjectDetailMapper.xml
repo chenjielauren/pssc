@@ -148,7 +148,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <select id="loadPieChartBydcode" parameterType="String" resultMap="QcBadProjectDetailResult">
-        select project as name,qty as value
+        select project as name,sum(qty) as value
         from qc_bad_project_detail  
         where main_id  in (
             select id from qc_bad_project_main  
@@ -158,12 +158,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 where orderno = #{dcode} and is_valid = '1'
             )
         )
-        order by create_time desc
+        group by project 
+        order by sum(qty) desc
         limit 10
     </select>
 
     <select id="loadPieChartByVendor" parameterType="String" resultMap="QcBadProjectDetailResult">
-        select project as name,qty as value
+        select project as name,sum(qty) as value
         from qc_bad_project_detail  
         where main_id  in (
             select id 
@@ -171,7 +172,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             where t.create_by in (select login_name from sys_user where user_name = #{vendor} )
             and t.is_valid = '1'
         )
-        order by qty desc
+        group by project 
+        order by sum(qty) desc
         limit 10
     </select>
 

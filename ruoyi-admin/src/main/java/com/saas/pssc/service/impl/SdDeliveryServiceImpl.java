@@ -121,8 +121,4 @@ public class SdDeliveryServiceImpl implements ISdDeliveryService {
         }
     }
 
-    @Override
-    public List<String> selectQcResult(SdDelivery sdDelivery) {
-        return sdDeliveryMapper.selectQcResult(sdDelivery);
-    }
 }

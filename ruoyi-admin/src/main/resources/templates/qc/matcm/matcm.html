@@ -110,7 +110,10 @@
                 },
                 {
                     field: 'pspec',
-                    title: '材料规格'
+                    title: '材料规格',
+                    formatter: function(value, row, index) {
+                       return $.common.nullToStr(value);
+                    }
                 },
                 {
                     field: 'lot',

@@ -188,7 +188,7 @@ var table = {
                             $.each(res.rows, function(i, row) {
                                 row.state = $.inArray(row[column], table.rememberSelectedIds[table.options.id]) !== -1;
                             })
-                    	}
+                        }
                         return { rows: res.rows, total: res.total };
                     }
                 } else {
@@ -528,14 +528,6 @@ var table = {
                     pageNumber: pageNumber,
                     pageSize: pageSize
                 });
-                //工序成品率分析, 刷新时加载折线图
-                if(url == "/pp/workyield/list"){
-                    loadLineChart();
-                }
-                //不良项目汇总, 刷新时加载2张饼图
-                if(url == "/qc/badproject/list"){
-                    loadPieChart();
-                }
             },
             // 刷新options配置
             refreshOptions: function(options, tableId) {
@@ -1567,7 +1559,7 @@ var table = {
             // 空对象转字符串
             nullToStr: function(value) {
                 if ($.common.isEmpty(value)) {
-                    return "-";
+                    return "";
                 }
                 return value;
             },

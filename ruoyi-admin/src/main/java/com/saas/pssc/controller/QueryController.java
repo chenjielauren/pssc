@@ -1,8 +1,10 @@
 package com.saas.pssc.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.saas.common.annotation.Log;
 import com.saas.common.core.controller.BaseController;
@@ -41,6 +43,7 @@ import com.saas.pssc.service.IQcBadProjectDetailService;
 import com.saas.pssc.service.IQcBadProjectMainService;
 import com.saas.pssc.service.IQcMatCheckMainService;
 import com.saas.pssc.service.IQcProcessCheckMainService;
+import com.saas.pssc.service.IQcProdCheckMainService;
 import com.saas.pssc.service.ISdDeliveryDetailService;
 import com.saas.pssc.service.ISdDeliveryService;
 import com.saas.pssc.service.ISdOrderService;
@@ -106,6 +109,9 @@ public class QueryController extends BaseController
     private IQcProcessCheckMainService qcProcessCheckMainService;//过程检验记录
 
     @Autowired
+    private IQcProdCheckMainService qcProdCheckMainService;//成品检验记录
+
+    @Autowired
     private IQcBadProjectMainService qcBadProjectMainService;//不良项目记录
 
     @Autowired
@@ -128,12 +134,12 @@ public class QueryController extends BaseController
         List<SdDelivery> list = sdDeliveryService.selectSdDeliveryList(sdDelivery);
         if(StringUtils.isNotEmpty(list)){
             for(SdDelivery obj:list){
-                List<String> qcResultList = sdDeliveryService.selectQcResult(obj);
+                List<String> qcResultList = qcProdCheckMainService.selectQcResult(obj.getDcode());
                 if(StringUtils.isEmpty(qcResultList)){
                     obj.setPpState("0");//未填报
-                }else if(qcResultList.size() > 1 && qcResultList.toString().contains("0")){
+                }else if(qcResultList.size() >= 1 && qcResultList.toString().contains("0")){
                     obj.setPpState("1");//异常 中间有一条为不合格即为异常，
-                }else if(qcResultList.size() == 1 && qcResultList.toString().contains("1")){
+                }else if(qcResultList.size() == 1 && "1".equals(qcResultList.toString())){
                     obj.setPpState("2");//合格 所有数据都要合格
                 }
             }
@@ -384,9 +390,6 @@ public class QueryController extends BaseController
 	@ResponseBody
 	public Map<String, Object> loadLineChart(String dcode) {
         Map<String, Object> retMap = new HashMap<String, Object>();
-        // PpWoBookMain ppWoBookMain = new PpWoBookMain();
-        // ppWoBookMain.setOrderno(dcode);
-        // PpWoBookMain retObj = ppWoBookMainService.selectPpWoBookDetail(ppWoBookMain);
         if(dcode != null){
             List<PpWoBookDetail> ppWoBookDetailList = ppWoBookDetailService.loadLineChart(dcode);
             //计划工单号列表

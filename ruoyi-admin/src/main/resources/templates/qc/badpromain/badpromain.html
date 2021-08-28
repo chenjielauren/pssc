@@ -108,7 +108,10 @@
                 },
                 {
                     field: 'pspec',
-                    title: '产品规格'
+                    title: '产品规格',
+                    formatter: function(value, row, index) {
+                       return $.common.nullToStr(value);
+                    }
                 },
                 {
                     field: 'inqty',
@@ -124,7 +127,10 @@
                 },
                 {
                     field: 'remark',
-                    title: '备注'
+                    title: '备注',
+                    formatter: function(value, row, index) {
+                       return $.common.nullToStr(value);
+                    }
                 },
                 {
                     title: '操作',

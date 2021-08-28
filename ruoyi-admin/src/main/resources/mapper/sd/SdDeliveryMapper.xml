@@ -149,8 +149,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
-    <select id="selectQcResult" parameterType="SdDelivery" resultType="String">
-        select distinct qc_result from view_qc_check_main where pcode = #{pcode}
-    </select>
-
 </mapper>

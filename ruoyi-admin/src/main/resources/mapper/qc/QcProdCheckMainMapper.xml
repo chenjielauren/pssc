@@ -189,4 +189,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+    <select id="selectQcResult" parameterType="String" resultType="String">
+        select distinct qc_result  from qc_prod_check_main where qcode in (
+        select wcode  from pp_wo_book_main  
+        where orderno = #{dcode} and is_valid = '1')
+        and is_valid  = '1'
+    </select>
+
 </mapper>

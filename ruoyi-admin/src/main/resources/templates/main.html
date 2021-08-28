@@ -98,13 +98,12 @@
     <th:block th:include="include :: echarts-js" />
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var prefix_main = ctx + "query";
-        var prefix_line = ctx + "pp/wbmain";//标准成品率和实际成品率折线图
+        var prefix = ctx + "query";
         var ppStateDatas = [[${@dict.getType('pp_state')}]];
         //根据发货批次号 找到供应商信息
         function findVendor(){
             var dlot = $('#dlot').val(); 
-            var url =  prefix_main+'/findVendor';
+            var url =  prefix+'/findVendor';
             $.post(url,$.common.formToJSON("formId"),function(result){
                 if(result.data.updateBy !=""){
                     $('#vendor').val(result.data.updateBy);
@@ -117,7 +116,7 @@
         function query(){
             $.table.destroy();
             var options = {
-                url: prefix_main + "/delivery/list",
+                url: prefix + "/delivery/list",
                 singleSelect:true,
                 onCheck: onCheck,
                 modalName: "发货信息",
@@ -151,7 +150,10 @@
                 },
                 {
                     field: 'pspec',
-                    title: '产品规格'
+                    title: '产品规格',
+                    formatter: function(value, row, index) {
+                       return $.common.nullToStr(value);
+                    }
                 },
                 {
                     field: 'flot',
@@ -204,7 +206,7 @@
         }
         //标注
         function remark(rowId,dlot){
-            var url = prefix_main + '/remark/'+rowId+'/'+dlot;
+            var url = prefix + '/remark/'+rowId+'/'+dlot;
             $.modal.open("标注", url);
         }
 
@@ -216,7 +218,7 @@
                 return;
             }
             console.log(rows);
-            var url = prefix_main + '/order/'+rows[0];
+            var url = prefix + '/order/'+rows[0];
             $.modal.openTab("查询订单", url);
         }
         //查询标准
@@ -229,7 +231,7 @@
             var pcode = rows[0];
             var vendor = "admin";
             console.log(rows[0]+vendor);
-            var url = prefix_main + '/standard/'+rows[0];
+            var url = prefix + '/standard/'+rows[0];
             console.log(url);
             $.modal.openTab("查询标准", url);
         }
@@ -268,7 +270,7 @@
         //加载 左侧 饼图
         function loadPieChartLeft(dcode){
             $.ajax({
-                url : prefix_main + "/loadPieChartLeft",
+                url : prefix + "/loadPieChartLeft",
                 type : "POST",
                 async : false,
                 data: {"dcode":dcode},
@@ -336,7 +338,7 @@
         //加载 右侧 饼图
         function loadPieChartRight(){
             $.ajax({
-                url : prefix_main + "/loadPieChartRight",
+                url : prefix + "/loadPieChartRight",
                 type : "POST",
                 async : false,
                 data: {"vendor":$('#vendor').val()},
@@ -398,7 +400,7 @@
         //加载折线图
         function loadLineChart(dcode){
             $.ajax({
-                url : prefix_line + "/loadLineChart",
+                url : prefix + "/loadLineChart",
                 type : "POST",
                 async : false,
                 data: {"dcode":dcode},
@@ -408,7 +410,7 @@
                     var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
                     var lineoption = {
                         title: {
-                            text: pcode + '工单成品率趋势'
+                            text: dcode + '订单下所有工单成品率趋势'
                         },
                         tooltip: {
                             trigger: 'axis'

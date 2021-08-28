@@ -62,5 +62,4 @@ public interface ISdDeliveryService
 
 	public void batchSdDeliveryDetail(SdDelivery sdDelivery);
 
-	public List<String> selectQcResult(SdDelivery sdDelivery);
 }

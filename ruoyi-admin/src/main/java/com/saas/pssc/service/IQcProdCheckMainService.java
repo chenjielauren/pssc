@@ -58,4 +58,12 @@ public interface IQcProdCheckMainService
      * @return 结果
      */
     public int deleteQcProdCheckMainById(String id);
+
+    /**
+     * 订单号→所有工单→成品检验报告结果
+     * 
+     * @param dcode 订单号
+     * @return 结果
+     */
+	public List<String> selectQcResult(String dcode);
 }

@@ -122,7 +122,10 @@
                 },
                 {
                     field: 'remark',
-                    title: '备注'
+                    title: '备注',
+                    formatter: function(value, row, index) {
+                       return $.common.nullToStr(value);
+                    }
                 },
                 {
                     field: 'isValid',
