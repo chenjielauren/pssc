@@ -12,16 +12,20 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>发货批次号：</label>
+                                <label style="width: 100px;">发货批次号：</label>
                                 <input type="text" name="dlot" id="dlot" onblur="findVendor()"/>
                             </li>
                             <li>
-                                <label>供应商名称：</label>
+                                <label style="width: 100px;">供应商名称：</label>
                                 <input type="text" name="vendor" id="vendor" />
                             </li>
                             <li style="display: none;">
                                 <label>产品编号：</label>
                                 <input type="text" name="pcode" id="pcode" />
+                            </li>
+                            <li style="display: none;">
+                                <label>工单号：</label>
+                                <input type="text" name="wcode" id="wcode"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="query()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -38,9 +42,6 @@
                 <a class="btn btn-primary single disabled" onclick="queryStandard()">
                     <i class="fa fa-bell-o"></i> 查询标准
                 </a>
-                <a class="btn btn-info single disabled" onclick="queryProdcm()">
-                    <i class="fa fa-cog"></i> 查询成品检验
-                </a>
                 <a class="btn btn-success" onclick="queryVendor()">
                     <i class="fa fa-bullhorn"></i> 查询合格供方
                 </a>
@@ -50,52 +51,25 @@
                 <a class="btn btn-danger" onclick="queryProcUnusual()">
                     <i class="fa fa-exclamation-circle"></i> 查询过程异常
                 </a>
-                <a class="btn btn-warning" onclick="queryProdUnusual()">
-                    <i class="fa fa-flag"></i> 查询成品异常
+                <a class="btn btn-info" onclick="queryProdInUnusual()">
+                    <i class="fa fa-cog"></i> 查询入库检验异常
+                </a>
+                <a class="btn btn-warning" onclick="queryProdOutUnusual()">
+                    <i class="fa fa-flag"></i> 查询成品出货检验异常
                 </a>
             </div>
-            <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
-                <table id="bootstrap-table" style="min-width:2000px;"></table>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+            <div class="btn-group-sm" id="toolbar1" role="group">
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <p class="select-title"></p>
+                <table id="bootstrap-table1"></table>
             </div>
         </div>
-        <!--饼图-->
-        <div class="row" style="margin-top: 20px;">
-            <div class="col-sm-12">
-                <div class="col-sm-6" id="pieleft">
-                    <div class="ibox float-e-margins">
-                        <div id="div0" class="ibox-title">
-                            <h5>订单号下所有工单不良项目TOP10</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <div style="height:400px" class="echarts" id="echarts-pie-chart-project"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6" id="pieright">
-                    <div class="ibox float-e-margins">
-                        <div id="div1" class="ibox-title">
-                            <h5>不良项目TOP10</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <div style="height:400px" class="echarts" id="echarts-pie-chart-pname"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--折线图-->
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-                        <div class="echarts" id="echarts-line-chart"></div>
-                    </div>
-                </div>
-            </div>
-         </div>
       </div>
     </div>
-    <th:block th:include="include :: echarts-js" />
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
         var prefix = ctx + "query";
@@ -108,7 +82,6 @@
                 if(result.data.updateBy !=""){
                     $('#vendor').val(result.data.updateBy);
                     $('#div1').empty().html('<h5>不良项目TOP10</h5>');
-                    loadPieChartRight();
                 }
             });  
         }
@@ -116,6 +89,7 @@
         function query(){
             $.table.destroy();
             var options = {
+                id:"bootstrap-table",
                 url: prefix + "/delivery/list",
                 singleSelect:true,
                 onCheck: onCheck,
@@ -138,7 +112,8 @@
                 },
                 {
                     field: 'dcode',
-                    title: '订单号'
+                    title: '订单号',
+                    visible: false
                 },
                 {
                     field: 'pcode',
@@ -151,6 +126,7 @@
                 {
                     field: 'pspec',
                     title: '产品规格',
+                    visible: false,
                     formatter: function(value, row, index) {
                        return $.common.nullToStr(value);
                     }
@@ -192,17 +168,70 @@
             };
             $.table.init(options);
         }
-       
         //选中行
         function onCheck(row, $element){
-            //加载饼图
-            $('#pcode').val(row.pcode);
-            //订单号
-            var dcode = row.dcode;
-            $('#div0').empty().html('<h5>'+dcode+'订单下所有工单未处理不良项目TOP10</h5>');
-            loadPieChartLeft(dcode);
-            //折线图
-            loadLineChart(dcode);
+            debugger;
+            //成品批次号
+            var flot = row.flot;
+            $('#wcode').val(flot);
+            $('.select-title').text(flot +"不良项目列表");
+            $("#bootstrap-table1").bootstrapTable('destroy');
+            
+            var prefix = ctx + "qc/badproject";
+            console.log(prefix + "/list");
+            var options1 = {
+                id:"bootstrap-table1",
+                toolbar:"toolbar1",
+                url: prefix + "/list",
+                showSearch: false,
+		        showRefresh: false,
+		        showToggle: false,
+		        showColumns: false,
+                modalName: "不良项目记录信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'ID',
+                    visible: false
+                },
+                {
+                    field: 'wcode',
+                    title: '工单号'
+                },
+                {
+                    field: 'pcode',
+                    title: '成品编号',
+                    visible: false
+                },
+                {
+                    field: 'pname',
+                    title: '产品名称'
+                },
+                {
+                    field: 'qty',
+                    title: '不良数量'
+                },
+                {
+                    field: 'memo',
+                    title: '不良描述'
+                },
+                {
+                    field: 'causeway',
+                    title: '原因对策'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-edit"></i>打开</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options1);
         }
         //标注
         function remark(rowId,dlot){
@@ -212,7 +241,7 @@
 
         //查询订单
         function queryOrder(){
-            var rows = $.table.selectColumns('dcode');
+            var rows = $.table.selectColumns('flot');
             if (rows.length == 0) {
                 $.modal.alertWarning("请至少选择一条记录");
                 return;
@@ -229,240 +258,36 @@
                 return;
             }
             var pcode = rows[0];
-            var vendor = "admin";
-            console.log(rows[0]+vendor);
+            console.log(rows[0]);
             var url = prefix + '/standard/'+rows[0];
             console.log(url);
             $.modal.openTab("查询标准", url);
         }
-        //查询成品检验
-        function queryProdcm(){
-            var rows = $.table.selectColumns('pcode');
-            if (rows.length == 0) {
-                $.modal.alertWarning("请至少选择一条记录");
-                return;
-            }
-            console.log(rows[0]);
-            var url = ctx + "qc/prodcm/"+rows[0]+"/''";
-            console.log(url);
-            $.modal.openTab("成品检验", url);
-        }
+        
         //查询合格供方
         function queryVendor(){
-            var url = ctx + "bs/vendor";
+            var url = prefix + "/vendor";
             $.modal.openTab("合格供方名录",url);
         }
         //查询材料异常
         function queryMatUnusual(){
-            var url = ctx + "qc/matcm/main/0";
+            var url = prefix + "/matunusual/0";
             $.modal.openTab('查询材料异常',url);
         }
         //查询过程异常
         function queryProcUnusual(){
-            var url = ctx + "qc/proccm/0";
+            var url = prefix + "/procunusual/0";
             $.modal.openTab('查询过程异常',url);
         }
-        //查询成品异常
-        function queryProdUnusual(){
-            var url = ctx + "qc/prodcm/0";
-            $.modal.openTab('查询成品异常',url);
+        //查询入库检验异常
+        function queryProdInUnusual(){
+            var url = prefix + "/produnusual/0/0";
+            $.modal.openTab('查询入库检验异常',url);
         }
-        //加载 左侧 饼图
-        function loadPieChartLeft(dcode){
-            $.ajax({
-                url : prefix + "/loadPieChartLeft",
-                type : "POST",
-                async : false,
-                data: {"dcode":dcode},
-                dataType : "json",
-                success : function(result) {
-                    console.log(JSON.stringify(result.projectList));
-                    var json = JSON.stringify(result.projectList);
-                    if($.common.isNotEmpty(json)){
-                        $('#pieleft').css("display","block");
-                        //不良项目饼图
-                        var pieChartProject = echarts.init(document.getElementById("echarts-pie-chart-project"));
-                        var optionProject = {
-                            tooltip: {
-                                trigger: 'item'
-                            },
-                            legend: {
-                                top: 'bottom',
-                                padding:1,
-                                left: 'center'
-                            },
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    dataZoom: {
-                                        show:false,
-                                        yAxisIndex: 'none'
-                                    },
-                                    dataView: {readOnly: false},
-                                    saveAsImage: {}
-                                }
-                            },
-                            series: [
-                                {
-                                    type: 'pie',
-                                    radius: ['40%', '70%'],
-                                    avoidLabelOverlap: false,
-                                    label: {
-                                        formatter: '{b}:({d}%)'
-                                    },
-                                    emphasis: {
-                                        shadowBlur: 10,
-                                        shadowOffsetX: 0,
-                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    },
-                                    labelLine: {
-                                        show: true
-                                    },
-                                    data: result.projectList
-                                    // data: [
-                                    //     {value: 1048, name: '搜索引擎'},
-                                    //     {value: 735, name: '直接访问'},
-                                    //     {value: 580, name: '邮件营销'},
-                                    //     {value: 484, name: '联盟广告'},
-                                    //     {value: 300, name: '视频广告'}
-                                    // ]
-                                }
-                            ]
-                        };
-                        pieChartProject.setOption(optionProject);
-                        $(window).resize(pieChartProject.resize);
-                    }
-                }
-            })            
-        }
-        //加载 右侧 饼图
-        function loadPieChartRight(){
-            $.ajax({
-                url : prefix + "/loadPieChartRight",
-                type : "POST",
-                async : false,
-                data: {"vendor":$('#vendor').val()},
-                dataType : "json",
-                success : function(result) {
-                    console.log(JSON.stringify(result.pnameList));
-                    var json = JSON.stringify(result.pnameList);
-                    if($.common.isNotEmpty(json)){
-                        $('#pieright').css("display","block");
-                        //成品名称饼图
-                        var pieChartPname = echarts.init(document.getElementById("echarts-pie-chart-pname"));
-                        var optionPname  = {
-                            tooltip: {
-                                trigger: 'item'
-                            },
-                            legend: {
-                                top: 'bottom',
-                                padding: -4,
-                                left: 'center'
-                            },
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    dataZoom: {
-                                        show:false,
-                                        yAxisIndex: 'none'
-                                    },
-                                    dataView: {readOnly: false},
-                                    saveAsImage: {}
-                                }
-                            },
-                            series: [
-                                {
-                                    type: 'pie',
-                                    radius: ['40%', '70%'],
-                                    center: ['50%', '50%'],
-                                    avoidLabelOverlap: false,
-                                    label: {
-                                        formatter: '{b}:({d}%)'
-                                    },
-                                    emphasis: {
-                                        shadowBlur: 10,
-                                        shadowOffsetX: 0,
-                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    },
-                                    labelLine: {
-                                        show: true
-                                    },
-                                    data: result.pnameList
-                                }
-                            ]
-                        };
-                        pieChartPname.setOption(optionPname);
-                        $(window).resize(pieChartPname.resize);
-                    }
-                }
-            })            
-        }
-        //加载折线图
-        function loadLineChart(dcode){
-            $.ajax({
-                url : prefix + "/loadLineChart",
-                type : "POST",
-                async : false,
-                data: {"dcode":dcode},
-                dataType : "json",
-                success : function(result) {
-                    console.log(result.wCodeList + "||"+result.standardYieldList+ "||"+ result.actualYieldList+"||")
-                    var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
-                    var lineoption = {
-                        title: {
-                            text: dcode + '订单下所有工单成品率趋势'
-                        },
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        legend: {
-                            data: ['实际成品率', '标准成品率']
-                        },
-                        toolbox: {
-                            show: true,
-                            feature: {
-                                dataView: {
-                                    show:false
-                                },
-                                dataZoom: {
-                                    show:false,
-                                    yAxisIndex: 'none'
-                                },
-                                dataView: {readOnly: false},
-                                magicType: {type: ['line', 'bar']},
-                                restore: {},
-                                saveAsImage: {}
-                            }
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: result.wCodeList
-                        },
-                        yAxis: {
-                            type: 'value',
-                            axisLabel: {
-                                formatter: '{value} %'
-                            }
-                        },
-                        series: [
-                            {
-                                name: '实际成品率',
-                                type: 'line',
-                                data: result.actualYieldList
-                            },
-                            {
-                                name: '标准成品率',
-                                type: 'line',
-                                data: result.standardYieldList
-                            }
-                        ]
-                    };
-                    lineChart.setOption(lineoption);
-                    $(window).resize(lineChart.resize);
-                }
-            })
-            
+        //查询成品出货检验异常
+        function queryProdOutUnusual(){
+            var url = prefix + "/produnusual/0/1";
+            $.modal.openTab('查询成品出货检验异常',url);
         }
     </script>
 </body>

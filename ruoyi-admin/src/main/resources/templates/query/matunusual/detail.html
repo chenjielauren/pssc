@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('修改过程检验记录')" />
+    <th:block th:include="include :: header('详情原材料检验记录')" />
     <th:block th:include="include :: datetimepicker-css" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-proccm-edit" th:object="${qcProcessCheckMain}">
+        <form class="form-horizontal m" id="form-matcm-edit" th:object="${qcMatCheckMain}">
             <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
             <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
             <h4 class="form-header h4">基本信息</h4>
             <input name="id" th:field="*{id}" type="hidden">
             <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">工单号：</label>
+                <label class="col-sm-2 control-label is-required">检验单号：</label>
                 <div class="col-sm-4">
                     <input name="qcode" th:field="*{qcode}" class="form-control" type="text" required>
                 </div>
                 <label class="col-sm-2 control-label is-required">检验时间：</label>
                 <div class="col-sm-4">
                     <div class="input-group date">
-                        <input name="qtime" th:value="${#dates.format(qcProcessCheckMain.qtime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
+                        <input name="qtime" th:value="${#dates.format(qcMatCheckMain.qtime, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss" type="text" required>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -31,53 +31,53 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">产品编号：</label>
+                <label class="col-sm-2 control-label is-required">材料编号：</label>
                 <div class="col-sm-4">
                     <input name="pcode" th:field="*{pcode}" class="form-control" type="text" required>
                 </div>
-                <label class="col-sm-2 control-label is-required">产品名称：</label>
+                <label class="col-sm-2 control-label is-required">材料名称：</label>
                 <div class="col-sm-4">
                     <input name="pname" th:field="*{pname}" class="form-control" type="text" required>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">产品规格：</label>
+            <div class="form-group">   
+                <label class="col-sm-2 control-label">材料规格：</label>
                 <div class="col-sm-4">
                     <input name="pspec" th:field="*{pspec}" class="form-control" type="text">
+                </div> 
+                <label class="col-sm-2 control-label is-required">批次号：</label>
+                <div class="col-sm-4">
+                    <input name="lot" th:field="*{lot}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">  
+                <label class="col-sm-2 control-label is-required">供方名称：</label>
+                <div class="col-sm-10">
+                    <input name="vendor" th:field="*{vendor}" class="form-control" type="text" required>
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-2 control-label is-required">检验工序：</label>
-                <div class="col-sm-4">
-                    <input name="cwork" th:field="*{cwork}" class="form-control" type="text" required>
-                </div>
-                <label class="col-sm-2 control-label">检验机台：</label>
-                <div class="col-sm-4">
-                    <input name="cstation" th:field="*{cstation}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group"> 
-                <label class="col-sm-2 control-label is-required">检验类型：</label>
-                <div class="col-sm-4">
-                    <select name="ctype" class="form-control m-b" th:with="type=${@dict.getType('bs_pqc_type')}" required>
-                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{ctype}"></option>
-                    </select>
-                </div>   
                 <label class="col-sm-2 control-label is-required">检验结果：</label>
                 <div class="col-sm-4">
                     <div class="radio-box" th:each="dict : ${@dict.getType('pp_qc_result')}">
-                        <input type="radio" th:id="${'qcResult_' + dict.dictCode}" name="qcResult" th:value="${dict.dictValue}" th:field="*{qcResult}" required>
+                        <input type="radio" th:id="${'qcResult_' + dict.dictCode}" name="qcResult" th:value="${dict.dictValue}" th:field="*{qcResult}">
                         <label th:for="${'qcResult_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
                     </div>
                 </div>
+                <label class="col-sm-2 control-label is-required">处理结果</label>
+                <div class="col-sm-4">
+                    <select name="handleResult" class="form-control m-b" th:with="type=${@dict.getType('qc_handle_result')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{handleResult}"></option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group" >
+            <div class="form-group">
                 <label class="col-sm-2 control-label">备注：</label>
                 <div class="col-sm-10">
                     <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
                 </div>
             </div>
-            <h4 class="form-header h4">检验标准信息</h4>
+            <h4 class="form-header h4">材料检验信息</h4>
             <div class="row">
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-white btn-sm" onclick="addColumn('')"><i class="fa fa-plus"> 增加</i></button>
@@ -93,15 +93,17 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <script th:inline="javascript">
-        var prefix = ctx + "qc/proccm";
+        var prefix = ctx + "qc/matcm";
         var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
-        $("#form-proccm-edit").validate({
+        var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
+        var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
+        $("#form-matcm-edit").validate({
             focusCleanup: true
         });
 
         function submitHandler() {
             if ($.validate.form()) {
-                $.operate.save(prefix + "/edit", $('#form-proccm-edit').serialize());
+                $.operate.save(prefix + "/edit", $('#form-matcm-edit').serialize());
             }
         }
 
@@ -113,10 +115,10 @@
 
         $(function() {
             var options = {
-                modalName: "检验标准信息",
-                importUrl: ctx + "qc/proccd/importData",
-                importTemplateUrl: ctx + "qc/proccd/importTemplate",
-                data: [[${qcProcessCheckMain.qcProcessCheckDetailList}]],
+                modalName: "材料信息",
+                importUrl: ctx + "qc/matcd/importData",
+                importTemplateUrl: ctx + "qc/matcd/importTemplate",
+                data: [[${qcMatCheckMain.qcMatCheckDetailList}]],
                 pagination: false,
                 showSearch: false,
                 showRefresh: false,
@@ -131,34 +133,34 @@
                     align: 'center',
                     title: "序号",
                     formatter: function (value, row, index) {
-                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='qcProcessCheckDetailList[%s].orderno' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
+                    	var columnIndex = $.common.sprintf("<input class='form-control' type='hidden' name='qcMatCheckDetailList[%s].orderno' value='%s'><input type='hidden' name='index' value='%s'>", index,$.table.serialNumber(index),$.table.serialNumber(index));
                     	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'cproject',
+                    align: 'center',
+                    title: '检验项目',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].cproject' value='%s'>", index, value);
+                        return html;
                     }
                 },
                 {
                     field: 'projectCode',
                     align: 'center',
-                    title: '项目编号',
+                    title: '检验项目编号',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].projectCode' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].projectCode' value='%s'>", index, value);
                         return html;
                     }
-				},
-                {
-                    field: 'cproject',
-                    align: 'center',
-                    title: '检验项目名称',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].cproject' value='%s'>", index, value);
-                        return html;
-                    }
-				},
+                },
                 {
                     field: 'csop',
                     align: 'center',
                     title: '检验标准',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].csop' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].csop' value='%s'>", index, value);
                         return html;
                     }
 				},
@@ -167,7 +169,7 @@
                     align: 'center',
                     title: '检验方法',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].cmethod' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].cmethod' value='%s'>", index, value);
                         return html;
                     }
 				},
@@ -176,27 +178,17 @@
                     align: 'center',
                     title: '检验结果',
                     formatter: function(value, row, index) {
-                        var name = $.common.sprintf("qcProcessCheckDetailList[%s].qcResult", index);
+                        var name = $.common.sprintf("qcMatCheckDetailList[%s].qcResult", index);
                         return $.common.dictToSelect(qcResultDatas, value, name);
                     }
                 },
                 {
-                    field: 'isValid',
-                    align: 'center',
-                    visible: false,
-                    title: '有效否',
-                    formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].isValid' value='%s'>", index, value);
-                        return html;
-                    }
-				},
-                {
                     field: 'createBy',
                     align: 'center',
-                    title: '创建人',
                     visible: false,
+                    title: '创建人',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].createBy' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].createBy' value='%s'>", index, value);
                         return html;
                     }
 				},
@@ -206,7 +198,7 @@
                     visible: false,
                     title: '创建时间 默认为当前时间',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].createTime' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].createTime' value='%s'>", index, value);
                         return html;
                     }
 				},
@@ -216,17 +208,17 @@
                     visible: false,
                     title: '修改人',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].updateBy' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].updateBy' value='%s'>", index, value);
                         return html;
                     }
 				},
                 {
                     field: 'updateTime',
                     align: 'center',
-                    title: '修改时间',
                     visible: false,
+                    title: '修改时间',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcProcessCheckDetailList[%s].updateTime' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcMatCheckDetailList[%s].updateTime' value='%s'>", index, value);
                         return html;
                     }
 				}]
@@ -243,8 +235,8 @@
                 row: {
                     index: $.table.serialNumber(count),
                     orderno: $.table.serialNumber(count),
-                    projectCode: $.common.isNotEmpty(obj)?obj.projectCode:"",
                     cproject: $.common.isNotEmpty(obj)?obj.cproject:"",
+                    projectCode: $.common.isNotEmpty(obj)?obj.projectCode:"",
                     csop: $.common.isNotEmpty(obj)?obj.csop:"",
                     cmethod: $.common.isNotEmpty(obj)?obj.cmethod:"",
                     qcResult: $.common.isNotEmpty(obj)?obj.qcResult:"",

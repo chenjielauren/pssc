@@ -61,7 +61,7 @@
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="pp:wbmain:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:matcm:import">
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:wbmain:import">
 				    <i class="fa fa-upload"></i> 导入
 				</a>
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="pp:wbmain:export">
@@ -69,7 +69,7 @@
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
-                <table id="bootstrap-table" style="min-width:1500px;"></table>
+                <table id="bootstrap-table" style="min-width:1200px;"></table>
             </div>
         </div>
     </div>

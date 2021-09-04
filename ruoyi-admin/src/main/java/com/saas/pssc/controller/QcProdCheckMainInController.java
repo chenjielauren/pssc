@@ -25,58 +25,58 @@ import com.saas.common.utils.poi.ExcelUtil;
 import com.saas.common.core.page.TableDataInfo;
 
 /**
- * 成品检验记录Controller
+ * 成品入库检验记录Controller
  * 
  * @author admin
  * @date 2021-07-25
  */
 @Controller
-@RequestMapping("/qc/prodcm")
-public class QcProdCheckMainController extends BaseController
+@RequestMapping("/qc/prodcm/in")
+public class QcProdCheckMainInController extends BaseController
 {
-    private String prefix = "qc/prodcm";
+    private String prefix = "qc/prodcm/in";
 
     @Autowired
     private IQcProdCheckMainService qcProdCheckMainService;
 
-    @RequiresPermissions("qc:prodcm:view")
-    @GetMapping(value = {"","/{pcode}/''","/{qcResult}" })
-    public String prodcm(@PathVariable(value = "pcode", required = false) String pcode,@PathVariable(value = "qcResult", required = false) String qcResult, ModelMap mmap)
+    @RequiresPermissions("qc:prodcm:in:view")
+    @GetMapping()
+    public String prodcm()
     {
-        mmap.put("pcode", pcode);
-        mmap.put("qcResult", qcResult);
         return prefix + "/prodcm";
     }
 
     /**
-     * 查询成品检验记录列表
+     * 查询成品入库检验记录列表
      */
-    @RequiresPermissions("qc:prodcm:list")
+    @RequiresPermissions("qc:prodcm:in:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(QcProdCheckMain qcProdCheckMain)
     {
         startPage();
+        qcProdCheckMain.setOperType("0");
         List<QcProdCheckMain> list = qcProdCheckMainService.selectQcProdCheckMainList(qcProdCheckMain);
         return getDataTable(list);
     }
 
     /**
-     * 导出成品检验记录列表
+     * 导出成品入库检验记录列表
      */
-    @RequiresPermissions("qc:prodcm:export")
-    @Log(title = "成品检验记录", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("qc:prodcm:in:export")
+    @Log(title = "成品入库检验记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(QcProdCheckMain qcProdCheckMain)
     {
+        qcProdCheckMain.setOperType("0");
         List<QcProdCheckMain> list = qcProdCheckMainService.selectQcProdCheckMainList(qcProdCheckMain);
         ExcelUtil<QcProdCheckMain> util = new ExcelUtil<QcProdCheckMain>(QcProdCheckMain.class);
-        return util.exportExcel(list, "成品检验记录数据");
+        return util.exportExcel(list, "成品入库检验记录数据");
     }
 
     /**
-     * 新增成品检验记录
+     * 新增成品入库检验记录
      */
     @GetMapping("/add")
     public String add()
@@ -85,10 +85,10 @@ public class QcProdCheckMainController extends BaseController
     }
 
     /**
-     * 新增保存成品检验记录
+     * 新增保存成品入库检验记录
      */
-    @RequiresPermissions("qc:prodcm:add")
-    @Log(title = "成品检验记录", businessType = BusinessType.INSERT)
+    @RequiresPermissions("qc:prodcm:in:add")
+    @Log(title = "成品入库检验记录", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(QcProdCheckMain qcProdCheckMain)
@@ -97,7 +97,7 @@ public class QcProdCheckMainController extends BaseController
     }
 
     /**
-     * 修改成品检验记录
+     * 修改成品入库检验记录
      */
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, ModelMap mmap)
@@ -108,10 +108,10 @@ public class QcProdCheckMainController extends BaseController
     }
 
     /**
-     * 修改保存成品检验记录
+     * 修改保存成品入库检验记录
      */
-    @RequiresPermissions("qc:prodcm:edit")
-    @Log(title = "成品检验记录", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("qc:prodcm:in:edit")
+    @Log(title = "成品入库检验记录", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(QcProdCheckMain qcProdCheckMain)
@@ -120,10 +120,10 @@ public class QcProdCheckMainController extends BaseController
     }
 
     /**
-     * 删除成品检验记录
+     * 删除成品入库检验记录
      */
-    @RequiresPermissions("qc:prodcm:remove")
-    @Log(title = "成品检验记录", businessType = BusinessType.DELETE)
+    @RequiresPermissions("qc:prodcm:in:remove")
+    @Log(title = "成品入库检验记录", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody
     public AjaxResult remove(String ids)
@@ -138,13 +138,13 @@ public class QcProdCheckMainController extends BaseController
     public AjaxResult importTemplate()
     {
         ExcelUtil<QcProdCheckMain> util = new ExcelUtil<QcProdCheckMain>(QcProdCheckMain.class);
-        return util.importTemplateExcel("成品检验记录列表");
+        return util.importTemplateExcel("成品入库检验记录列表");
     }
     
     /**
      * 导入数据
      */
-    @RequiresPermissions("qc:prodcm:import")
+    @RequiresPermissions("qc:prodcm:in:import")
     @PostMapping("/importData")
     @ResponseBody
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
@@ -156,9 +156,9 @@ public class QcProdCheckMainController extends BaseController
     }
 
     /**
-     * 导入成品检验记录数据
+     * 导入成品入库检验记录数据
      * 
-     * @param userList 成品检验记录数据列表
+     * @param userList 成品入库检验记录数据列表
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
      * @return 结果
      */
@@ -166,7 +166,7 @@ public class QcProdCheckMainController extends BaseController
     {
         if (CollectionUtils.isEmpty(list) || list.size() == 0)
         {
-            throw new BusinessException("导入成品检验记录数据不能为空！");
+            throw new BusinessException("导入成品入库检验记录数据不能为空！");
         }
         int successNum = 0;
         int failureNum = 0;
@@ -176,19 +176,20 @@ public class QcProdCheckMainController extends BaseController
         {
             try
             {
+                qcProdCheckMain.setOperType("0");//入库
                 qcProdCheckMain.setIsValid("1");
                 boolean flag = false;
                 List<QcProdCheckMain>  dblist= qcProdCheckMainService.selectQcProdCheckMainList(qcProdCheckMain);
-                logger.info("同名成品检验记录条数："+dblist.size());
+                logger.info("同名成品入库检验记录条数："+dblist.size());
                 if (dblist.size()>0) {
-                	flag = true;  // 验证是否存在这个成品检验记录
+                	flag = true;  // 验证是否存在这个成品入库检验记录
 				}
                 if (!flag)
                 {
                     qcProdCheckMain.setCreateBy(ShiroUtils.getLoginName());
                     qcProdCheckMain.setUpdateBy(ShiroUtils.getLoginName());
                     // qcProdCheckMain.setIsValid("1");
-                    qcProdCheckMainService.insertQcProdCheckMain(qcProdCheckMain);//插入成品检验记录
+                    qcProdCheckMainService.insertQcProdCheckMain(qcProdCheckMain);//插入成品入库检验记录
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、产品编号 " +qcProdCheckMain.getPcode() + " 产品名称" +qcProdCheckMain.getPname() + " 导入成功");
                 }
@@ -196,7 +197,7 @@ public class QcProdCheckMainController extends BaseController
                 {
                     qcProdCheckMain.setId(dblist.get(0).getId());
                     qcProdCheckMain.setUpdateBy(ShiroUtils.getLoginName());
-                	qcProdCheckMainService.updateQcProdCheckMain(qcProdCheckMain);//修改成品检验记录
+                	qcProdCheckMainService.updateQcProdCheckMain(qcProdCheckMain);//修改成品入库检验记录
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、产品编号 " +qcProdCheckMain.getPcode() + " 产品名称" +qcProdCheckMain.getPname() + " 更新成功");
                 }

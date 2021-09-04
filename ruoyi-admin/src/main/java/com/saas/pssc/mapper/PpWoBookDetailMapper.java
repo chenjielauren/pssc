@@ -1,6 +1,8 @@
 package com.saas.pssc.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.saas.pssc.domain.PpWoBookDetail;
 
 /**
@@ -60,4 +62,6 @@ public interface PpWoBookDetailMapper
     public int deletePpWoBookDetailByIds(String[] ids);
 
 	public List<PpWoBookDetail> loadLineChart(String dcode);
+
+	public List<PpWoBookDetail> selectPpWoBookDetailByMap(Map<String, Object> paramMap);
 }

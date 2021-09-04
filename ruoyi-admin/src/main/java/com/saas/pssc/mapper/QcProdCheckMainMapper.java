@@ -85,5 +85,11 @@ public interface QcProdCheckMainMapper
      */
     public int deleteQcProdCheckDetailByMainId(String id);
 
-	public List<String> selectQcResult(String dcode);
+    /**
+     * 首页的成品批次号查找成品检验记录里对应的批次号结果
+     * 
+     * @param lot 订单号
+     * @return 结果
+     */
+	public List<String> selectQcResult(String lot);
 }

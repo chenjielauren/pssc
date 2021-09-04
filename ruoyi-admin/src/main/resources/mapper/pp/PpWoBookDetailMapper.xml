@@ -176,6 +176,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             select id 
             from pp_wo_book_main  
             where orderno = #{dcode} and is_valid = '1')
+        order by orderno
+    </select>
+
+    <select id="selectPpWoBookDetailByMap" parameterType="Map" resultMap="PpWoBookDetailResult">
+        <include refid="selectPpWoBookDetailVo"/>
+        <where>  
+            <if test="soncode != null  and soncode != ''"> and soncode= #{soncode}</if>
+            <if test="mcode != null  and mcode != ''"> and mcode = #{mcode}</if>
+            <if test="mname != null  and mname != ''"> and mname like concat('%', #{mname}, '%')</if>
+            <if test="mspec != null  and mspec != ''"> and mspec = #{mspec}</if>
+            <if test="stime != null "> and stime = #{stime}</if>
+            <if test="etime != null "> and etime = #{etime}</if>
+            <if test="cwork != null  and cwork != ''"> and cwork = #{cwork}</if>
+            <if test="cstation != null  and cstation != ''"> and cstation = #{cstation}</if>
+            <if test="planqty != null  and planqty != ''"> and planqty = #{planqty}</if>
+            <if test="inputqty != null  and inputqty != ''"> and inputqty = #{inputqty}</if>
+            <if test="outputqty != null  and outputqty != ''"> and outputqty = #{outputqty}</if>
+            <if test="stdtime != null  and stdtime != ''"> and stdtime = #{stdtime}</if>
+            <if test="stdrate != null  and stdrate != ''"> and stdrate = #{stdrate}</if>
+            <if test="acttime != null  and acttime != ''"> and acttime = #{acttime}</if>
+            <if test="actrate != null  and actrate != ''"> and actrate = #{actrate}</if>
+        </where>
     </select>
 
 </mapper>

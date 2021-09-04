@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('成品检验记录列表')" />
+    <th:block th:include="include :: header('成品入库检验记录列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
         <div class="row">
             <div class="col-sm-12 search-collapse">
                 <form id="formId">
+                    <input type="hidden" name="operType" th:value="*{operType}"/>
                     <div class="select-list">
                         <ul>
                             <li>
@@ -23,17 +24,21 @@
                             
                             <li>
                                 <label>成品编号：</label>
-                                <input type="text" name="pcode"/>
+                                <input type="text" name="pcode" th:value="${pcode}"/>
                             </li>
                             <li>
                                 <label>成品名称：</label>
                                 <input type="text" name="pname"/>
                             </li>
                             <li>
+                                <label>批次号：</label>
+                                <input type="text" name="lot"  th:value="${lot}"/>
+                            </li>
+                            <li>
                                 <label>检验结果：</label>
                                 <select name="qcResult" th:with="type=${@dict.getType('pp_qc_result')}">
                                     <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:selected="${dict.dictValue == qcResult}"></option>
                                 </select>
                             </li>
                             <li>
@@ -45,55 +50,42 @@
                 </form>
             </div>
 
-            <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="qc:prodcm:add">
+            <!-- <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="qc:prodcm:in:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="qc:prodcm:edit">
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="qc:prodcm:in:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="qc:prodcm:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="qc:prodcm:in:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:prodcm:import">
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:prodcm:in:import">
 				    <i class="fa fa-upload"></i> 导入
 				</a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="qc:prodcm:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="qc:prodcm:in:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
-            </div>
+            </div> -->
             <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
-                <table id="bootstrap-table" style="min-width:1500px;"></table>
+                <table id="bootstrap-table" style="min-width:1200px;"></table>
             </div>
         </div>
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('qc:prodcm:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('qc:prodcm:remove')}]];
+        var editFlag = [[${@permission.hasPermi('qc:prodcm:in:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('qc:prodcm:in:remove')}]];
         var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
         var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
-        var prefix = ctx + "qc/prodcm";
-        var pcode = [[${pcode}]];
-        var qcResult = [[${qcResult}]];
+        var prefix = ctx + "query/produnusual";
 
         $(function() {
-            if($.common.isNotEmpty(pcode)){
-                $("input[name='pcode']").val(pcode);
-            }
-            if($.common.isNotEmpty(qcResult)){
-                $("select[name='qcResult']").val(qcResult);
-            }
             var options = {
                 url: prefix + "/list",
-                createUrl: prefix + "/add",
-                updateUrl: prefix + "/edit/{id}",
-                removeUrl: prefix + "/remove",
-                exportUrl: prefix + "/export",
-                importUrl: prefix + "/importData",
-                importTemplateUrl: prefix + "/importTemplate",
-                modalName: "成品检验记录",
+                detailUrl: prefix + "/detail/{id}",
+                modalName: "成品异常记录",
                 columns: [{
                     checkbox: true
                 },
@@ -159,8 +151,8 @@
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-edit"></i>打开</a> ');
+                        // actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
                 }]

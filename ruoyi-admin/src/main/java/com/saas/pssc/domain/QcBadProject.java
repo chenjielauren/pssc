@@ -1,19 +1,18 @@
 package com.saas.pssc.domain;
 
 import java.math.BigDecimal;
-import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.saas.common.annotation.Excel;
 import com.saas.common.core.domain.BaseEntity;
 
 /**
- * 不良项目记录对象 qc_bad_project_main
+ * 不良项目汇总对象 qc_bad_project
  * 
  * @author admin
- * @date 2021-08-03
+ * @date 2021-09-04
  */
-public class QcBadProjectMain extends BaseEntity
+public class QcBadProject extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -24,21 +23,33 @@ public class QcBadProjectMain extends BaseEntity
     @Excel(name = "工单号")
     private String wcode;
 
-    /** 产品编号 */
-    @Excel(name = "产品编号")
+    /** 成品编号 */
+    @Excel(name = "成品编号")
     private String pcode;
 
-    /** 产品名称 */
-    @Excel(name = "产品名称")
+    /** 成品名称 */
+    @Excel(name = "成品名称")
     private String pname;
+
+    /** 不良项目 */
+    @Excel(name = "不良项目")
+    private String project;
 
     /** 产品规格 */
     @Excel(name = "产品规格")
     private String pspec;
 
+    /** 批次号 */
+    @Excel(name = "批次号")
+    private String lot;
+
     /** 投入数量 */
     @Excel(name = "投入数量")
     private BigDecimal inqty;
+
+    /** 不良数量 */
+    @Excel(name = "不良数量")
+    private Long qty;
 
     /** 产出数量 */
     @Excel(name = "产出数量")
@@ -48,26 +59,45 @@ public class QcBadProjectMain extends BaseEntity
     @Excel(name = "良品率")
     private String okratio;
 
-    /** 有效否 0失效1有效 */
+    /** 有效否 */
     private String isValid;
 
-    /** 备注 */
-    @Excel(name = "备注")
-    private String remark;
-    
+    /** 发生工序 */
+    @Excel(name = "发生工序")
+    private String cwork;
+
+    /** 发生机台 */
+    @Excel(name = "发生机台")
+    private String cstation;
+
     /**  */
     private String attribute1;
+
+    /** 不良描述 */
+    @Excel(name = "不良描述")
+    private String memo;
 
     /**  */
     private String attribute2;
 
+    /** 临时对策 */
+    @Excel(name = "临时对策")
+    private String tempway;
+
     /**  */
     private String attribute3;
 
-    /** 不良项目记录明细信息 */
-    private List<QcBadProjectDetail> qcBadProjectDetailList;
+    /** 原因分析 */
+    @Excel(name = "原因分析")
+    private String cause;
 
-    private String vendor;//供应商名称
+    /** 原因对策 */
+    @Excel(name = "原因对策")
+    private String causeway;
+
+    /** 处理结果 */
+    @Excel(name = "处理结果")
+    private String handleway;
 
     public void setId(String id) 
     {
@@ -105,6 +135,15 @@ public class QcBadProjectMain extends BaseEntity
     {
         return pname;
     }
+    public void setProject(String project) 
+    {
+        this.project = project;
+    }
+
+    public String getProject() 
+    {
+        return project;
+    }
     public void setPspec(String pspec) 
     {
         this.pspec = pspec;
@@ -114,6 +153,15 @@ public class QcBadProjectMain extends BaseEntity
     {
         return pspec;
     }
+    public void setLot(String lot) 
+    {
+        this.lot = lot;
+    }
+
+    public String getLot() 
+    {
+        return lot;
+    }
     public void setInqty(BigDecimal inqty) 
     {
         this.inqty = inqty;
@@ -122,6 +170,15 @@ public class QcBadProjectMain extends BaseEntity
     public BigDecimal getInqty() 
     {
         return inqty;
+    }
+    public void setQty(Long qty) 
+    {
+        this.qty = qty;
+    }
+
+    public Long getQty() 
+    {
+        return qty;
     }
     public void setOutqty(BigDecimal outqty) 
     {
@@ -150,15 +207,24 @@ public class QcBadProjectMain extends BaseEntity
     {
         return isValid;
     }
-
-    public String getRemark() {
-        return remark;
+    public void setCwork(String cwork) 
+    {
+        this.cwork = cwork;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public String getCwork() 
+    {
+        return cwork;
+    }
+    public void setCstation(String cstation) 
+    {
+        this.cstation = cstation;
     }
 
+    public String getCstation() 
+    {
+        return cstation;
+    }
     public void setAttribute1(String attribute1) 
     {
         this.attribute1 = attribute1;
@@ -167,6 +233,15 @@ public class QcBadProjectMain extends BaseEntity
     public String getAttribute1() 
     {
         return attribute1;
+    }
+    public void setMemo(String memo) 
+    {
+        this.memo = memo;
+    }
+
+    public String getMemo() 
+    {
+        return memo;
     }
     public void setAttribute2(String attribute2) 
     {
@@ -177,6 +252,15 @@ public class QcBadProjectMain extends BaseEntity
     {
         return attribute2;
     }
+    public void setTempway(String tempway) 
+    {
+        this.tempway = tempway;
+    }
+
+    public String getTempway() 
+    {
+        return tempway;
+    }
     public void setAttribute3(String attribute3) 
     {
         this.attribute3 = attribute3;
@@ -186,23 +270,32 @@ public class QcBadProjectMain extends BaseEntity
     {
         return attribute3;
     }
-
-    public String getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
-    
-    public List<QcBadProjectDetail> getQcBadProjectDetailList()
+    public void setCause(String cause) 
     {
-        return qcBadProjectDetailList;
+        this.cause = cause;
     }
 
-    public void setQcBadProjectDetailList(List<QcBadProjectDetail> qcBadProjectDetailList)
+    public String getCause() 
     {
-        this.qcBadProjectDetailList = qcBadProjectDetailList;
+        return cause;
+    }
+    public void setCauseway(String causeway) 
+    {
+        this.causeway = causeway;
+    }
+
+    public String getCauseway() 
+    {
+        return causeway;
+    }
+    public void setHandleway(String handleway) 
+    {
+        this.handleway = handleway;
+    }
+
+    public String getHandleway() 
+    {
+        return handleway;
     }
 
     @Override
@@ -212,21 +305,29 @@ public class QcBadProjectMain extends BaseEntity
             .append("wcode", getWcode())
             .append("pcode", getPcode())
             .append("pname", getPname())
+            .append("project", getProject())
             .append("pspec", getPspec())
+            .append("lot", getLot())
             .append("inqty", getInqty())
+            .append("qty", getQty())
             .append("outqty", getOutqty())
-            .append("okratio", getOkratio())
             .append("remark", getRemark())
+            .append("okratio", getOkratio())
             .append("isValid", getIsValid())
+            .append("cwork", getCwork())
             .append("createBy", getCreateBy())
+            .append("cstation", getCstation())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("attribute1", getAttribute1())
+            .append("memo", getMemo())
             .append("attribute2", getAttribute2())
+            .append("tempway", getTempway())
             .append("attribute3", getAttribute3())
-            .append("qcBadProjectDetailList", getQcBadProjectDetailList())
+            .append("cause", getCause())
+            .append("causeway", getCauseway())
+            .append("handleway", getHandleway())
             .toString();
     }
-
 }

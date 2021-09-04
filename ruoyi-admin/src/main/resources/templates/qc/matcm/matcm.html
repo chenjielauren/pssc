@@ -32,7 +32,7 @@
                                 <label>检验结果：</label>
                                 <select name="qcResult" th:with="type=${@dict.getType('pp_qc_result')}">
                                     <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"  th:selected="${dict.dictValue == qcResult}"></option>
                                 </select>
                             </li>
                             <li>
@@ -62,7 +62,7 @@
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
-                <table id="bootstrap-table" style="min-width:1500px;"></table>
+                <table id="bootstrap-table" style="min-width:1200px;"></table>
             </div>
         </div>
     </div>
@@ -74,11 +74,7 @@
         var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
         var prefix = ctx + "qc/matcm";
-        var qcResult = [[${qcResult}]];
         $(function() {
-            if($.common.isNotEmpty(qcResult)){
-                $("select[name='qcResult']").val(qcResult);
-            }
             var options = {
                 url: prefix + "/list",
                 createUrl: prefix + "/add",

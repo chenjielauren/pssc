@@ -1,13 +1,17 @@
 package com.saas.pssc.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
+import com.saas.common.core.text.Convert;
 import com.saas.common.utils.DateUtils;
+import com.saas.common.utils.StringUtils;
+import com.saas.pssc.domain.PpWoBookDetail;
+import com.saas.pssc.mapper.PpWoBookDetailMapper;
+import com.saas.pssc.service.IPpWoBookDetailService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.saas.pssc.mapper.PpWoBookDetailMapper;
-import com.saas.pssc.domain.PpWoBookDetail;
-import com.saas.pssc.service.IPpWoBookDetailService;
-import com.saas.common.core.text.Convert;
 
 /**
  * 工单制造信息Service业务层处理
@@ -16,8 +20,7 @@ import com.saas.common.core.text.Convert;
  * @date 2021-08-03
  */
 @Service
-public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService 
-{
+public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService {
     @Autowired
     private PpWoBookDetailMapper ppWoBookDetailMapper;
 
@@ -28,8 +31,7 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
      * @return 工单制造信息
      */
     @Override
-    public PpWoBookDetail selectPpWoBookDetailById(String id)
-    {
+    public PpWoBookDetail selectPpWoBookDetailById(String id) {
         return ppWoBookDetailMapper.selectPpWoBookDetailById(id);
     }
 
@@ -40,8 +42,7 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
      * @return 工单制造信息
      */
     @Override
-    public List<PpWoBookDetail> selectPpWoBookDetailList(PpWoBookDetail ppWoBookDetail)
-    {
+    public List<PpWoBookDetail> selectPpWoBookDetailList(PpWoBookDetail ppWoBookDetail) {
         return ppWoBookDetailMapper.selectPpWoBookDetailList(ppWoBookDetail);
     }
 
@@ -52,8 +53,7 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
      * @return 结果
      */
     @Override
-    public int insertPpWoBookDetail(PpWoBookDetail ppWoBookDetail)
-    {
+    public int insertPpWoBookDetail(PpWoBookDetail ppWoBookDetail) {
         ppWoBookDetail.setCreateTime(DateUtils.getNowDate());
         return ppWoBookDetailMapper.insertPpWoBookDetail(ppWoBookDetail);
     }
@@ -65,8 +65,7 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
      * @return 结果
      */
     @Override
-    public int updatePpWoBookDetail(PpWoBookDetail ppWoBookDetail)
-    {
+    public int updatePpWoBookDetail(PpWoBookDetail ppWoBookDetail) {
         ppWoBookDetail.setUpdateTime(DateUtils.getNowDate());
         return ppWoBookDetailMapper.updatePpWoBookDetail(ppWoBookDetail);
     }
@@ -78,8 +77,7 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
      * @return 结果
      */
     @Override
-    public int deletePpWoBookDetailByIds(String ids)
-    {
+    public int deletePpWoBookDetailByIds(String ids) {
         return ppWoBookDetailMapper.deletePpWoBookDetailByIds(Convert.toStrArray(ids));
     }
 
@@ -90,13 +88,22 @@ public class PpWoBookDetailServiceImpl implements IPpWoBookDetailService
      * @return 结果
      */
     @Override
-    public int deletePpWoBookDetailById(String id)
-    {
+    public int deletePpWoBookDetailById(String id) {
         return ppWoBookDetailMapper.deletePpWoBookDetailById(id);
     }
 
     @Override
     public List<PpWoBookDetail> loadLineChart(String dcode) {
         return ppWoBookDetailMapper.loadLineChart(dcode);
+    }
+
+    @Override
+    public PpWoBookDetail selectPpWoBookDetailByMap(Map<String, Object> paramMap) {
+        List <PpWoBookDetail> list = ppWoBookDetailMapper.selectPpWoBookDetailByMap(paramMap);
+        PpWoBookDetail ppWoBookDetail = new PpWoBookDetail();
+        if(StringUtils.isNotEmpty(list)){
+            ppWoBookDetail = list.get(0);
+        }
+        return ppWoBookDetail;
     }
 }

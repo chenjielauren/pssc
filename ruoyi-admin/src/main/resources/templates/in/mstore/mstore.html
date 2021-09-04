@@ -59,15 +59,15 @@
                 <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="in:instore:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:matcm:import">
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:instore:import">
 				    <i class="fa fa-upload"></i> 导入
 				</a>
                 <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="in:instore:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
-            <div class="col-sm-12 select-table table-striped " style="overflow:scroll;">
-                <table id="bootstrap-table"  style="min-width:1500px;"></table>
+            <div class="col-sm-12 select-table table-striped ">
+                <table id="bootstrap-table"></table>
             </div>
         </div>
     </div>

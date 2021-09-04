@@ -75,6 +75,7 @@ public class PpWoBookBom extends BaseEntity
     @Excel(name = "备注")
     private String remark;
     
+    private BigDecimal iqty;//库存数量
     /**  */
     private String attribute1;
 
@@ -254,6 +255,14 @@ public class PpWoBookBom extends BaseEntity
     public String getAttribute3() 
     {
         return attribute3;
+    }
+    
+    public BigDecimal getIqty() {
+        return iqty;
+    }
+
+    public void setIqty(BigDecimal iqty) {
+        this.iqty = iqty;
     }
 
     @Override

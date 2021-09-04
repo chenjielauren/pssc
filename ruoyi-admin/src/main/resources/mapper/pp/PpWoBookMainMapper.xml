@@ -107,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="qty != null "> and qty = #{qty}</if>
             <if test="pstarTime != null "> and pstar_time = #{pstarTime}</if>
             <if test="pendTime != null "> and pend_time = #{pendTime}</if>
+            <if test="attribute1 != null  and attribute1 != ''"> and wcode = #{attribute1} </if>
             and is_valid = '1' 
             <!-- 数据范围过滤 -->
             ${params.dataScope}

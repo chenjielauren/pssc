@@ -1,6 +1,7 @@
 package com.saas.pssc.controller;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import com.saas.common.core.controller.BaseController;
 import com.saas.common.core.domain.AjaxResult;
 import com.saas.common.core.page.TableDataInfo;
 import com.saas.common.enums.BusinessType;
+import com.saas.common.json.JSONObject;
+import com.saas.common.json.JSONObject.JSONArray;
 import com.saas.common.utils.StringUtils;
 import com.saas.pssc.domain.BsBomMain;
 import com.saas.pssc.domain.BsCraftSopMain;
@@ -20,15 +23,16 @@ import com.saas.pssc.domain.BsMcnMain;
 import com.saas.pssc.domain.BsPqcMain;
 import com.saas.pssc.domain.BsProSopMain;
 import com.saas.pssc.domain.BsVendor;
+import com.saas.pssc.domain.InStore;
+import com.saas.pssc.domain.PpWoBookBom;
 import com.saas.pssc.domain.PpWoBookDetail;
 import com.saas.pssc.domain.PpWoBookMain;
-import com.saas.pssc.domain.QcBadProjectDetail;
-import com.saas.pssc.domain.QcBadProjectMain;
+import com.saas.pssc.domain.QcBadProject;
 import com.saas.pssc.domain.QcMatCheckMain;
 import com.saas.pssc.domain.QcProcessCheckMain;
+import com.saas.pssc.domain.QcProdCheckMain;
 import com.saas.pssc.domain.SdDelivery;
 import com.saas.pssc.domain.SdDeliveryDetail;
-import com.saas.pssc.domain.SdOrder;
 import com.saas.pssc.service.IBsBomMainService;
 import com.saas.pssc.service.IBsCraftSopMainService;
 import com.saas.pssc.service.IBsMatSopDetailService;
@@ -37,16 +41,15 @@ import com.saas.pssc.service.IBsMcnMainService;
 import com.saas.pssc.service.IBsPqcMainService;
 import com.saas.pssc.service.IBsProSopMainService;
 import com.saas.pssc.service.IBsVendorService;
+import com.saas.pssc.service.IInStoreService;
 import com.saas.pssc.service.IPpWoBookDetailService;
 import com.saas.pssc.service.IPpWoBookMainService;
-import com.saas.pssc.service.IQcBadProjectDetailService;
-import com.saas.pssc.service.IQcBadProjectMainService;
+import com.saas.pssc.service.IQcBadProjectService;
 import com.saas.pssc.service.IQcMatCheckMainService;
 import com.saas.pssc.service.IQcProcessCheckMainService;
 import com.saas.pssc.service.IQcProdCheckMainService;
 import com.saas.pssc.service.ISdDeliveryDetailService;
 import com.saas.pssc.service.ISdDeliveryService;
-import com.saas.pssc.service.ISdOrderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,15 +71,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class QueryController extends BaseController
 {
     private String prefix = "query";
+    
+    private String prefix_vendor = "query/vendor";//合格供方名录
 
-    @Autowired
-    private ISdOrderService sdOrderService;//订单信息
+    private String prefix_mat = "query/matunusual";//材料异常
+
+    private String prefix_proc = "query/procunusual";//过程异常
+
+    private String prefix_prod = "query/produnusual";//成品异常
 
     @Autowired
     private IPpWoBookMainService ppWoBookMainService;//工单记录信息
 
     @Autowired
-    private IBsBomMainService bsBomMainService;//BOM明细信息
+    private IBsBomMainService bsBomMainService;//BOM物料清单
+
+    @Autowired
+    private IInStoreService inStoreService;//库存信息
 
     @Autowired
     private IBsCraftSopMainService bsCraftSopMainService;//工艺技术标准
@@ -112,10 +123,7 @@ public class QueryController extends BaseController
     private IQcProdCheckMainService qcProdCheckMainService;//成品检验记录
 
     @Autowired
-    private IQcBadProjectMainService qcBadProjectMainService;//不良项目记录
-
-    @Autowired
-    private IQcBadProjectDetailService qcBadProjectDetailService;//不良项目记录明细
+    private IQcBadProjectService qcBadProjectService;//不良项目记录
 
     @Autowired
     private ISdDeliveryDetailService sdDeliveryDetailService;//发货明细信息
@@ -134,7 +142,7 @@ public class QueryController extends BaseController
         List<SdDelivery> list = sdDeliveryService.selectSdDeliveryList(sdDelivery);
         if(StringUtils.isNotEmpty(list)){
             for(SdDelivery obj:list){
-                List<String> qcResultList = qcProdCheckMainService.selectQcResult(obj.getDcode());
+                List<String> qcResultList = qcProdCheckMainService.selectQcResult(obj.getFlot());
                 if(StringUtils.isEmpty(qcResultList)){
                     obj.setPpState("0");//未填报
                 }else if(qcResultList.size() >= 1 && qcResultList.toString().contains("0")){
@@ -167,78 +175,43 @@ public class QueryController extends BaseController
     /**
      * 查询订单
      */
-    @GetMapping("/order/{ocode}")
-    public String order(@PathVariable("ocode") String ocode, ModelMap mmap)
+    @GetMapping("/order/{flot}")
+    public String order(@PathVariable("flot") String flot, ModelMap mmap)
     {
-        mmap.put("ocode", ocode);
-        return prefix + "/order";
-    }
-
-    /**
-     * 查询订单信息列表
-     */
-    @PostMapping("/order/list")
-    @ResponseBody
-    public TableDataInfo list(SdOrder sdOrder)
-    {
-        startPage();
-        List<SdOrder> list = sdOrderService.selectOrderAndPpList(sdOrder);
-        return getDataTable(list);
-    }
-
-    /**
-     * 查询工单
-     */
-    @GetMapping("/ppwb/{orderno}")
-    public String ppwb(@PathVariable("orderno") String orderno, ModelMap mmap)
-    {
-        mmap.put("orderno", orderno);
-        return prefix + "/ppwb";
-    }
-
-    /**
-     * 查询工单信息列表
-     */
-    @PostMapping("/ppwb/list")
-    @ResponseBody
-    public TableDataInfo list(PpWoBookMain ppWoBookMain)
-    {
-        startPage();
-        List<PpWoBookMain> list = ppWoBookMainService.selectPpWoBookMainList(ppWoBookMain);
-        return getDataTable(list);
-    }
-
-    /**
-     * 查询详情
-     */
-    @GetMapping("/ppdetail/{wcode}/{pcode}")
-    public String detail(@PathVariable(value = "wcode", required = false) String wcode,@PathVariable(value = "pcode", required = false) String pcode, ModelMap mmap)
-    {
+        mmap.put("flot", flot);
         //根据产品编号查询工单BOM信息
         PpWoBookMain ppWoBookMain = new PpWoBookMain();
-        ppWoBookMain.setPcode(pcode);
+        ppWoBookMain.setAttribute1(flot);
         List<PpWoBookMain> list = ppWoBookMainService.selectPpWoBookMainList(ppWoBookMain);
         if(StringUtils.isNotEmpty(list)){
             ppWoBookMain  = ppWoBookMainService.selectPpWoBookMainById(list.get(0).getId());
-            mmap.put("ppWoBookBomList", ppWoBookMain.getPpWoBookBomList());
+            List<PpWoBookBom> ppWoBookBomList = ppWoBookMain.getPpWoBookBomList();
+            InStore inStore = new InStore(); 
+            List<InStore> inStoreList = inStoreService.selectInStoreList(inStore);
+            Map<String,BigDecimal> inStoreMap = new HashMap<String,BigDecimal>();
+            if(StringUtils.isNotEmpty(inStoreList)){
+                inStoreMap = inStoreList.stream().collect(Collectors.toMap(InStore::getMcode, InStore::getIqty,(oldValue,newValue)->newValue));
+            }
+            if(StringUtils.isNotEmpty(ppWoBookBomList)){
+                for(PpWoBookBom ppWoBookBom : ppWoBookBomList){
+                    //根据部件编号找到库存数量
+                    ppWoBookBom.setIqty(inStoreMap.get(ppWoBookBom.getMcode()));
+                }
+            }
+            mmap.put("ppWoBookBomList", ppWoBookBomList);
+            mmap.put("ppWoBookDetailList", ppWoBookMain.getPpWoBookDetailList());
         }
-        //根据母工单号模糊查询子工单制造信息
-        PpWoBookDetail ppWoBookDetail = new PpWoBookDetail();
-        ppWoBookDetail.setSoncode(wcode);
-        List<PpWoBookDetail> ppWoBookDetailList = ppWoBookDetailService.selectPpWoBookDetailList(ppWoBookDetail);
-        mmap.put("ppWoBookDetailList", ppWoBookDetailList);
-        //根据母工单号模糊查询子工单过程检验记录信息
-        QcProcessCheckMain qcProcessCheckMain = new QcProcessCheckMain();
-        qcProcessCheckMain.setQcode(wcode);
-        List<QcProcessCheckMain> qcProcessCheckMainList = qcProcessCheckMainService.selectQcProcessCheckMainList(qcProcessCheckMain);
-        mmap.put("qcProcessCheckMainList", qcProcessCheckMainList);
-        //根据母工单号模糊查询子工单不良项目记录信息
-        QcBadProjectMain qcBadProjectMain = new QcBadProjectMain();
-        qcBadProjectMain.setWcode(wcode);
-        List<QcBadProjectMain> qcBadProjectMainList = qcBadProjectMainService.selectQcBadProjectMainList(qcBadProjectMain);
-        mmap.put("qcBadProjectMainList", qcBadProjectMainList);
-        mmap.put("wcode", wcode);
-        mmap.put("pcode", pcode);
+         //根据母工单号模糊查询子工单过程检验记录信息
+         QcProcessCheckMain qcProcessCheckMain = new QcProcessCheckMain();
+         qcProcessCheckMain.setQcode(flot);
+         List<QcProcessCheckMain> qcProcessCheckMainList = qcProcessCheckMainService.selectQcProcessCheckMainList(qcProcessCheckMain);
+         mmap.put("qcProcessCheckMainList", qcProcessCheckMainList);
+         //根据母工单号模糊查询子工单不良项目记录信息
+         QcBadProject qcBadProject = new QcBadProject();
+         qcBadProject.setWcode(flot);
+         List<QcBadProject> qcBadProjectList = qcBadProjectService.selectQcBadProjectList(qcBadProject);
+         mmap.put("qcBadProjectList", qcBadProjectList);
+         mmap.put("flot", flot);
         return prefix + "/ppdetail";
     }
 
@@ -366,8 +339,8 @@ public class QueryController extends BaseController
         AjaxResult ajaxResult = AjaxResult.success();
         //同订单号下所有工单→不良项目记录明细信息→不良项目名称/不良项目数量（显示数量前10位的不良项目）
         if(StringUtils.isNotEmpty(dcode)){
-            List<QcBadProjectDetail> projectList= qcBadProjectDetailService.loadPieChartBydcode(dcode); 
-            ajaxResult.put("projectList", projectList);
+            // List<QcBadProjectDetail> projectList= qcBadProjectDetailService.loadPieChartBydcode(dcode); 
+            // ajaxResult.put("projectList", projectList);
         }
         return ajaxResult;
     }
@@ -379,8 +352,8 @@ public class QueryController extends BaseController
         AjaxResult ajaxResult = AjaxResult.success();
         //所选用户下所有产品不良项目名称/不良项目数量
         if(StringUtils.isNotEmpty(vendor)){
-            List<QcBadProjectDetail> pnameList= qcBadProjectDetailService.loadPieChartByVendor(vendor);
-            ajaxResult.put("pnameList", pnameList);
+            // List<QcBadProjectDetail> pnameList= qcBadProjectDetailService.loadPieChartByVendor(vendor);
+            // ajaxResult.put("pnameList", pnameList);
         }
         return ajaxResult;
     }
@@ -392,24 +365,192 @@ public class QueryController extends BaseController
         Map<String, Object> retMap = new HashMap<String, Object>();
         if(dcode != null){
             List<PpWoBookDetail> ppWoBookDetailList = ppWoBookDetailService.loadLineChart(dcode);
-            //计划工单号列表
-            List<String> wCodeList =  ppWoBookDetailList.stream().map(PpWoBookDetail::getSoncode).collect(Collectors.toList());
-            retMap.put("wCodeList", StringUtils.isNotEmpty(wCodeList)?wCodeList.toArray():"");
-            //标准成品率
-            String standardYield = ppWoBookDetailList.stream().map(PpWoBookDetail::getStdrate).collect(Collectors.joining(";"));
-            if(StringUtils.isNotEmpty(standardYield)){
-                standardYield = standardYield.replaceAll("%", "");
-                List<String> standardYieldList = Arrays.asList(standardYield.split(";"));
-                retMap.put("standardYieldList",standardYieldList);
-            }
-            //实际成品率
-            String actualYield = ppWoBookDetailList.stream().map(PpWoBookDetail::getActrate).collect(Collectors.joining(";"));
-            if(StringUtils.isNotEmpty(actualYield)){
-                actualYield = actualYield.replaceAll("%", "");
-                List<String> actualYieldList = Arrays.asList(actualYield.split(";"));
+            //生产工序列表
+            List<String> cworkList =  ppWoBookDetailList.stream().map(PpWoBookDetail::getCwork).distinct().collect(Collectors.toList());
+            retMap.put("cworkList", StringUtils.isNotEmpty(cworkList)?cworkList.toArray():"");
+            //子工单号列表
+            List<String> soncodeList =  ppWoBookDetailList.stream().map(PpWoBookDetail::getSoncode).distinct().collect(Collectors.toList());
+            retMap.put("soncodeList", StringUtils.isNotEmpty(soncodeList)?soncodeList.toArray():"");
+            //子工单号对应 实际成品率
+            JSONArray actualYieldList = new JSONArray();
+            if(StringUtils.isNotEmpty(ppWoBookDetailList) && StringUtils.isNotEmpty(soncodeList) && StringUtils.isNotEmpty(cworkList)){
+                for(String soncode:soncodeList){
+                    JSONObject item = new JSONObject();
+                    item.put("name", soncode);
+                    item.put("type", "line");
+                    List<String> list = new ArrayList<String>();
+                    for(int i = 0;i<cworkList.size();i++){
+                        Map<String,Object> paramMap = new HashMap<String,Object>();
+                        paramMap.put("soncode", soncode);
+                        paramMap.put("cwork", cworkList.get(i));
+                        PpWoBookDetail obj = ppWoBookDetailService.selectPpWoBookDetailByMap(paramMap);
+                        if(obj != null && obj.getActrate() != null){
+                            list.add(obj.getActrate().replaceAll("%", ""));
+                        }else{
+                            list.add("0");
+                        }
+                        item.put("data", list);
+                    }
+                    actualYieldList.add(item);
+                }
                 retMap.put("actualYieldList",actualYieldList);
             }
         }
         return retMap;
+    }
+
+    @GetMapping("/qc/prodcm/in/{pcode}/{lot}/{qcResult}")
+    public String prodcm(@PathVariable(value = "pcode", required = false) String pcode,@PathVariable(value = "lot", required = false) String lot,@PathVariable(value = "qcResult", required = false) String qcResult, ModelMap mmap)
+    {
+        mmap.put("pcode", pcode);
+        mmap.put("lot", lot);
+        mmap.put("qcResult", qcResult);
+        return prefix + "/prodcmin";
+    }
+    /**
+     * 查询成品入库检验记录列表
+     */
+    @PostMapping("/qc/prodcm/in/list")
+    @ResponseBody
+    public TableDataInfo list(QcProdCheckMain qcProdCheckMain)
+    {
+        startPage();
+        qcProdCheckMain.setOperType("0");
+        List<QcProdCheckMain> list = qcProdCheckMainService.selectQcProdCheckMainList(qcProdCheckMain);
+        return getDataTable(list);
+    }
+    /**
+     * 详情成品入库检验记录
+     */
+    @GetMapping("/qc/prodcm/in/detail/{id}")
+    public String detail(@PathVariable("id") String id, ModelMap mmap)
+    {
+        QcProdCheckMain qcProdCheckMain = qcProdCheckMainService.selectQcProdCheckMainById(id);
+        mmap.put("qcProdCheckMain", qcProdCheckMain);
+        return prefix + "/prodcmindetail";
+    }
+
+    /**
+     * 查询合格供方
+    */
+    @GetMapping("/vendor")
+    public String vendor()
+    {
+        return prefix_vendor + "/vendor";
+    }
+    /**
+     * 查询供应商列表
+     */
+    @PostMapping("/vendor/list")
+    @ResponseBody
+    public TableDataInfo vendorList(BsVendor bsVendor)
+    {
+        startPage();
+        List<BsVendor> list = bsVendorService.selectBsVendorList(bsVendor);
+        return getDataTable(list);
+    }
+    /**
+     * 详情供应商记录
+     */
+    @GetMapping("/vendor/detail/{id}")
+    public String vendorDetail(@PathVariable("id") String id, ModelMap mmap)
+    {
+        BsVendor bsVendor = bsVendorService.selectBsVendorById(id);
+        mmap.put("bsVendor", bsVendor);
+        return prefix_vendor + "/detail";
+    }
+
+    /**
+     * 查询材料异常
+    */
+    @GetMapping("/matunusual/{qcResult}")
+    public String matunusual(@PathVariable(value = "qcResult") String qcResult, ModelMap mmap)
+    {
+        mmap.put("qcResult", qcResult);
+        return prefix_mat + "/matunusual";
+    }
+    /**
+     * 查询材料异常列表
+     */
+    @PostMapping("/matunusual/list")
+    @ResponseBody
+    public TableDataInfo matunusualList(QcMatCheckMain qcMatCheckMain)
+    {
+        startPage();
+        List<QcMatCheckMain> list = qcMatCheckMainService.selectQcMatCheckMainList(qcMatCheckMain);
+        return getDataTable(list);
+    }
+    /**
+     * 详情材料异常记录
+     */
+    @GetMapping("/matunusual/detail/{id}")
+    public String matunusualDetail(@PathVariable("id") String id, ModelMap mmap)
+    {
+        QcMatCheckMain qcMatCheckMain = qcMatCheckMainService.selectQcMatCheckMainById(id);
+        mmap.put("qcMatCheckMain", qcMatCheckMain);
+        return prefix_mat + "/detail";
+    }
+
+    /**
+     * 查询过程异常
+    */
+    @GetMapping("/procunusual/{qcResult}")
+    public String procunusual(@PathVariable(value = "qcResult") String qcResult, ModelMap mmap)
+    {
+        mmap.put("qcResult", qcResult);
+        return prefix_proc + "/procunusual";
+    }
+    /**
+     * 查询过程异常列表
+     */
+    @PostMapping("/procunusual/list")
+    @ResponseBody
+    public TableDataInfo procunusualList(QcProcessCheckMain qcProcessCheckMain)
+    {
+        startPage();
+        List<QcProcessCheckMain> list = qcProcessCheckMainService.selectQcProcessCheckMainList(qcProcessCheckMain);
+        return getDataTable(list);
+    }
+    /**
+     * 详情过程异常记录
+     */
+    @GetMapping("/procunusual/detail/{id}")
+    public String procunusualDetail(@PathVariable("id") String id, ModelMap mmap)
+    {
+        QcProcessCheckMain qcProcessCheckMain = qcProcessCheckMainService.selectQcProcessCheckMainById(id);
+        mmap.put("qcProcessCheckMain", qcProcessCheckMain);
+        return prefix_proc + "/detail";
+    }
+
+    /**
+     * 查询入库检验异常或成品出货检验异常
+    */
+    @GetMapping("/produnusual/{qcResult}/{operType}")
+    public String produnusual(@PathVariable(value = "qcResult") String qcResult, @PathVariable(value = "operType") String operType,ModelMap mmap)
+    {
+        mmap.put("qcResult", qcResult);
+        mmap.put("operType", operType);
+        return prefix_prod + "/produnusual";
+    }
+    /**
+     * 查询入库检验异常或成品出货检验异常列表
+     */
+    @PostMapping("/produnusual/list")
+    @ResponseBody
+    public TableDataInfo produnusualList(QcProdCheckMain qcProdCheckMain)
+    {
+        startPage();
+        List<QcProdCheckMain> list = qcProdCheckMainService.selectQcProdCheckMainList(qcProdCheckMain);
+        return getDataTable(list);
+    }
+    /**
+     * 详情入库检验异常或成品出货检验异常记录
+     */
+    @GetMapping("/produnusual/detail/{id}")
+    public String produnusualDetail(@PathVariable("id") String id, ModelMap mmap)
+    {
+        QcProdCheckMain qcProdCheckMain = qcProdCheckMainService.selectQcProdCheckMainById(id);
+        mmap.put("qcProdCheckMain", qcProdCheckMain);
+        return prefix_prod + "/detail";
     }
 }

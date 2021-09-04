@@ -9,7 +9,7 @@ import com.saas.common.annotation.Excel;
 import com.saas.common.core.domain.BaseEntity;
 
 /**
- * 成品检验记录对象 qc_prod_check_main
+ * 成品入库检验记录和成品出货检验记录对象 qc_prod_check_main
  * 
  * @author admin
  * @date 2021-07-25
@@ -20,6 +20,9 @@ public class QcProdCheckMain extends BaseEntity
 
     /** 计划工单号ID */
     private String id;
+
+    /** 操作类型 0入库 1出货 */
+    private String operType;
 
     /** 检验单号 */
     @Excel(name = "检验单号")
@@ -73,8 +76,6 @@ public class QcProdCheckMain extends BaseEntity
 
     private Date qEndtime;//检验结束时间
 
-    // private String[] pcodes;//成品检验记录列表
-
     /** 检验信息 */
     private List<QcProdCheckDetail> qcProdCheckDetailList;
 
@@ -87,6 +88,16 @@ public class QcProdCheckMain extends BaseEntity
     {
         return id;
     }
+
+    
+    public String getOperType() {
+        return operType;
+    }
+
+    public void setOperType(String operType) {
+        this.operType = operType;
+    }
+    
     public void setQcode(String qcode) 
     {
         this.qcode = qcode;
@@ -212,15 +223,6 @@ public class QcProdCheckMain extends BaseEntity
     public void setqEndtime(Date qEndtime) {
         this.qEndtime = qEndtime;
     }
-
-    // public String[] getPcodes() {
-    //     return pcodes;
-    // }
-
-    // public void setPcodes(String[] pcodes) {
-    //     this.pcodes = pcodes;
-    // }
-
     
     public String getPspec() {
         return pspec;

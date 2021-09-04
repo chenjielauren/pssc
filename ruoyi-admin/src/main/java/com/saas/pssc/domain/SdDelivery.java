@@ -49,7 +49,7 @@ public class SdDelivery extends BaseEntity
     private String pspec;
 
     /** 成品批次号 */
-    @Excel(name = "产品批次号")
+    @Excel(name = "成品批次号")
     private String flot;
 
     /** 发货数量 */

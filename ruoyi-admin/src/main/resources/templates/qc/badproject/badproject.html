@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('不良项目记录列表')" />
+    <th:block th:include="include :: header('不良项目汇总列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -15,28 +15,8 @@
                                 <input type="text" name="wcode"/>
                             </li>
                             <li>
-                                <label>产品编号：</label>
-                                <input type="text" name="pcode"/>
-                            </li>
-                            <li>
                                 <label>产品名称：</label>
                                 <input type="text" name="pname"/>
-                            </li>
-                            <li style="display: none;">
-                                <label>产品规格：</label>
-                                <input type="text" name="pspec"/>
-                            </li>
-                            <li style="display: none;">
-                                <label>投入数量：</label>
-                                <input type="text" name="inqty"/>
-                            </li>
-                            <li style="display: none;">
-                                <label>产出数量：</label>
-                                <input type="text" name="outqty"/>
-                            </li>
-                            <li style="display: none;">
-                                <label>良品率：</label>
-                                <input type="text" name="okratio"/>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -48,19 +28,19 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="qc:badpromain:add">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="qc:badproject:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="qc:badpromain:edit">
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="qc:badproject:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="qc:badpromain:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="qc:badproject:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:matcm:import">
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="bs:badproject:import">
 				    <i class="fa fa-upload"></i> 导入
 				</a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="qc:badpromain:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="qc:badproject:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
@@ -71,10 +51,10 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('qc:badpromain:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('qc:badpromain:remove')}]];
+        var editFlag = [[${@permission.hasPermi('qc:badproject:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('qc:badproject:remove')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
-        var prefix = ctx + "qc/badpromain";
+        var prefix = ctx + "qc/badproject";
 
         $(function() {
             var options = {
@@ -85,7 +65,7 @@
                 exportUrl: prefix + "/export",
                 importUrl: prefix + "/importData",
                 importTemplateUrl: prefix + "/importTemplate",
-                modalName: "不良项目记录",
+                modalName: "不良项目汇总",
                 columns: [{
                     checkbox: true
                 },
@@ -100,37 +80,24 @@
                 },
                 {
                     field: 'pcode',
-                    title: '产品编号'
+                    title: '成品编号',
+                    visible: false
                 },
                 {
                     field: 'pname',
                     title: '产品名称'
                 },
                 {
-                    field: 'pspec',
-                    title: '产品规格',
-                    formatter: function(value, row, index) {
-                       return $.common.nullToStr(value);
-                    }
+                    field: 'qty',
+                    title: '不良数量'
                 },
                 {
-                    field: 'inqty',
-                    title: '投入数量'
+                    field: 'memo',
+                    title: '不良描述'
                 },
                 {
-                    field: 'outqty',
-                    title: '产出数量'
-                },
-                {
-                    field: 'okratio',
-                    title: '良品率'
-                },
-                {
-                    field: 'remark',
-                    title: '备注',
-                    formatter: function(value, row, index) {
-                       return $.common.nullToStr(value);
-                    }
+                    field: 'causeway',
+                    title: '原因对策'
                 },
                 {
                     title: '操作',

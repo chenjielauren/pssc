@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="QcProdCheckMain" id="QcProdCheckMainResult">
         <result property="id"    column="id"    />
+        <result property="operType"    column="oper_type"    />
         <result property="qcode"    column="qcode"    />
         <result property="qtime"    column="qtime"    />
         <result property="quser"    column="quser"    />
@@ -57,10 +58,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectQcProdCheckMainList" parameterType="QcProdCheckMain" resultMap="QcProdCheckMainResult">
         <include refid="selectQcProdCheckMainVo"/>
         <where>  
+            <if test="operType != null  and operType != ''"> and oper_type = #{operType}</if>
             <if test="qStarttime != null "> and DATE_FORMAT(qtime ,'%Y-%m-%d') >= DATE_FORMAT(#{qStarttime} ,'%Y-%m-%d')</if>
             <if test="qEndtime != null "> and DATE_FORMAT(qtime ,'%Y-%m-%d') &lt;= DATE_FORMAT(#{qEndtime} ,'%Y-%m-%d')</if> 
             <if test="qcode != null  and qcode != ''"> and qcode like concat('%', #{qcode}, '%')</if>
             <if test="qtime != null "> and qtime = #{qtime}</if>
+            <if test="lot != null and lot != ''"> and lot = #{lot}</if>
             <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
             <if test="qcResult != null  and qcResult != ''"> and qc_result = #{qcResult}</if>
@@ -84,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into qc_prod_check_main
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
+            <if test="operType != null and operType != ''">oper_type,</if>
             <if test="qcode != null and qcode != ''">qcode,</if>
             <if test="qtime != null">qtime,</if>
             <if test="quser != null">quser,</if>
@@ -104,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
+            <if test="operType != null and operType != ''">#{operType},</if>
             <if test="qcode != null and qcode != ''">#{qcode},</if>
             <if test="qtime != null">#{qtime},</if>
             <if test="quser != null">#{quser},</if>
@@ -190,9 +195,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <select id="selectQcResult" parameterType="String" resultType="String">
-        select distinct qc_result  from qc_prod_check_main where qcode in (
-        select wcode  from pp_wo_book_main  
-        where orderno = #{dcode} and is_valid = '1')
+        select distinct qc_result  from qc_prod_check_main 
+        where  lot = #{lot}
         and is_valid  = '1'
     </select>
 

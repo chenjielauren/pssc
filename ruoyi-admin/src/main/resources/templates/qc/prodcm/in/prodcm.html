@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('过程检验记录列表')" />
+    <th:block th:include="include :: header('成品检验记录列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -17,27 +17,21 @@
                                 <input type="text" class="time-input" id="qEndtime" placeholder="结束时间" name="qEndtime"/>
                             </li>
                             <li>
-                                <label>工单号：</label>
+                                <label>检验单号：</label>
                                 <input type="text" name="qcode"/>
                             </li>
+                            
                             <li>
-                                <label>产品编号：</label>
-                                <input type="text" name="pcode"/>
+                                <label>成品编号：</label>
+                                <input type="text" name="pcode" th:value="${pcode}"/>
                             </li>
                             <li>
-                                <label>产品名称：</label>
+                                <label>成品名称：</label>
                                 <input type="text" name="pname"/>
                             </li>
                             <li>
-                                <label>检验工序：</label>
-                                <input type="text" name="cwork"/>
-                            </li>
-                            <li>
-                                <label>检验类型：</label>
-                                <select name="ctype" th:with="type=${@dict.getType('bs_pqc_type')}">
-                                    <option value="">所有</option>
-                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                                </select>
+                                <label>批次号：</label>
+                                <input type="text" name="lot"  th:value="${lot}"/>
                             </li>
                             <li>
                                 <label>检验结果：</label>
@@ -56,34 +50,36 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="qc:proccm:add">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="qc:prodcm:in:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="qc:proccm:edit">
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="qc:prodcm:in:edit">
                     <i class="fa fa-edit"></i> 修改
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="qc:proccm:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="qc:prodcm:in:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:proccm:import">
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="qc:prodcm:in:import">
 				    <i class="fa fa-upload"></i> 导入
 				</a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="qc:proccm:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="qc:prodcm:in:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
-                <table id="bootstrap-table" style="min-width:1300px;"></table>
+                <table id="bootstrap-table" style="min-width:1200px;"></table>
             </div>
         </div>
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('qc:proccm:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('qc:proccm:remove')}]];
-        var ctypeDatas = [[${@dict.getType('bs_pqc_type')}]];
+        var editFlag = [[${@permission.hasPermi('qc:prodcm:in:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('qc:prodcm:in:remove')}]];
         var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
-        var prefix = ctx + "qc/proccm";
+        var handleResultDatas = [[${@dict.getType('qc_handle_result')}]];
+        var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
+        var prefix = ctx + "qc/prodcm/in";
+
         $(function() {
             var options = {
                 url: prefix + "/list",
@@ -93,62 +89,58 @@
                 exportUrl: prefix + "/export",
                 importUrl: prefix + "/importData",
                 importTemplateUrl: prefix + "/importTemplate",
-                modalName: "过程检验记录",
+                modalName: "成品入库检验记录",
                 columns: [{
                     checkbox: true
                 },
                 {
                     field: 'id',
-                    title: '工单号ID',
+                    title: '计划工单号ID',
                     visible: false
                 },
                 {
                     field: 'qcode',
-                    title: '工单号'
+                    title: '检验单号'
+                },
+                {
+                    field: 'pcode',
+                    title: '成品编号'
+                },
+                {
+                    field: 'pname',
+                    title: '成品名称'
+                },
+                {
+                    field: 'pspec',
+                    title: '成品规格',
+                    formatter: function(value, row, index) {
+                       return $.common.nullToStr(value);
+                    }
+                },
+                {
+                    field: 'lot',
+                    title: '批次号'
+                },
+                {
+                    field: 'quser',
+                    title: '检验人员'
                 },
                 {
                     field: 'qtime',
                     title: '检验时间'
                 },
                 {
-                    field: 'quser',
-                    title: '检验人'
-                },
-                {
-                    field: 'pcode',
-                    title: '产品编号'
-                },
-                {
-                    field: 'pname',
-                    title: '产品名称'
-                },
-                {
-                    field: 'pspec',
-                    title: '产品规格',
-                    formatter: function(value, row, index) {
-                       return $.common.nullToStr(value);
-                    }
-                },
-                {
-                    field: 'cwork',
-                    title: '检验工序'
-                },
-                {
-                    field: 'cstation',
-                    title: '检验机台'
-                },
-                {
-                    field: 'ctype',
-                    title: '检验类型',
-                    formatter: function(value, row, index) {
-                       return $.table.selectDictLabel(ctypeDatas, value);
-                    }
-                },
-                {
                     field: 'qcResult',
                     title: '检验结果',
                     formatter: function(value, row, index) {
                        return $.table.selectDictLabel(qcResultDatas, value);
+                    }
+                },
+                {
+                    field: 'handleResult',
+                    title: '处理结果',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(handleResultDatas, value);
                     }
                 },
                 {

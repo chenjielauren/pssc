@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('新增成品检验记录')" />
+    <th:block th:include="include :: header('新增成品入库检验记录')" />
     <th:block th:include="include :: datetimepicker-css" />
 </head>
 <body class="white-bg">
@@ -9,6 +9,7 @@
         <form class="form-horizontal m" id="form-prodcm-add">
             <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
             <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="operType" th:value="0">
             <h4 class="form-header h4">基本信息</h4>
             <div class="form-group">    
                 <label class="col-sm-2 control-label is-required">检验单号：</label>
@@ -42,7 +43,7 @@
             <div class="form-group">    
                 <label class="col-sm-2 control-label">成品规格：</label>
                 <div class="col-sm-4">
-                    <input name="pcode" class="form-control" type="text">
+                    <input name="pspec" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
@@ -88,7 +89,7 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <script th:inline="javascript">
-        var prefix = ctx + "qc/prodcm"
+        var prefix = ctx + "qc/prodcm/in"
         var qcResultDatas = [[${@dict.getType('pp_qc_result')}]];
         var isValidDatas = [[${@dict.getType('sys_is_valid')}]];
         $("#form-prodcm-add").validate({
@@ -109,7 +110,7 @@
 
         $(function() {
             var options = {
-                modalName: "成品检验信息",
+                modalName: "成品入库检验信息",
                 importUrl: ctx + "qc/prodcd/importData",
                 importTemplateUrl: ctx + "qc/prodcd/importTemplate",
                 pagination: false,
