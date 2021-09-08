@@ -147,7 +147,7 @@ public class QueryController extends BaseController
                     obj.setPpState("0");//未填报
                 }else if(qcResultList.size() >= 1 && qcResultList.toString().contains("0")){
                     obj.setPpState("1");//异常 中间有一条为不合格即为异常，
-                }else if(qcResultList.size() == 1 && "1".equals(qcResultList.toString())){
+                }else if(qcResultList.size() == 1 && "1".equals(qcResultList.get(0))){
                     obj.setPpState("2");//合格 所有数据都要合格
                 }
             }

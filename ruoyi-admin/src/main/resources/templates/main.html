@@ -36,8 +36,8 @@
                 </form>
             </div>
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success multiple disabled" onclick="queryOrder()">
-                    <i class="fa fa-anchor"></i> 查询订单
+                <a class="btn btn-success multiple disabled" onclick="queryDetail()">
+                    <i class="fa fa-anchor"></i> 查询详情
                 </a>
                 <a class="btn btn-primary single disabled" onclick="queryStandard()">
                     <i class="fa fa-bell-o"></i> 查询标准
@@ -89,7 +89,6 @@
         function query(){
             $.table.destroy();
             var options = {
-                id:"bootstrap-table",
                 url: prefix + "/delivery/list",
                 singleSelect:true,
                 onCheck: onCheck,
@@ -176,13 +175,12 @@
             $('#wcode').val(flot);
             $('.select-title').text(flot +"不良项目列表");
             $("#bootstrap-table1").bootstrapTable('destroy');
-            
             var prefix = ctx + "qc/badproject";
-            console.log(prefix + "/list");
             var options1 = {
                 id:"bootstrap-table1",
                 toolbar:"toolbar1",
                 url: prefix + "/list",
+                detailUrl: prefix + "/edit/{id}",
                 showSearch: false,
 		        showRefresh: false,
 		        showToggle: false,
@@ -239,28 +237,27 @@
             $.modal.open("标注", url);
         }
 
-        //查询订单
-        function queryOrder(){
+        //查询详情
+        function queryDetail(){
+            table.set('bootstrap-table');
             var rows = $.table.selectColumns('flot');
             if (rows.length == 0) {
                 $.modal.alertWarning("请至少选择一条记录");
                 return;
             }
-            console.log(rows);
             var url = prefix + '/order/'+rows[0];
-            $.modal.openTab("查询订单", url);
+            $.modal.openTab("查询详情", url);
         }
         //查询标准
         function queryStandard(){
+            table.set('bootstrap-table');
             var rows = $.table.selectColumns('pcode');
             if (rows.length == 0) {
                 $.modal.alertWarning("请至少选择一条记录");
                 return;
             }
             var pcode = rows[0];
-            console.log(rows[0]);
             var url = prefix + '/standard/'+rows[0];
-            console.log(url);
             $.modal.openTab("查询标准", url);
         }
         

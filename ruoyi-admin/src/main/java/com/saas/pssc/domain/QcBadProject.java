@@ -43,16 +43,16 @@ public class QcBadProject extends BaseEntity
     @Excel(name = "批次号")
     private String lot;
 
-    /** 投入数量 */
-    @Excel(name = "投入数量")
+    /** 对象数量 */
+    @Excel(name = "对象数量")
     private BigDecimal inqty;
 
     /** 不良数量 */
     @Excel(name = "不良数量")
     private Long qty;
 
-    /** 产出数量 */
-    @Excel(name = "产出数量")
+    /** 合格数量 */
+    @Excel(name = "合格数量")
     private BigDecimal outqty;
 
     /** 良品率 */
@@ -62,12 +62,12 @@ public class QcBadProject extends BaseEntity
     /** 有效否 */
     private String isValid;
 
-    /** 发生工序 */
-    @Excel(name = "发生工序")
+    /** 检验环节 */
+    @Excel(name = "检验环节")
     private String cwork;
 
-    /** 发生机台 */
-    @Excel(name = "发生机台")
+    /** 发生位置 */
+    @Excel(name = "发生位置")
     private String cstation;
 
     /**  */
