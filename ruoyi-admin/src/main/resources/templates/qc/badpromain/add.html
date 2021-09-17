@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增不良项目汇总')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-badpromain-add">
+            <input type="hidden" name="createBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <input type="hidden" name="createByName" th:value="${@permission.getPrincipalProperty('userName')}"> 
+            <input type="hidden" name="updateBy" th:value="${@permission.getPrincipalProperty('loginName')}">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">工单号：</label>
+                <div class="col-sm-4">
+                    <input name="wcode" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">成品编号：</label>
+                <div class="col-sm-4">
+                    <input name="pcode" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">产品名称：</label>
+                <div class="col-sm-10">
+                    <input name="pname" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">不良项目：</label>
+                <div class="col-sm-4">
+                    <input name="project" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label">产品规格：</label>
+                <div class="col-sm-4">
+                    <input name="pspec" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">批次号：</label>
+                <div class="col-sm-4">
+                    <input name="lot" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">对象数量：</label>
+                <div class="col-sm-4">
+                    <input name="inqty" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group"> 
+                <label class="col-sm-2 control-label is-required">不良数量：</label>
+                <div class="col-sm-4">
+                    <input name="qty" class="form-control" type="text" required>
+                </div>   
+                <label class="col-sm-2 control-label is-required">合格数量：</label>
+                <div class="col-sm-4">
+                    <input name="outqty" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group"> 
+                <label class="col-sm-2 control-label is-required">报废数量：</label>
+                <div class="col-sm-4">
+                    <input name="unlessqty" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">良品率：</label>
+                <div class="col-sm-4">
+                    <input name="okratio" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">检验环节：</label>
+                <div class="col-sm-4">
+                    <input name="cwork" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">发生位置：</label>
+                <div class="col-sm-4">
+                    <input name="cstation" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label">处理结果：</label>
+                <div class="col-sm-4">
+                    <input name="handleway" class="form-control" type="text" ></input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">不良描述：</label>
+                <div class="col-sm-10">
+                    <textarea name="memo" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">临时对策：</label>
+                <div class="col-sm-10">
+                    <textarea name="tempway" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">原因分析：</label>
+                <div class="col-sm-10">
+                    <textarea name="cause" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">原因对策：</label>
+                <div class="col-sm-10">
+                    <textarea name="causeway" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+            <h4 class="form-header h4">报废文件信息</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+                    <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>
+                    <div class="col-sm-12 select-table table-striped">
+                        <table id="bootstrap-table"></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:src="@{/saas/js/badpro_main.js}"></script>
+    <script th:inline="javascript">
+        var prefix = ctx + "qc/badpromain"
+        $("#form-badpromain-add").validate({
+            onkeyup: false,
+			rules:{
+				inqty:{
+					number:true
+                },
+                qty:{
+					number:true
+                },
+                outqty:{
+					number:true
+                },
+                unlessqty:{
+					number:true
+                },
+			},
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-badpromain-add').serialize());
+            }
+        }
+        $(function() {
+            var options = {
+                pagination: false,
+                showSearch: false,
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                sidePagination: "client",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                    	var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                    	return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'fileTitle',
+                    align: 'center',
+                    title: '文件标题',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].fileTitle' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'fileName',
+                    align: 'center',
+                    title: '文件名称',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push($.common.sprintf("<input class='form-control' type='hidden' name='qcBadProjectDetailList[%s].fileName' value='%s'>", index, value));
+                        actions.push($.common.sprintf("<input class='form-control' type='hidden' name='qcBadProjectDetailList[%s].fileUrl' value='%s'>", index, row.fileUrl));
+                        actions.push($.common.sprintf("<a id='a%s' href='%s' target='_blank'>%s</a>",index,row.fileUrl,value));                        
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'fileUrl',
+                    align: 'center',
+                    title: '文件路径',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].fileUrl' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'uploadUser',
+                    align: 'center',
+                    title: '上传人',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].uploadUser' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'uploadTime',
+                    align: 'center',
+                    title: '上传时间',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].uploadTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="uploadfile(\'' + index + '\')"><i class="fa fa-upload"></i>上传</a> ');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'isValid',
+                    align: 'center',
+                    visible: false,
+                    title: '有效否 0失效1有效',
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].isValid' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'createBy',
+                    align: 'center',
+                    title: '创建人',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].createBy' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'createTime',
+                    align: 'center',
+                    title: '创建时间',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].createTime' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'updateBy',
+                    align: 'center',
+                    title: '修改人',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].updateBy' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'updateTime',
+                    align: 'center',
+                    title: '修改时间',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' type='text' name='qcBadProjectDetailList[%s].updateTime' value='%s'>", index, value);
+                        return html;
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function addColumn() {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+        	
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    fileTitle: "",
+                    fileName: "",
+                    fileUrl: "",
+                    uploadUser: $("input[name='createByName']").val(),
+                    uploadTime: $.common.dateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"),
+                    isValid: "",
+                    createBy: "",
+                    createTime: "",
+                    updateBy: "",
+                    updateTime: ""
+                }
+            });
+        }
+    </script>
+</body>
+</html>

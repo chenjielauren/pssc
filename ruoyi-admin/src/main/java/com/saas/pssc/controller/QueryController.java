@@ -27,7 +27,7 @@ import com.saas.pssc.domain.InStore;
 import com.saas.pssc.domain.PpWoBookBom;
 import com.saas.pssc.domain.PpWoBookDetail;
 import com.saas.pssc.domain.PpWoBookMain;
-import com.saas.pssc.domain.QcBadProject;
+import com.saas.pssc.domain.QcBadProjectMain;
 import com.saas.pssc.domain.QcMatCheckMain;
 import com.saas.pssc.domain.QcProcessCheckMain;
 import com.saas.pssc.domain.QcProdCheckMain;
@@ -44,7 +44,7 @@ import com.saas.pssc.service.IBsVendorService;
 import com.saas.pssc.service.IInStoreService;
 import com.saas.pssc.service.IPpWoBookDetailService;
 import com.saas.pssc.service.IPpWoBookMainService;
-import com.saas.pssc.service.IQcBadProjectService;
+import com.saas.pssc.service.IQcBadProjectMainService;
 import com.saas.pssc.service.IQcMatCheckMainService;
 import com.saas.pssc.service.IQcProcessCheckMainService;
 import com.saas.pssc.service.IQcProdCheckMainService;
@@ -123,7 +123,7 @@ public class QueryController extends BaseController
     private IQcProdCheckMainService qcProdCheckMainService;//成品检验记录
 
     @Autowired
-    private IQcBadProjectService qcBadProjectService;//不良项目记录
+    private IQcBadProjectMainService qcBadProjectMainService;//不良项目记录
 
     @Autowired
     private ISdDeliveryDetailService sdDeliveryDetailService;//发货明细信息
@@ -207,9 +207,9 @@ public class QueryController extends BaseController
          List<QcProcessCheckMain> qcProcessCheckMainList = qcProcessCheckMainService.selectQcProcessCheckMainList(qcProcessCheckMain);
          mmap.put("qcProcessCheckMainList", qcProcessCheckMainList);
          //根据母工单号模糊查询子工单不良项目记录信息
-         QcBadProject qcBadProject = new QcBadProject();
-         qcBadProject.setWcode(flot);
-         List<QcBadProject> qcBadProjectList = qcBadProjectService.selectQcBadProjectList(qcBadProject);
+         QcBadProjectMain qcBadProjectMain = new QcBadProjectMain();
+         qcBadProjectMain.setWcode(flot);
+         List<QcBadProjectMain> qcBadProjectList = qcBadProjectMainService.selectQcBadProjectMainList(qcBadProjectMain);
          mmap.put("qcBadProjectList", qcBadProjectList);
          mmap.put("flot", flot);
         return prefix + "/ppdetail";
