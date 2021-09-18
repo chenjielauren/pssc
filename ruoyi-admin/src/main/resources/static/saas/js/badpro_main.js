@@ -27,13 +27,6 @@ function doSubmit(index, layero) {
     layer.close(index);
 }
 $("#bootstrap-table").on("post-body.bs.table", function (e, args) {
-    //变更日期
-    $("input[name$='mdate']").datetimepicker({
-        format: "yyyy-mm-dd",
-        minView: "month",
-        autoclose: true,
-        pickerPosition:'top-right'
-    });
     //上传日期
     $("input[name$='uploadTime']").datetimepicker({
         format: "yyyy-mm-dd",
