@@ -88,8 +88,8 @@ ALTER TABLE pssc.qc_mat_check_main CHANGE pspec pspec varchar(100) NULL COMMENT 
 
 ALTER TABLE pssc.qc_process_check_main ADD pspec varchar(100) NULL COMMENT '产品规格';
 ALTER TABLE pssc.qc_process_check_main CHANGE pspec pspec varchar(100) NULL COMMENT '产品规格' AFTER pname;
-ALTER TABLE pssc.qc_process_check_main ADD cmachine varchar(100) NULL COMMENT '检验机台';
-ALTER TABLE pssc.qc_process_check_main CHANGE cmachine cmachine varchar(100) NULL COMMENT '检验机台' AFTER ctype;
+ALTER TABLE pssc.qc_process_check_main ADD cstation varchar(100) NULL COMMENT '检验机台';
+ALTER TABLE pssc.qc_process_check_main CHANGE cstation cstation varchar(100) NULL COMMENT '检验机台' AFTER ctype;
 
 ALTER TABLE pssc.qc_prod_check_main ADD handle_result varchar(50) NULL COMMENT '处理结果0合格入库,1让步接受,2退货';
 ALTER TABLE pssc.qc_prod_check_main CHANGE handle_result handle_result varchar(50) NULL COMMENT '处理结果0合格入库,1让步接受,2退货' AFTER qc_result;
