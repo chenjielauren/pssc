@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="selectQcBadProjectMainVo">
         select id, wcode, pcode, pname, pspec, inqty, outqty, okratio, cwork, cstation, lot, project, t.qty, unlessqty, memo, tempway, cause, causeway, handleway, 
-        t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by,t.update_time, attribute1, attribute2, attribute3 
         from qc_bad_project_main t left join sys_user su on t.update_by = su.login_name
     </sql>
 
@@ -84,6 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="cause != null  and cause != ''"> and cause = #{cause}</if>
             <if test="causeway != null  and causeway != ''"> and causeway = #{causeway}</if>
             <if test="handleway != null  and handleway != ''"> and handleway = #{handleway}</if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             and is_valid = '1'
             <!-- 数据范围过滤 -->
             ${params.dataScope}

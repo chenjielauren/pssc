@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectQcProcessCheckMainVo">
-        select id, qcode, qtime, quser, pcode, pname,pspec, cwork, cstation,ctype, qc_result, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by,t.update_time, attribute1, attribute2, attribute3 
+        select id, qcode, qtime, quser, pcode, pname,pspec, cwork, cstation,ctype, qc_result, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
         from qc_process_check_main t left join sys_user su on t.create_by = su.login_name
     </sql>
 
@@ -67,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="cwork != null  and cwork != ''"> and cwork like concat('%', #{cwork}, '%')</if>
             <if test="ctype != null  and ctype != ''"> and ctype like concat('%', #{ctype}, '%')</if>
             <if test="qcResult != null and qcResult != ''"> and qc_result = #{qcResult}</if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             and is_valid = '1'  
             <!-- 数据范围过滤 --> 
             ${params.dataScope}

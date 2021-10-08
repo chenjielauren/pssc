@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectInStoreVo">
-        select id, ptype, mcode, mname, mspec, mlot, unit, vendor, iqty, uptime, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        select id, ptype, mcode, mname, mspec, mlot, unit, vendor, iqty, uptime, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
         from in_store t left join sys_user su on t.update_by = su.login_name 
     </sql>
 
@@ -43,6 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="vendor != null  and vendor != ''"> and vendor = #{vendor}</if>
             <if test="iqty != null "> and iqty = #{iqty}</if>
             <if test="uptime != null "> and uptime = #{uptime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             and is_valid = '1' 
             <!-- 数据范围过滤 -->
             ${params.dataScope}

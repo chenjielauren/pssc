@@ -43,6 +43,10 @@
                                 <input type="text" class="time-input" placeholder="请选择完工时间" name="pendTime"/>
                             </li>
                             <li>
+                                <label>更新人：</label>
+                                <input type="text" name="updateBy"/>
+                            </li>
+                            <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                             </li>
@@ -69,7 +73,7 @@
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped" style="overflow:scroll;">
-                <table id="bootstrap-table" style="min-width:1200px;"></table>
+                <table id="bootstrap-table" style="min-width:1500px;"></table>
             </div>
         </div>
     </div>
@@ -132,6 +136,14 @@
                 {
                     field: 'pendTime',
                     title: '完工时间'
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新日期'
+                },
+                {
+                    field: 'updateBy',
+                    title: '更新人'
                 },
                 {
                     field: 'remark',

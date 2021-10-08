@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsBomMainVo">
-        select t.id, t.pcode, t.name, t.spec, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        select t.id, t.pcode, t.name, t.spec, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
         from bs_bom_main t left join sys_user su on t.update_by = su.login_name 
     </sql>
 
@@ -62,6 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="spec != null  and spec != ''"> and spec = #{spec}</if>
             <if test="isValid != null  and isValid != ''"> and is_valid = #{isValid}</if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             and is_valid = '1'
             <!-- 数据范围过滤 -->
             ${params.dataScope}

@@ -18,6 +18,10 @@
                                 <label>产品名称：</label>
                                 <input type="text" name="name"/>
                             </li>
+                            <li>
+                                <label>更新人：</label>
+                                <input type="text" name="updateBy"/>
+                            </li>
                             <li style="display: none;">
                                 <label>是否有效：</label>
                                 <select name="isValid" th:with="type=${@dict.getType('sys_is_valid')}">

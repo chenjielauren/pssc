@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSdDeliveryVo">
-        select id, dlot,dtime, dcode, pcode, pname, pspec, flot, qty, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        select id, dlot,dtime, dcode, pcode, pname, pspec, flot, qty, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
         from sd_delivery t left join sys_user su on t.create_by = su.login_name  
     </sql>
 
@@ -40,6 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pspec != null  and pspec != ''"> and pspec = #{pspec}</if>
             <if test="flot != null  and flot != ''"> and flot = #{flot}</if>
             <if test="qty != null "> and qty = #{qty}</if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             and is_valid = '1'
             <!-- 数据范围过滤 -->
             ${params.dataScope}

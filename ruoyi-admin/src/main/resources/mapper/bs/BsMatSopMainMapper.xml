@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsMatSopMainVo">
-        select id, pcode, name, spec, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        select id, pcode, name, spec, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
         from bs_mat_sop_main t left join sys_user su on t.create_by = su.login_name 
     </sql>
 
@@ -54,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pcode != null  and pcode != ''"> and pcode like concat('%', #{pcode}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="spec != null  and spec != ''"> and spec like concat('%', #{spec}, '%') </if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             and is_valid = '1' 
             <!-- 数据范围过滤 -->
             ${params.dataScope}

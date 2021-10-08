@@ -56,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             and is_valid = '1'
             <if test="spec != null  and spec != ''"> and spec like concat('%', #{spec}, '%')</if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>

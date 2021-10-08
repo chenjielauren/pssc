@@ -16,13 +16,17 @@
                                     <option value="1">半成品库存</option>
                                 </select>
                             </li>
-                            <li style="width: 100px;">
-                                <label>半成品编号：</label>
+                            <li>
+                                <label style="width: 80px;">半成品编号：</label>
                                 <input type="text" name="mcode"/>
                             </li>
-                            <li style="width: 100px;">
-                                <label>半成品名称：</label>
+                            <li>
+                                <label style="width: 80px;">半成品名称：</label>
                                 <input type="text" name="mname"/>
+                            </li>
+                            <li>
+                                <label>更新人：</label>
+                                <input type="text" name="updateBy"/>
                             </li>
                             <li style="display: none;">
                                 <label>半成品规格：</label>
@@ -67,7 +71,7 @@
                 </a>
             </div>
             <div class="col-sm-12 select-table table-striped ">
-                <table id="bootstrap-table"></table>
+                <table id="bootstrap-table" style="min-width:1200px;"></table>
             </div>
         </div>
     </div>
@@ -140,6 +144,14 @@
                 {
                     field: 'uptime',
                     title: '库存更新时间'
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新日期'
+                },
+                {
+                    field: 'updateBy',
+                    title: '更新人'
                 },
                 {
                     field: 'remark',

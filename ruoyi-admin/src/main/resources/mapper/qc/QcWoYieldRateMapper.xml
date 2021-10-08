@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectQcWoYieldRateVo">
-        select id, wo, pcode, pname, iqty, oqty, rate, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        select id, wo, pcode, pname, iqty, oqty, rate, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
         from qc_wo_yield_rate t left join sys_user su on t.create_by = su.login_name
     </sql>
 
@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="wo != null  and wo != ''"> and wo = #{wo}</if>
             <if test="pcode != null  and pcode != ''"> and pcode = #{pcode}</if>
             <if test="pname != null  and pname != ''"> and pname like concat('%', #{pname}, '%')</if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             and is_valid = '1'  ${params.dataScope}
         </where>
         order by t.create_time desc

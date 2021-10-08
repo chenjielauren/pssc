@@ -92,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPpWoBookMainVo">
-        select id, wcode, orderno, pcode, pname, pspec, qty, pstar_time, pend_time, t.remark, t.is_valid, t.create_by, t.create_time, t.update_by, t.update_time, attribute1, attribute2, attribute3 
+        select id, wcode, orderno, pcode, pname, pspec, qty, pstar_time, pend_time, t.remark, t.is_valid, t.create_by, t.create_time, su.user_name update_by, t.update_time, attribute1, attribute2, attribute3 
         from pp_wo_book_main t left join sys_user su on t.update_by = su.login_name
     </sql>
 
@@ -108,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="pstarTime != null "> and pstar_time = #{pstarTime}</if>
             <if test="pendTime != null "> and pend_time = #{pendTime}</if>
             <if test="attribute1 != null  and attribute1 != ''"> and wcode = #{attribute1} </if>
+            <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
             and is_valid = '1' 
             <!-- 数据范围过滤 -->
             ${params.dataScope}
