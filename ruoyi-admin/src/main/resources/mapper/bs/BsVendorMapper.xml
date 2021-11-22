@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBsVendorVo">
-        select id, category, vcode, name, phone, contract_user, contract_mobile, address, t.remark,  t.is_valid,  t.create_by,  t.create_time,  su.user_name update_by,  t.update_time, attribute1, attribute2, attribute3 
+        select id, category, vcode, name, phone, contract_user, contract_mobile, address, t.remark,  t.is_valid,  t.create_by,  t.create_time,  su.user_name update_by,  t.update_time, attribute1, attribute2,su.login_name attribute3 
         from bs_vendor t left join sys_user su on t.update_by = su.login_name
     </sql>
 

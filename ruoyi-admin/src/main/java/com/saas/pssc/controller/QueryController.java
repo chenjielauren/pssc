@@ -2,18 +2,24 @@ package com.saas.pssc.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.saas.common.annotation.Log;
 import com.saas.common.core.controller.BaseController;
 import com.saas.common.core.domain.AjaxResult;
+import com.saas.common.core.domain.entity.SysDictData;
+import com.saas.common.core.domain.entity.SysUser;
 import com.saas.common.core.page.TableDataInfo;
 import com.saas.common.enums.BusinessType;
 import com.saas.common.json.JSONObject;
 import com.saas.common.json.JSONObject.JSONArray;
+import com.saas.common.utils.ShiroUtils;
 import com.saas.common.utils.StringUtils;
 import com.saas.pssc.domain.BsBomMain;
 import com.saas.pssc.domain.BsCraftSopMain;
@@ -50,7 +56,10 @@ import com.saas.pssc.service.IQcProcessCheckMainService;
 import com.saas.pssc.service.IQcProdCheckMainService;
 import com.saas.pssc.service.ISdDeliveryDetailService;
 import com.saas.pssc.service.ISdDeliveryService;
+import com.saas.system.service.ISysDictDataService;
+import com.saas.system.service.ISysUserService;
 
+import org.apache.shiro.util.AntPathMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,6 +68,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.HandlerMapping;
 
 /**
  * 综合查询Controller
@@ -79,6 +89,12 @@ public class QueryController extends BaseController
     private String prefix_proc = "query/procunusual";//过程异常
 
     private String prefix_prod = "query/produnusual";//成品异常
+
+    @Autowired
+    private ISysUserService sysUserService;//用户信息
+
+    @Autowired
+    private ISysDictDataService dictDataService;//字典信息
 
     @Autowired
     private IPpWoBookMainService ppWoBookMainService;//工单记录信息
@@ -173,12 +189,37 @@ public class QueryController extends BaseController
         return ajaxResult;
     }
     /**
-     * 查询订单
+     * 屏蔽发货批次号
      */
-    @GetMapping("/order/{flot}")
-    public String order(@PathVariable("flot") String flot, ModelMap mmap)
+    @PostMapping("/blockdlot")
+    @ResponseBody
+    public AjaxResult blockdlot(String dlot)
     {
-        mmap.put("flot", flot);
+        String dictType = "dlot_keyword";
+        SysDictData sdd = new SysDictData();
+        sdd.setDictType(dictType);
+        List<SysDictData> list = dictDataService.selectDictDataList(sdd);
+        SysDictData dictData = new SysDictData();
+        dictData.setDictLabel(dlot);
+        dictData.setDictValue(dlot);
+        dictData.setDictType(dictType);
+        dictData.setDictSort(StringUtils.isNotEmpty(list)?Long.valueOf(list.size()):0);
+        dictData.setCreateBy(ShiroUtils.getLoginName());
+        dictData.setCreateTime(new Date());
+        dictDataService.insertDictData(dictData);
+        return success();
+    }
+
+    /**
+     * 查询详情
+     */
+    @GetMapping("/order/{loginName}/**")
+    public String order(@PathVariable(value = "loginName") String loginName,HttpServletRequest request, ModelMap mmap)
+    {
+        //对成品批次号带斜杠的特殊处理
+        final String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
+        final String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
+        String flot = new AntPathMatcher().extractPathWithinPattern(bestMatchingPattern, path);
         //根据产品编号查询工单BOM信息
         PpWoBookMain ppWoBookMain = new PpWoBookMain();
         ppWoBookMain.setAttribute1(flot);
@@ -201,17 +242,21 @@ public class QueryController extends BaseController
             mmap.put("ppWoBookBomList", ppWoBookBomList);
             mmap.put("ppWoBookDetailList", ppWoBookMain.getPpWoBookDetailList());
         }
-         //根据母工单号模糊查询子工单过程检验记录信息
-         QcProcessCheckMain qcProcessCheckMain = new QcProcessCheckMain();
-         qcProcessCheckMain.setQcode(flot);
-         List<QcProcessCheckMain> qcProcessCheckMainList = qcProcessCheckMainService.selectQcProcessCheckMainList(qcProcessCheckMain);
-         mmap.put("qcProcessCheckMainList", qcProcessCheckMainList);
-         //根据母工单号模糊查询子工单不良项目记录信息
-         QcBadProjectMain qcBadProjectMain = new QcBadProjectMain();
-         qcBadProjectMain.setWcode(flot);
-         List<QcBadProjectMain> qcBadProjectList = qcBadProjectMainService.selectQcBadProjectMainList(qcBadProjectMain);
-         mmap.put("qcBadProjectList", qcBadProjectList);
-         mmap.put("flot", flot);
+        //根据母工单号模糊查询子工单过程检验记录信息
+        QcProcessCheckMain qcProcessCheckMain = new QcProcessCheckMain();
+        qcProcessCheckMain.setQcode(flot);
+        List<QcProcessCheckMain> qcProcessCheckMainList = qcProcessCheckMainService.selectQcProcessCheckMainList(qcProcessCheckMain);
+        mmap.put("qcProcessCheckMainList", qcProcessCheckMainList);
+        //根据母工单号模糊查询子工单不良项目记录信息
+        QcBadProjectMain qcBadProjectMain = new QcBadProjectMain();
+        qcBadProjectMain.setWcode(flot);
+        List<QcBadProjectMain> qcBadProjectList = qcBadProjectMainService.selectQcBadProjectMainList(qcBadProjectMain);
+        mmap.put("qcBadProjectList", qcBadProjectList);
+        mmap.put("flot", flot);
+        SysUser sysUser = sysUserService.selectUserByLoginName(loginName);
+        if(StringUtils.isNotNull(sysUser)){
+            mmap.put("vendor", sysUser.getUserName());
+        }
         return prefix + "/ppdetail";
     }
 
@@ -237,8 +282,8 @@ public class QueryController extends BaseController
      * 根据产品编号和供应商查询产品BOM信息、产品工艺技术标准和4M变更单
      * 查询标准
      */
-    @GetMapping("/standard/{pcode}")
-    public String standard(@PathVariable("pcode") String pcode, ModelMap mmap)
+    @GetMapping("/standard/{pcode}/{loginName}")
+    public String standard(@PathVariable("pcode") String pcode,@PathVariable("loginName") String loginName, ModelMap mmap)
     {
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("pcode", pcode);
@@ -248,6 +293,10 @@ public class QueryController extends BaseController
         mmap.put("bsCraftSopMain", bsCraftSopMain);
         BsMcnMain bsMcnMain = bsMcnMainService.selectBsMcnMainByMap(paramMap);
         mmap.put("bsMcnMain", bsMcnMain);
+        SysUser sysUser = sysUserService.selectUserByLoginName(loginName);
+        if(StringUtils.isNotNull(sysUser)){
+            mmap.put("vendor", sysUser.getUserName());
+        }
         return prefix + "/standard";
     }
     /**
@@ -433,9 +482,13 @@ public class QueryController extends BaseController
     /**
      * 查询合格供方
     */
-    @GetMapping("/vendor")
-    public String vendor()
+    @GetMapping("/vendor/{loginName}")
+    public String vendor(@PathVariable(value = "loginName") String loginName, ModelMap mmap)
     {
+        SysUser sysUser = sysUserService.selectUserByLoginName(loginName);
+        if(StringUtils.isNotNull(sysUser)){
+            mmap.put("vendor", sysUser.getUserName());
+        }
         return prefix_vendor + "/vendor";
     }
     /**
@@ -463,10 +516,14 @@ public class QueryController extends BaseController
     /**
      * 查询材料异常
     */
-    @GetMapping("/matunusual/{qcResult}")
-    public String matunusual(@PathVariable(value = "qcResult") String qcResult, ModelMap mmap)
+    @GetMapping("/matunusual/{qcResult}/{loginName}")
+    public String matunusual(@PathVariable(value = "qcResult") String qcResult,@PathVariable(value = "loginName") String loginName, ModelMap mmap)
     {
         mmap.put("qcResult", qcResult);
+        SysUser sysUser = sysUserService.selectUserByLoginName(loginName);
+        if(StringUtils.isNotNull(sysUser)){
+            mmap.put("vendor", sysUser.getUserName());
+        }
         return prefix_mat + "/matunusual";
     }
     /**
@@ -494,10 +551,19 @@ public class QueryController extends BaseController
     /**
      * 查询过程异常
     */
-    @GetMapping("/procunusual/{qcResult}")
-    public String procunusual(@PathVariable(value = "qcResult") String qcResult, ModelMap mmap)
+    @GetMapping("/procunusual/{qcResult}/{loginName}/**")
+    public String procunusual(@PathVariable(value = "qcResult") String qcResult,@PathVariable(value = "loginName") String loginName,HttpServletRequest request, ModelMap mmap)
     {
         mmap.put("qcResult", qcResult);
+        //对成品批次号带斜杠的特殊处理
+        final String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
+        final String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
+        String arguments = new AntPathMatcher().extractPathWithinPattern(bestMatchingPattern, path);
+        mmap.put("qcode", arguments);
+        SysUser sysUser = sysUserService.selectUserByLoginName(loginName);
+        if(StringUtils.isNotNull(sysUser)){
+            mmap.put("vendor", sysUser.getUserName());
+        }
         return prefix_proc + "/procunusual";
     }
     /**
@@ -525,11 +591,20 @@ public class QueryController extends BaseController
     /**
      * 查询入库检验异常或成品出货检验异常
     */
-    @GetMapping("/produnusual/{qcResult}/{operType}")
-    public String produnusual(@PathVariable(value = "qcResult") String qcResult, @PathVariable(value = "operType") String operType,ModelMap mmap)
+    @GetMapping(value = {"/produnusual/{qcResult}/{operType}/{loginName}/**"})
+    public String produnusual(@PathVariable(value = "qcResult") String qcResult, @PathVariable(value = "operType") String operType,@PathVariable(value = "loginName",required = false) String loginName,HttpServletRequest request, ModelMap mmap)
     {
         mmap.put("qcResult", qcResult);
         mmap.put("operType", operType);
+        SysUser sysUser = sysUserService.selectUserByLoginName(loginName);
+        if(StringUtils.isNotNull(sysUser)){
+            mmap.put("vendor", sysUser.getUserName());
+        }
+        //对成品批次号带斜杠的特殊处理
+        final String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
+        final String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
+        String arguments = new AntPathMatcher().extractPathWithinPattern(bestMatchingPattern, path);
+        mmap.put("lot", arguments);
         return prefix_prod + "/produnusual";
     }
     /**

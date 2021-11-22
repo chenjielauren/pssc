@@ -17,6 +17,7 @@
                             </li>
                             <li>
                                 <label style="width: 100px;">供应商名称：</label>
+                                <input type="hidden" name="loginName" id="loginName" />
                                 <input type="text" name="vendor" id="vendor" />
                             </li>
                             <li style="display: none;">
@@ -36,6 +37,9 @@
                 </form>
             </div>
             <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-info multiple disabled" onclick="blockdlot()">
+                    <i class="fa fa-table"></i> 屏蔽批次号
+                </a>
                 <a class="btn btn-success multiple disabled" onclick="queryDetail()">
                     <i class="fa fa-anchor"></i> 查询详情
                 </a>
@@ -54,7 +58,7 @@
                 <a class="btn btn-info" onclick="queryProdInUnusual()">
                     <i class="fa fa-cog"></i> 查询入库检验异常
                 </a>
-                <a class="btn btn-warning" onclick="queryProdOutUnusual()">
+                <a class="btn btn-warning multiple disabled" onclick="queryProdOutUnusual()">
                     <i class="fa fa-flag"></i> 查询成品出货检验异常
                 </a>
             </div>
@@ -80,6 +84,7 @@
             var url =  prefix+'/findVendor';
             $.post(url,$.common.formToJSON("formId"),function(result){
                 if(result.data.updateBy !=""){
+                    $('#loginName').val(result.data.attribute3);
                     $('#vendor').val(result.data.updateBy);
                     $('#div1').empty().html('<h5>不良项目TOP10</h5>');
                 }
@@ -91,6 +96,8 @@
             var options = {
                 url: prefix + "/delivery/list",
                 singleSelect:true,
+                showToggle:false,
+                showSearch:false,
                 onCheck: onCheck,
                 modalName: "发货信息",
                 columns: [{
@@ -144,6 +151,10 @@
                     formatter: function(value, row, index) {
                        return $.table.selectDictLabel(ppStateDatas, value);
                     }
+                },
+                {
+                    field: 'updateBy',
+                    title: '供应商名称'
                 },
                 {
                     field: 'remark',
@@ -236,7 +247,25 @@
             var url = prefix + '/remark/'+rowId+'/'+dlot;
             $.modal.open("标注", url);
         }
-
+        //屏蔽发货批次号
+        function blockdlot(){
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('dlot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有发货批次号的单据");
+                return;
+            }
+            $.modal.confirm("确定屏蔽该条" + rows[0] + "发货批次号吗？", function() {
+                var url = prefix + '/blockdlot/';
+                var data = { "dlot": rows[0] };
+                $.operate.submit(url, "post", "json", data);
+            });
+            $.table.refresh();
+        }
         //查询详情
         function queryDetail(){
             table.set('bootstrap-table');
@@ -245,7 +274,15 @@
                 $.modal.alertWarning("请至少选择一条记录");
                 return;
             }
-            var url = prefix + '/order/'+rows[0];
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有成品批次号的单据");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + '/order/'+$('#loginName').val()+"/"+rows[0];
             $.modal.openTab("查询详情", url);
         }
         //查询标准
@@ -256,34 +293,88 @@
                 $.modal.alertWarning("请至少选择一条记录");
                 return;
             }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
             var pcode = rows[0];
-            var url = prefix + '/standard/'+rows[0];
+            var url = prefix + '/standard/'+rows[0]+"/"+$('#loginName').val();
             $.modal.openTab("查询标准", url);
         }
         
         //查询合格供方
         function queryVendor(){
-            var url = prefix + "/vendor";
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/vendor/"+$('#loginName').val();
             $.modal.openTab("合格供方名录",url);
         }
         //查询材料异常
         function queryMatUnusual(){
-            var url = prefix + "/matunusual/0";
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/matunusual/0/"+$('#loginName').val();
             $.modal.openTab('查询材料异常',url);
         }
         //查询过程异常
         function queryProcUnusual(){
-            var url = prefix + "/procunusual/0";
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('flot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有成品批次号的单据");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/procunusual/0/"+$('#loginName').val()+"/"+rows[0];
             $.modal.openTab('查询过程异常',url);
         }
         //查询入库检验异常
         function queryProdInUnusual(){
-            var url = prefix + "/produnusual/0/0";
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('flot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有成品批次号的单据");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/produnusual/0/0/"+$('#loginName').val()+"/"+rows[0];
             $.modal.openTab('查询入库检验异常',url);
         }
         //查询成品出货检验异常
         function queryProdOutUnusual(){
-            var url = prefix + "/produnusual/0/1";
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('flot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有成品批次号的单据");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/produnusual/0/1/"+$('#loginName').val()+"/" +rows[0];
             $.modal.openTab('查询成品出货检验异常',url);
         }
     </script>

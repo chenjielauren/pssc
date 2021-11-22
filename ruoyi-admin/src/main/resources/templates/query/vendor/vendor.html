@@ -23,7 +23,11 @@
                             </li>
                             <li>
                                 <label>供方名称：</label>
-                                <input type="text" name="name"/>
+                                <input type="text" name="updateBy"/>
+                            </li>
+                            <li>
+                                <label>更新人：</label>
+                                <input type="text" name="vendor" th:value="*{vendor}" />
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>

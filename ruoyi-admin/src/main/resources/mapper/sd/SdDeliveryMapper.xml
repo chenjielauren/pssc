@@ -41,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="flot != null  and flot != ''"> and flot = #{flot}</if>
             <if test="qty != null "> and qty = #{qty}</if>
             <if test="updateBy != null  and updateBy != ''"> and su.user_name like concat('%', #{updateBy}, '%')</if>
+            and dlot not in (select dict_value from sys_dict_data where dict_type ='dlot_keyword' and status = '0')
             and is_valid = '1'
             <!-- 数据范围过滤 -->
             ${params.dataScope}
