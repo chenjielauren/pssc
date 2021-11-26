@@ -98,3 +98,6 @@ ALTER TABLE pssc.qc_prod_check_main ADD pspec varchar(100) NULL COMMENT '成品�
 ALTER TABLE pssc.qc_prod_check_main CHANGE pspec pspec varchar(100) NULL COMMENT '成品规格' AFTER pname;
 
 ALTER TABLE pssc.qc_wo_yield_rate MODIFY COLUMN id varchar(50) NOT NULL COMMENT '计划工单号ID';
+
+INSERT INTO sys_menu (menu_name,parent_id,order_num,url,target,menu_type,visible,is_refresh,perms,icon,create_by,create_time,update_by,update_time,remark) VALUES
+	 ('批次屏蔽',1,9,'/system/dict/dlotkeyword','','C','0','1','system:dict:view','fa fa-table','admin','2021-11-22 16:17:06','',NULL,'批次屏蔽菜单');

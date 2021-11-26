@@ -153,6 +153,17 @@ public class SysDictTypeController extends BaseController
         mmap.put("dictList", dictTypeService.selectDictTypeAll());
         return "system/dict/data/data";
     }
+    /**
+     * 批次屏蔽关键字
+     */
+    @RequiresPermissions("system:dict:view")
+    @GetMapping("/dlotkeyword")
+    public String dlotKeyWord(ModelMap mmap)
+    {
+        mmap.put("dict", dictTypeService.selectDictTypeByType("dlot_keyword"));
+        mmap.put("dictList", dictTypeService.selectDictTypeAll());
+        return "system/dict/data/data";
+    }
 
     /**
      * 校验字典类型
