@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('首页')" />
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label style="width: 100px;">发货批次号：</label>
+                                <input type="text" name="dlot" id="dlot" onblur="findVendor()"/>
+                            </li>
+                            <li>
+                                <label style="width: 100px;">供应商名称：</label>
+                                <input type="hidden" name="loginName" id="loginName" />
+                                <input type="text" name="vendor" id="vendor" />
+                            </li>
+                            <li style="display: none;">
+                                <label>产品编号：</label>
+                                <input type="text" name="pcode" id="pcode" />
+                            </li>
+                            <li style="display: none;">
+                                <label>工单号：</label>
+                                <input type="text" name="wcode" id="wcode"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="query()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-info multiple disabled" onclick="blockdlot()">
+                    <i class="fa fa-table"></i> 屏蔽批次号
+                </a>
+                <a class="btn btn-success multiple disabled" onclick="queryDetail()">
+                    <i class="fa fa-anchor"></i> 查询详情
+                </a>
+                <a class="btn btn-primary single disabled" onclick="queryStandard()">
+                    <i class="fa fa-bell-o"></i> 查询标准
+                </a>
+                <a class="btn btn-success" onclick="queryVendor()">
+                    <i class="fa fa-bullhorn"></i> 查询合格供方
+                </a>
+                <a class="btn btn-warning" onclick="queryMatUnusual()">
+                    <i class="fa fa-bolt"></i> 查询材料异常
+                </a>
+                <a class="btn btn-danger" onclick="queryProcUnusual()">
+                    <i class="fa fa-exclamation-circle"></i> 查询过程异常
+                </a>
+                <a class="btn btn-info" onclick="queryProdInUnusual()">
+                    <i class="fa fa-cog"></i> 查询入库检验异常
+                </a>
+                <a class="btn btn-warning multiple disabled" onclick="queryProdOutUnusual()">
+                    <i class="fa fa-flag"></i> 查询成品出货检验异常
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+            <div class="btn-group-sm" id="toolbar1" role="group">
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <p class="select-title"></p>
+                <table id="bootstrap-table1"></table>
+            </div>
+        </div>
+      </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "query";
+        var ppStateDatas = [[${@dict.getType('pp_state')}]];
+        //根据发货批次号 找到供应商信息
+        function findVendor(){
+            var dlot = $('#dlot').val(); 
+            var url =  prefix+'/findVendor';
+            $.post(url,$.common.formToJSON("formId"),function(result){
+                if(result.data.updateBy !=""){
+                    $('#loginName').val(result.data.attribute3);
+                    $('#vendor').val(result.data.updateBy);
+                    $('#div1').empty().html('<h5>不良项目TOP10</h5>');
+                }
+            });  
+        }
+        //查询发货表
+        function query(){
+            $.table.destroy();
+            var options = {
+                url: prefix + "/delivery/list",
+                singleSelect:true,
+                showToggle:false,
+                showSearch:false,
+                onCheck: onCheck,
+                modalName: "发货信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '发货ID',
+                    visible: false
+                },
+                {
+                    field: 'dlot',
+                    title: '发货批次号'
+                },
+                {
+                    field: 'dtime',
+                    title: '发货时间'
+                },
+                {
+                    field: 'dcode',
+                    title: '订单号',
+                    visible: false
+                },
+                {
+                    field: 'pcode',
+                    title: '产品编号'
+                },
+                {
+                    field: 'pname',
+                    title: '产品名称'
+                },
+                {
+                    field: 'pspec',
+                    title: '产品规格',
+                    visible: false,
+                    formatter: function(value, row, index) {
+                       return $.common.nullToStr(value);
+                    }
+                },
+                {
+                    field: 'flot',
+                    title: '成品批次号'
+                },
+                {
+                    field: 'qty',
+                    title: '发货数量'
+                },
+                {
+                    field: 'ppState',
+                    title: '成品检验',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(ppStateDatas, value);
+                    }
+                },
+                {
+                    field: 'updateBy',
+                    title: '供应商名称'
+                },
+                {
+                    field: 'remark',
+                    title: '备注',
+                    visible: false
+                },
+                {
+                    field: 'isValid',
+                    title: '有效否 0失效1有效',
+                    visible: false,
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="remark(\'' + row.id + '\',\'' + row.dlot + '\')"><i class="fa fa-edit"></i>标注</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        }
+        //选中行
+        function onCheck(row, $element){
+            debugger;
+            //更新查询条件的发货批次号
+            $('#dlot').val(row.dlot);
+            findVendor();
+            //成品批次号
+            var flot = row.flot;
+            $('#wcode').val(flot);
+            $('.select-title').text(flot +"不良项目列表");
+            $("#bootstrap-table1").bootstrapTable('destroy');
+            var prefix = ctx + "qc/badpromain";
+            var options1 = {
+                id:"bootstrap-table1",
+                toolbar:"toolbar1",
+                url: prefix + "/list",
+                detailUrl: prefix + "/edit/{id}",
+                showSearch: false,
+		        showRefresh: false,
+		        showToggle: false,
+		        showColumns: false,
+                modalName: "不良项目记录信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'ID',
+                    visible: false
+                },
+                {
+                    field: 'wcode',
+                    title: '工单号'
+                },
+                {
+                    field: 'pcode',
+                    title: '成品编号',
+                    visible: false
+                },
+                {
+                    field: 'pname',
+                    title: '产品名称'
+                },
+                {
+                    field: 'qty',
+                    title: '不良数量'
+                },
+                {
+                    field: 'memo',
+                    title: '不良描述'
+                },
+                {
+                    field: 'causeway',
+                    title: '原因对策'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-edit"></i>打开</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options1);
+        }
+        //标注
+        function remark(rowId,dlot){
+            var url = prefix + '/remark/'+rowId+'/'+dlot;
+            $.modal.open("标注", url);
+        }
+        //屏蔽发货批次号
+        function blockdlot(){
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('dlot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有发货批次号的单据");
+                return;
+            }
+            $.modal.confirm("确定屏蔽该条" + rows[0] + "发货批次号吗？", function() {
+                var url = prefix + '/blockdlot/';
+                var data = { "dlot": rows[0] };
+                $.operate.submit(url, "post", "json", data);
+            });
+            $.table.refresh();
+        }
+        //查询详情
+        function queryDetail(){
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('flot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有成品批次号的单据");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + '/order/'+$('#loginName').val()+"/"+rows[0];
+            $.modal.openTab("查询详情", url);
+        }
+        //查询标准
+        function queryStandard(){
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('pcode');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var pcode = rows[0];
+            var url = prefix + '/standard/'+rows[0]+"/"+$('#loginName').val();
+            $.modal.openTab("查询标准", url);
+        }
+        
+        //查询合格供方
+        function queryVendor(){
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/vendor/"+$('#loginName').val();
+            $.modal.openTab("合格供方名录",url);
+        }
+        //查询材料异常
+        function queryMatUnusual(){
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/matunusual/0/"+$('#loginName').val();
+            $.modal.openTab('查询材料异常',url);
+        }
+        //查询过程异常
+        function queryProcUnusual(){
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('flot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有成品批次号的单据");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/procunusual/0/"+$('#loginName').val()+"/"+rows[0];
+            $.modal.openTab('查询过程异常',url);
+        }
+        //查询入库检验异常
+        function queryProdInUnusual(){
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('flot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有成品批次号的单据");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/produnusual/0/0/"+$('#loginName').val()+"/"+rows[0];
+            $.modal.openTab('查询入库检验异常',url);
+        }
+        //查询成品出货检验异常
+        function queryProdOutUnusual(){
+            table.set('bootstrap-table');
+            var rows = $.table.selectColumns('flot');
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            if ($.common.isEmpty(rows[0])) {
+                $.modal.alertWarning("请选择有成品批次号的单据");
+                return;
+            }
+            if ($.common.isEmpty($('#loginName').val())) {
+                $.modal.alertWarning("请选择供应商名称");
+                return;
+            }
+            var url = prefix + "/produnusual/0/1/"+$('#loginName').val()+"/" +rows[0];
+            $.modal.openTab('查询成品出货检验异常',url);
+        }
+    </script>
+</body>
+</html>
