@@ -18,7 +18,7 @@
                             <li>
                                 <label style="width: 100px;">供应商名称：</label>
                                 <input type="hidden" name="loginName" id="loginName" />
-                                <input type="text" name="vendor" id="vendor" />
+                                <input type="text" name="updateBy" id="updateBy" />
                             </li>
                             <li style="display: none;">
                                 <label>产品编号：</label>
@@ -85,7 +85,7 @@
             $.post(url,$.common.formToJSON("formId"),function(result){
                 if(result.data.updateBy !=""){
                     $('#loginName').val(result.data.attribute3);
-                    $('#vendor').val(result.data.updateBy);
+                    $('#updateBy').val(result.data.updateBy);
                     $('#div1').empty().html('<h5>不良项目TOP10</h5>');
                 }
             });  
